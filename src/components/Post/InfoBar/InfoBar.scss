@@ -1,0 +1,64 @@
+@use '@assets/webColors' as *;
+
+.InfoBar {
+  font-family: "Bootstrap-icons";
+
+  ul {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    li {
+      position: relative;
+      display: flex;
+      // align-items: flex-start;
+      gap: 2px;
+      cursor: pointer;
+
+      &:hover p {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      span{
+        font-size: 13px;
+        position: relative;
+        bottom: 8px;
+      }
+
+      p {
+        font-family: "Roboto";
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: -30px;
+        left: -10px;
+        background-color: $dark-grey;
+        color: $white;
+        padding: 3px;
+        border-radius: 5px;
+        transition: 200ms;
+        font-size: 14px;
+      }
+
+      &.share {
+        width: 26px;
+        height: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        color: $white;
+        border-radius: 50%;
+        font-size: 13px;
+        transition: 150ms;
+
+        &:hover {
+          scale: 1.2;
+          color: $red;
+        }
+
+      }
+    }
+  }
+}

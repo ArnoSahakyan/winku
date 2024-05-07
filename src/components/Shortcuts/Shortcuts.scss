@@ -1,0 +1,48 @@
+@use '@assets/webColors' as *;
+
+.Shortcuts {
+  position: sticky;
+  top: 67px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 20px;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 5px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: $grey1;
+      transition: 100ms;
+
+      &:hover {
+        color: $blue;
+
+        a {
+          color: $blue;
+        }
+      }
+
+      a {
+        color: $grey1;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .Shortcuts {
+    position: static;
+  }
+}

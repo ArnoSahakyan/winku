@@ -1,0 +1,37 @@
+@use '@assets/webColors' as *;
+
+
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+
+a {
+  font-weight: 500;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 20px;
+  background: $grey-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: $grey1;
+}

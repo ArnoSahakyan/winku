@@ -1,0 +1,36 @@
+@use '@assets/webColors' as *;
+
+.Photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 30px;
+  background-color: $white;
+  border-radius: 5px;
+
+  &__img {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    
+    img {
+      width: 100%;
+      object-fit: cover;
+      height: 100%;
+      display: block;
+      transition: 100ms;
+
+      &:hover {
+        scale: 1.05;
+      }
+    }
+
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .Photos{
+    grid-template-columns: 1fr 1fr;
+    padding: 15px;
+  }
+}

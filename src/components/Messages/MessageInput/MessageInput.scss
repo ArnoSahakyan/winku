@@ -1,0 +1,32 @@
+@use '@assets/webColors' as *;
+
+.MessageInput {
+  padding: 15px;
+  form {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    textarea {
+      width: 100%;
+      resize: none;
+      height: 70px;
+      padding: 10px;
+      font-family: 'Roboto';
+    }
+    button{
+      cursor: pointer;
+      position: absolute;
+      right: -20px;
+      width: 40px;
+      height: 40px;
+      font-family: "Bootstrap-icons";
+      font-size: 20px;
+      background-color: $blue;
+      color: $white;
+      border: none;
+      outline: none;
+      border-radius: 50%;
+    }
+  }
+}

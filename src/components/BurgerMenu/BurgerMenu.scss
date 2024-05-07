@@ -1,0 +1,194 @@
+/* ---------------- Navbar and burger menu ------------------ */
+@use '@assets/webColors' as *;
+
+.BurgerMenu {
+  display: none;
+  width: '100%';
+
+  nav {
+    width: 100%;
+    background-color: $blue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+
+    a {
+      img {
+        width: 120px;
+        object-fit: cover;
+      }
+    }
+
+    .burger-menu {
+      width: 64px;
+      height: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      cursor: pointer;
+
+      .burger-bar {
+        width: 64px;
+        height: 8px;
+        background-color: $white;
+        border-radius: 8px;
+      }
+    }
+
+  }
+
+  .menu {
+    padding-top: 20px;
+    width: 80%;
+    height: 100vh;
+    background-color: $white;
+    color: $blue;
+    position: fixed;
+    transform-origin: left;
+    transition: 200ms;
+    transition-timing-function: ease-in-out;
+    top: 0;
+    z-index: 9;
+
+    a {
+      padding-left: 30px;
+      display: flex;
+      text-decoration: none;
+      position: relative;
+
+      span {
+        display: none;
+        position: absolute;
+        right: 20px;
+        font-size: 30px;
+        color: $blue;
+        font-weight: 900;
+      }
+    }
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h2 {
+      text-align: center;
+      border-bottom: 1px solid $grey1;
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+
+    .bLinks {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: 300ms;
+
+      li {
+        position: relative;
+        padding: 5px;
+        font-size: 20px;
+        border-bottom: 1px solid $grey1;
+        transition: 200ms;
+
+        &:hover .bSublinks {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .bSublinks {
+          width: 90%;
+          background-color: $grey-bg;
+          position: absolute;
+          top: 35px;
+          left: 10px;
+          z-index: 1;
+          opacity: 0;
+          visibility: hidden;
+
+          li {
+            padding: 10px 15px;
+            transition: 200ms;
+
+            &:hover {
+              background-color: $dark-grey;
+              padding-left: 25px;
+            }
+          }
+        }
+
+      }
+    }
+
+    &.hidden {
+      transform: scaleX(0);
+      // display: none;
+    }
+
+    &.visible {
+      transform: scaleX(1);
+    }
+  }
+
+  /* ------------- sliding menu ------------------ */
+
+  /* ----- animations--------- */
+  /* clicked */
+  .burger-bar.clicked:nth-child(1) {
+    transform: rotate(45deg) translate(12px, 20px);
+    transition: ease-out 0.5s;
+  }
+
+  .burger-bar.clicked:nth-child(2) {
+    transform: scale(0.1);
+    transition: ease-out 0.5s;
+  }
+
+  .burger-bar.clicked:nth-child(3) {
+    transform: rotate(135deg) translate(-8px, 16px);
+    transition: ease-out 0.5s;
+  }
+
+  /* unclicked */
+  .burger-bar.unclicked {
+    transform: rotate(0) translate(0);
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .BurgerMenu {
+    display: block;
+
+    .burger-menu {
+      width: 64px;
+      height: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      cursor: pointer;
+      transform: scale(0.5);
+
+      .burger-bar {
+        width: 64px;
+        height: 8px;
+        background-color: green;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .menu {
+    width: 100%;
+
+    a {
+      span {
+        display: block;
+      }
+    }
+  }
+}

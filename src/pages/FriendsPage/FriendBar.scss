@@ -1,0 +1,106 @@
+@use '@assets/webColors' as *;
+
+.FriendBar {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid $grey-bg;
+  border-radius: 5px;
+  transition: 150ms linear;
+
+  &:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+
+  &__content {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    h5 {
+      font-size: 16px;
+      color: $dark-grey;
+    }
+
+    span {
+      font-size: 13px;
+      color: $blue;
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+
+
+  &__btns {
+    display: flex;
+    gap: 10px;
+
+    span {
+      display: none;
+    }
+
+    input {
+      padding: 5px 10px;
+      font-size: 13px;
+      outline: none;
+      border: none;
+      border-radius: 5px;
+      color: $white;
+      cursor: pointer;
+
+      &.decline {
+        background-color: $decline;
+      }
+
+      &.confirm {
+        background-color: $blue;
+      }
+    }
+  }
+
+}
+
+
+@media screen and (max-width: 450px) {
+  .FriendBar {
+    width: 100%;
+    padding: 10px;
+
+    &__btns {
+      flex-direction: column;
+      padding: 0;
+
+      span {
+        display: block;
+        font-family: "Bootstrap-icons";
+        color: $white;
+        padding: 5px;
+        font-size: 13px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.span-decline {
+          background-color: $decline;
+        }
+
+        &.span-confirm {
+          background-color: $blue;
+        }
+      }
+
+
+      input {
+        display: none;
+      }
+    }
+  }
+}

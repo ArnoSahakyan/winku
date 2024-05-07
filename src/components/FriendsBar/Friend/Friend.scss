@@ -1,0 +1,61 @@
+@use '@assets/webColors' as *;
+
+
+.Friend {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  &__img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    position: relative;
+
+    .status {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 7px;
+      height: 7px;
+      background-color: #fff;
+      border-radius: 50%;
+
+      &.online {
+        outline: 4px solid $online;
+      }
+
+      &.away {
+        outline: 3px solid $away;
+      }
+
+      &.offline {
+        outline: 3px solid $offline;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      object-position: top;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    h6 {
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    p {
+      font-size: 11px;
+      font-style: italic;
+    }
+  }
+}

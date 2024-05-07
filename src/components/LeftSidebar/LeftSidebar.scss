@@ -1,0 +1,67 @@
+@use '@assets/webColors' as *;
+
+.LeftSidebar {
+  position: fixed;
+  left: 0;
+  width: 70px;
+  height: 100vh;
+  background-color: $white;
+  z-index: 1;
+  box-shadow: 0 0 34px 0 rgba(63, 66, 87, .1);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    li {
+      position: relative;
+
+      .desc {
+        background-color: $dark-grey;
+        color: $white;
+        padding: 5px 10px;
+        font-size: 14px;
+        position: absolute;
+        left: 30px;
+        top: -3px;
+        border-radius: 3px;
+
+        opacity: 0;
+        visibility: hidden;
+        transition: 200ms;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      a {
+        color: $grey1;
+
+        &:hover {
+          +.desc {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .LeftSidebar{
+    display: none;
+  }
+}

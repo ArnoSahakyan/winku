@@ -1,0 +1,26 @@
+@use '@assets/webColors' as *;
+
+.HomePage {
+  background-color: $grey-bg;
+
+  section {
+    position: relative;
+    padding: 30px 87px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .HomePage {
+    section {
+      width: 90%;
+      padding: 20px 0;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

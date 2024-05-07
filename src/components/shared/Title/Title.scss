@@ -1,0 +1,18 @@
+@use '@assets/webColors' as *;
+
+.Title {
+  position: relative;
+  font-size: 15px;
+  color: $dark-grey;
+
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: $blue;
+    width: 58px;
+    height: 2px;
+    bottom: -10px;
+    left: 0px;
+  }
+
+}

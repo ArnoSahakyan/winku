@@ -1,0 +1,54 @@
+@use '@assets/webColors' as *;
+
+.Messages {
+  padding: 25px;
+  background-color: $white;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-column-end: 4;
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  &+.FriendsBar {
+    display: none;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      color: $grey1;
+      font-family: "Bootstrap-icons";
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    h4 {
+      position: relative;
+      font-size: 18px;
+      color: $dark-grey;
+
+      span {
+        color: $blue;
+        font-size: 14px;
+        cursor: unset;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: $blue;
+        width: 58px;
+        height: 2px;
+        bottom: -10px;
+        left: 0px;
+      }
+    }
+  }
+
+
+}

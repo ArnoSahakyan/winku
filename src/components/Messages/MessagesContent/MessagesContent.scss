@@ -1,0 +1,82 @@
+@use '@assets/webColors' as *;
+
+.MessagesContent {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  height: 450px;
+
+  &__friends {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    .Friend {
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid $grey-bg;
+      border-right: 1px solid $grey-bg;
+
+      &__content {
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .content {
+      display: flex;
+      border-bottom: 1px solid $grey-bg;
+      margin-left: 15px;
+      padding: 15px 0;
+      gap: 20px;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      &-info {
+
+        h4 {
+          color: $dark-grey;
+          font-size: 18px;
+          font-weight: 500;
+        }
+
+        span {
+          color: $grey1;
+          font-style: italic;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .chat {
+      height: 250px;
+      overflow-y: auto;
+    }
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .MessagesContent {
+    height: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__friends{
+      max-height: 200px;
+    }
+  }
+}

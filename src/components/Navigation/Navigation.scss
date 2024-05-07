@@ -1,0 +1,250 @@
+@use '@assets/webColors' as *;
+
+.Navigation {
+  padding: 0 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: $white;
+
+  &__logo {
+    width: 95px;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    gap: 50px;
+
+
+    li {
+      position: relative;
+      padding: 20px 0;
+
+      a {
+        color: $dark-grey;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        gap: 5px;
+
+        span {
+          font-family: 'Bootstrap-icons';
+        }
+      }
+
+      &:hover {
+        .submenu {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+
+    .submenu {
+      opacity: 0;
+      visibility: hidden;
+      width: 200px;
+      position: absolute;
+      top: 57px;
+      background-color: $white;
+      border-top: 2px solid $blue;
+      box-shadow: 4px 7px 20px 0 rgba(0, 0, 0, .09);
+      transition: all .2s linear 0s;
+      border-radius: 0 0 5px 5px;
+
+
+      li {
+        font-size: 13.5px;
+        padding: 0;
+
+        a {
+          transition: 200ms;
+          padding: 10px 15px;
+
+          &:hover {
+            background-color: $grey-bg;
+            padding-left: 20px;
+            color: $blue;
+          }
+        }
+
+      }
+    }
+  }
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 200px;
+
+    li {
+      position: relative;
+
+      .searchFriend {
+        position: absolute;
+        width: 260px;
+        padding: 15px 18px;
+        font-size: 15px;
+        top: 40px;
+        right: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+        border: none;
+        border-bottom: 2px solid $dark-grey;
+        outline: none;
+        display: none;
+
+        &:focus {
+          border-bottom: 2px solid $blue;
+        }
+
+        &.active {
+          display: block;
+        }
+      }
+
+      a {
+        padding: 0 15px;
+        color: $dark-grey;
+        cursor: pointer;
+
+
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+
+    .actions {
+      position: absolute;
+      top: 46px;
+      left: -60px;
+      background-color: $white;
+      width: 150px;
+      display: none;
+      border: 0.5px solid $blue;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+      overflow: hidden;
+
+      li {
+        color: $dark-grey;
+        padding: 10px 15px;
+        font-size: 13px;
+
+        &.status {
+          cursor: pointer;
+          position: relative;
+          text-transform: capitalize;
+
+          &.away::after {
+            border: 3px solid $away;
+          }
+
+          &.offline::after {
+            border: 3px solid $offline;
+          }
+
+          &::after {
+            position: absolute;
+            content: '';
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: 3px solid $online;
+            right: 20px;
+            top: calc(50% - 7px);
+          }
+        }
+
+        &:hover {
+          background-color: $grey-bg;
+          color: $blue;
+
+          a {
+            color: $blue;
+          }
+        }
+
+        a {
+          color: $dark-grey;
+          font-size: 13px;
+
+          span {
+            font-size: 13px;
+          }
+        }
+
+      }
+
+      &.open {
+        display: block;
+      }
+    }
+
+
+    .user {
+      position: relative;
+
+      img {
+        border-radius: 50%;
+        width: 31.5px;
+        height: 31.5px;
+        cursor: pointer;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        border: 3px solid $online;
+        background-color: $white;
+        bottom: 0;
+        right: 0;
+      }
+
+      &.away::after {
+        border: 3px solid $away;
+      }
+
+      &.offline::after {
+        border: 3px solid $offline;
+      }
+    }
+
+    span {
+      font-family: 'Bootstrap-icons';
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .Navigation {
+    display: none;
+  }
+}

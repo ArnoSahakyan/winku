@@ -1,0 +1,40 @@
+import './FriendBar.scss'
+
+export default function FriendBar({ data, isFriend }) {
+  return (
+    <div className='FriendBar'>
+      <div className="FriendBar__content">
+        <img src={data.img} />
+        <div className="name">
+          <h5>{data.name}</h5>
+          <span>{data.job}</span>
+        </div>
+      </div>
+      <div className="FriendBar__btns">
+        {isFriend ?
+          <>
+            <label htmlFor={`decline-${data.id}`}>
+              <span className='span-decline'>&#xF659;</span>
+              <input type='button' id={`decline-${data.id}`} className='decline' value="Unfriend" />
+            </label>
+            <label htmlFor={`confirm-${data.id}`}>
+              <span className='span-confirm'>&#xF633;</span>
+              <input type='button' id={`confirm-${data.id}`} className='confirm' value="Add Friend" />
+            </label>
+          </>
+          :
+          <>
+            <label htmlFor={`decline-${data.id}`}>
+              <span className='span-decline'>&#xF659;</span>
+              <input type='button' id={`decline-${data.id}`} className='decline' value="Delete Request" />
+            </label>
+            <label htmlFor={`confirm-${data.id}`}>
+              <span className='span-confirm'>&#xF633;</span>
+              <input type='button' id={`confirm-${data.id}`} className='confirm' value="Confirm" />
+            </label>
+          </>
+        }
+      </div>
+    </div>
+  )
+}
