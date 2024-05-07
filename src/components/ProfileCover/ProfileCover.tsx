@@ -1,18 +1,18 @@
-import { useState } from 'react';
 import './ProfileCover.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { getCoverPhoto, getPfp, setCoverPhoto, setPfp } from '../../store/features/userInfoSlice';
 
 export default function ProfileCover() {
-
-  const [coverImage, setCoverImage] = useState("/cover.jpg"); // Initial cover image
-  const [profileImage, setProfileImage] = useState("/pfp.jpg"); // Initial cover image
-
+  const dispatch = useDispatch();
+  const profileImage = useSelector(getPfp)
+  const coverImage = useSelector(getCoverPhoto)
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setCoverImage(reader.result as string);
+      dispatch(setCoverPhoto(reader.result as string));
     };
 
     if (file) {
@@ -25,7 +25,7 @@ export default function ProfileCover() {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setProfileImage(reader.result as string);
+      dispatch(setPfp(reader.result as string));
     };
 
     if (file) {

@@ -3,7 +3,7 @@ import './Navigation.scss'
 import ROUTES from '../../routes/routes';
 import BurgerMenu from '../BurgerMenu/BurgerMenu'
 import { useDispatch, useSelector } from 'react-redux';
-import { TonlineStatus, getStatus, setStatus } from '../../store/features/onlineStatusSlice';
+import { getPfp, getStatus, setStatus } from '../../store/features/userInfoSlice';
 import { useState } from 'react';
 
 
@@ -13,13 +13,7 @@ export type MenuItem = {
   subtitles: string[];
 }
 
-// interface MenuIcons {
-//   id: number;
-//   title: string;
-//   icon: JSX.Element;
-// }
-
-const onlineStatus = ['online', 'away', 'offline']
+const onlineStatus = ['online', 'away', 'offline'];
 
 const dropDownMenu: MenuItem[] = [
   {
@@ -92,6 +86,7 @@ export default function Navigation() {
   const [statusOpen, setStatusOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const status = useSelector(getStatus);
+  const pfp = useSelector(getPfp)
 
   const dispatch = useDispatch()
 
@@ -139,14 +134,14 @@ export default function Navigation() {
 
         <div className="Navigation__user">
           <div onClick={() => setStatusOpen(!statusOpen)} className={`${status} user`}>
-            <img src="/pfp.jpg" />
+            <img src={pfp} />
           </div>
           <span>&#xF479;</span>
 
           <ul className={`${statusOpen ? 'open' : ''} actions`}>
             {
               onlineStatus.map(status => {
-                return <li className={`${status} status`} onClick={() => dispatch(setStatus(status as TonlineStatus))} key={status}>{status}</li>
+                return <li className={`${status} status`} onClick={() => dispatch(setStatus(status))} key={status}>{status}</li>
               })
             }
             <li><Link to={ROUTES.HOME}><span>&#xF4E1;</span> View Profile</Link></li>

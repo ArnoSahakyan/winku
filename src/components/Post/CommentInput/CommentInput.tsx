@@ -1,7 +1,8 @@
-import { Field, Formik, Form } from 'formik'
+import { Field, Formik, Form, FormikValues } from 'formik'
 import './CommentInput.scss'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postComment } from '../../../store/features/postSlice';
+import { getPfp } from '../../../store/features/userInfoSlice';
 
 const initialValues = {
   comment: ''
@@ -9,11 +10,13 @@ const initialValues = {
 
 export default function CommentInput({ post }) {
   const dispatch = useDispatch();
+  const pfp = useSelector(getPfp)
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values: FormikValues, { resetForm }) => {
     const updatedValues = {
       ...values,
-      postID: post.id
+      postID: post.id,
+      pfp: pfp
     }
     dispatch(postComment(updatedValues))
     resetForm();
@@ -23,7 +26,7 @@ export default function CommentInput({ post }) {
 
   return (
     <div className="CommentInput">
-      <img src="/pfp.jpg" />
+      <img src={pfp} />
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}

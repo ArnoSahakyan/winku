@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import ROUTES from '../../routes/routes'
 import './PageBar.scss'
+import { useSelector } from 'react-redux'
+import { getPfp } from '../../store/features/userInfoSlice'
 
 export default function PageBar() {
 
@@ -22,11 +24,13 @@ export default function PageBar() {
     },
   ]
 
+  const pfp = useSelector(getPfp)
+
   return (
     <div className='PageBar'>
       <div className="PageBar__user">
         <div className="pfp">
-          <img src="/pfp.jpg" />
+          <img src={pfp} />
         </div>
         <div className="name">
           <h3>Janice Griffith</h3>

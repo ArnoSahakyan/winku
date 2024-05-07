@@ -210,6 +210,8 @@
         width: 31.5px;
         height: 31.5px;
         cursor: pointer;
+        object-fit: cover;
+        object-position: top;
       }
 
       &::after {

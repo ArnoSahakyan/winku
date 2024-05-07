@@ -18,16 +18,16 @@ export type TComments = {
   id: string;
   name: string;
   pfp: string;
-  date: string; // You might want to use Date type here as well
+  date: string;
   message: string;
-  replies: TReplies[] | null; // Array of replies
+  replies: TReplies[] | null;
 };
 
 export type TReplies = {
   id: string;
   name: string;
   pfp: string;
-  date: string; // You might want to use Date type here as well
+  date: string;
   message: string;
 };
 
@@ -138,7 +138,7 @@ const onlineStatusSlice = createSlice({
         const newComment = {
           id: nanoid(5),
           name: 'Janice Griffith',
-          pfp: '/pfp.jpg',
+          pfp: payload.pfp,
           date: 'right now',
           message: payload.comment,
           replies: []
