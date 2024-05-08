@@ -3,7 +3,7 @@ import ROUTES from '../../routes/routes';
 import './Shortcuts.scss'
 import Title from '../shared/Title/Title';
 
-interface ShortcutList {
+type TshortcutList = {
   id: number,
   title: string,
   icon: JSX.Element,
@@ -11,7 +11,7 @@ interface ShortcutList {
 }
 
 export default function Shortcuts() {
-  const shortcuts: ShortcutList[] = [
+  const shortcuts: TshortcutList[] = [
     {
       id: 1,
       title: 'News Feed',

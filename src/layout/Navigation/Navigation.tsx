@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import './Navigation.scss'
 import ROUTES from '../../routes/routes';
 
-interface MenuItem {
+type TmenuItem = {
   id: number;
   title: string;
   subtitles: string[];
 }
 
-interface MenuIcons {
+type TmenuIcons = {
   id: number;
   title: string;
   icon: JSX.Element;
@@ -16,7 +16,7 @@ interface MenuIcons {
 
 export default function Navigation() {
 
-  const dropDownMenu: MenuItem[] = [
+  const dropDownMenu: TmenuItem[] = [
     {
       id: 1,
       title: 'Home',
@@ -39,7 +39,7 @@ export default function Navigation() {
     },
   ];
 
-  const menuIcons: MenuIcons[] = [
+  const menuIcons: TmenuIcons[] = [
     {
       id: 1,
       title: 'Search',

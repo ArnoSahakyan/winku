@@ -1,4 +1,4 @@
-import { Field, Formik, Form, FormikValues, FormikHelpers } from 'formik';
+import { Field, Formik, Form, FormikValues } from 'formik';
 import './MessageInput.scss';
 import { useDispatch } from 'react-redux';
 import { TFriend, sendMessage } from '../../../store/features/friendsSlice';
@@ -11,7 +11,7 @@ export default function MessageInput({ friend }: { friend: TFriend }) {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (values: FormikValues, { resetForm }: FormikHelpers<{ message: string; }>) => {
+  const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
     const updatedValues = {
       ...values,
       friendId: friend.id

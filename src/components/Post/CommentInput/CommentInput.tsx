@@ -1,18 +1,18 @@
 import { Field, Formik, Form, FormikValues } from 'formik'
 import './CommentInput.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { postComment } from '../../../store/features/postSlice';
+import { PostState, postComment } from '../../../store/features/postSlice';
 import { getPfp } from '../../../store/features/userInfoSlice';
 
 const initialValues = {
   comment: ''
 }
 
-export default function CommentInput({ post }) {
+export default function CommentInput({ post }: { post: PostState }) {
   const dispatch = useDispatch();
   const pfp = useSelector(getPfp)
 
-  const handleSubmit = (values: FormikValues, { resetForm }) => {
+  const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
     const updatedValues = {
       ...values,
       postID: post.id,

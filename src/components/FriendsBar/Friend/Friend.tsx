@@ -1,7 +1,7 @@
 import './Friend.scss'
 
-interface User {
-  id: number;
+type TUser = {
+  id: string;
   name: string;
   email: string;
   onlineStatus: string;
@@ -9,7 +9,7 @@ interface User {
 }
 
 type FriendProps = {
-  user: User;
+  user: TUser;
   onlyImg: boolean
 }
 

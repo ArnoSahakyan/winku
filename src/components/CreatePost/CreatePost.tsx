@@ -1,5 +1,5 @@
-import { Formik, Form, Field, FormikHelpers } from 'formik';
-import { useState } from 'react'; // Import useState
+import { Formik, Form, Field } from 'formik';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostState, setPost } from '../../store/features/postSlice';
 import './CreatePost.scss';
@@ -9,17 +9,20 @@ import { getName, getPfp } from '../../store/features/userInfoSlice';
 
 export default function CreatePost() {
 
-  const initialValues = { text: '', file: null };
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const dispatch = useDispatch();
 
   const userName = useSelector(getName)
   const pfp = useSelector(getPfp)
 
-  const postObj = {
+  const initialValues: PostState = {
     id: nanoid(5),
     name: userName,
     pfp: pfp,
+    date: new Date(),
+    text: '',
+    file: null,
+    img: '',
     insights: {
       id: nanoid(5),
       views: 0,
@@ -28,17 +31,19 @@ export default function CreatePost() {
       dislikes: 0
     },
     comments: []
-  }
+  };
 
-  const handleSubmit = (values: PostState, { resetForm }: FormikHelpers<PostState>) => {
+  const handleSubmit = (values: PostState, { resetForm }: { resetForm: () => void }) => {
     const currentDate = new Date(); // Current date
-    const updatedValues = { ...values };
-    updatedValues.date = currentDate;
+    const updatedValues = {
+      ...values,
+      date: currentDate
+    };
     if (values.file) {
       updatedValues.img = URL.createObjectURL(values.file);
     }
     if (values.file || values.text) {
-      dispatch(setPost({ ...postObj, ...updatedValues }));
+      dispatch(setPost({ ...initialValues, ...updatedValues }));
     }
     resetForm();
     setFilePreview(null);

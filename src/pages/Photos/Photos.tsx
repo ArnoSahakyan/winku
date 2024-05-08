@@ -8,7 +8,6 @@ interface UnsplashPhoto {
     regular: string;
   };
   slug: string;
-  // Add more properties if needed
 }
 
 export default function Photos() {

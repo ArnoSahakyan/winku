@@ -9,14 +9,14 @@ import MessageInput from '../MessageInput/MessageInput'
 export default function MessagesContent() {
 
   const friends = useSelector(getFriends)
-  const chatRef = useRef<HTMLDivElement>(null); 
+  const chatRef = useRef<HTMLDivElement>(null);
 
   const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
 
   const selectFriend = (index: number) => {
     setSelectedFriendIndex(index);
   }
-  
+
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -51,7 +51,6 @@ export default function MessagesContent() {
           }
         </div>
 
-        {/* Message Input */}
         <MessageInput friend={friends[selectedFriendIndex]} />
 
       </div>

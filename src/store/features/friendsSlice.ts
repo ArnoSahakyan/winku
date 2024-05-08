@@ -11,7 +11,7 @@ export type TFriend = {
   messages: TMessages[];
 }
 
-type TRequest = Omit<TFriend, "messages">
+export type TRequest = Omit<TFriend, "messages">
 
 type TUsers = {
   friends: TFriend[]

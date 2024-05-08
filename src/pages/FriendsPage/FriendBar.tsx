@@ -1,6 +1,12 @@
+import { TFriend, TRequest } from '../../store/features/friendsSlice';
 import './FriendBar.scss'
 
-export default function FriendBar({ data, isFriend }) {
+interface FriendBarProps {
+  data: TFriend | TRequest;
+  isFriend: boolean;
+}
+
+export default function FriendBar({ data, isFriend }: FriendBarProps) {
   return (
     <div className='FriendBar'>
       <div className="FriendBar__content">

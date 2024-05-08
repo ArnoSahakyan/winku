@@ -12,10 +12,6 @@ export type TInsigths = {
   dislikes: number;
 }
 
-interface Posts {
-  postData: PostState;
-}
-
 const dateOptions: Intl.DateTimeFormatOptions = {
   month: 'long',
   day: 'numeric',
@@ -25,7 +21,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
   hour12: true
 };
 
-export default function Post({ postData }: Posts) {
+export default function Post({ postData }: { postData: PostState }) {
 
   const formatDate = (date: Date) => new Intl.DateTimeFormat('en-US', dateOptions).format(date);
 

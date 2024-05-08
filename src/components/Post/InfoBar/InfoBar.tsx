@@ -1,10 +1,6 @@
 import './InfoBar.scss'
 import { TInsigths } from '../Post'
 
-interface Insights {
-  insights: TInsigths
-}
-
 const formatNumber = (number: number) => {
   const symbols = ['K', 'M', 'B', 'T'];
   const tier = Math.log10(Math.abs(number)) / 3 | 0;
@@ -15,7 +11,7 @@ const formatNumber = (number: number) => {
   return scaled.toFixed(1) + suffix;
 };
 
-export default function InfoBar({ insights }: Insights) {
+export default function InfoBar({ insights }: { insights: TInsigths }) {
 
   return (
     <div className='InfoBar'>

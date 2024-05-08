@@ -1,6 +1,8 @@
+import { TReplies } from '../../../store/features/postSlice'
 import './Comment.scss'
 
-export default function Comment({ comment, isReply }) {
+
+export default function Comment({ comment, isReply }: { comment: TReplies, isReply: boolean }) {
   return (
     <div className={`Comment ${isReply ? 'reply' : ''} `}>
       <div className="Comment__pfp">

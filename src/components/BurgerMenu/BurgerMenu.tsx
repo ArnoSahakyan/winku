@@ -4,11 +4,8 @@ import ROUTES from "../../routes/routes";
 import { Link } from "react-router-dom";
 import { MenuItem } from '../Navigation/Navigation'
 
-interface BurgerMenuProps {
-  menuLinks: MenuItem[];
-}
 
-export default function BurgerMenu({ menuLinks }: BurgerMenuProps) {
+export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
 
   // to change burger classes
   const [burger_class, setBurgerClass] = useState("burger-bar unclicked")
