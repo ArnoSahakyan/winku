@@ -87,3 +87,27 @@
     }
   }
 }
+
+
+@media screen and (max-width: 450px) {
+  body{
+    background-color: $grey-bg;
+  }
+  .LogIn{
+    flex-direction: column;
+    height: unset;
+    &__info{
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      img{
+        display: none;
+      }
+    }
+    &__content{
+      margin: 30px auto;
+      width: 90%;
+      padding: 20px 0;
+    }
+  }
+}

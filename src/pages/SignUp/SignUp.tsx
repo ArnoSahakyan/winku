@@ -76,6 +76,8 @@ export default function SignUp() {
             </Form>
           )}
         </Formik>
+        <p>Already have an account? <Link className='signup' to={ROUTES.LOGIN}>Log In</Link></p>
+
       </div>
     </div>
   );
