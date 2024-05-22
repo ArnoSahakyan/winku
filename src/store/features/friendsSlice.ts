@@ -623,7 +623,7 @@ const friendsSlice = createSlice({
           senderId: 'user',
           message: message
         };
-        friend.messages.push(newMessage); // Fixed line
+        friend.messages.push(newMessage);
       }
     }
   },

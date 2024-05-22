@@ -48,4 +48,3 @@ const userInfoSlice = createSlice({
 export const { setStatus, setPfp, setCoverPhoto } = userInfoSlice.actions;
 export const { getName, getPfp, getCoverPhoto, getStatus } = userInfoSlice.selectors
 export default userInfoSlice.reducer;
-

@@ -90,21 +90,25 @@
 
 
 @media screen and (max-width: 450px) {
-  body{
+  body {
     background-color: $grey-bg;
   }
-  .LogIn{
+
+  .LogIn {
     flex-direction: column;
     height: unset;
-    &__info{
+
+    &__info {
       width: 100%;
       padding: 20px;
       text-align: center;
-      img{
+
+      img {
         display: none;
       }
     }
-    &__content{
+
+    &__content {
       margin: 30px auto;
       width: 90%;
       padding: 20px 0;
