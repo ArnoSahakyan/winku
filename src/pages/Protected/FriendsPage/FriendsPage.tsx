@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import './FriendsPage.scss'
-import { getFriends, getRequests } from '../../store/features/friendsSlice'
+import { getFriends, getRequests } from '../../../store/features/friendsSlice'
 import { useState } from 'react'
 import FriendBar from './FriendBar'
 

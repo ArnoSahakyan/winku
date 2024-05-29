@@ -28,14 +28,14 @@ export default function Post({ postData }: { postData: PostState }) {
   return (
     <div className='Post'>
       <div className="Post__user">
-        <img className='pfp' src={postData.pfp} />
+        <img className='pfp' src={postData.pfp} alt='profile picture' />
         <div className="name">
           <h5>{postData.name}</h5>
           <span>Published: {formatDate(postData.date)}</span>
         </div>
       </div>
       <div className="Post__content">
-        {(postData.img || postData.file) && <img className='pfp' src={postData.img ?? ''} />}
+        {(postData.img || postData.file) && <img className='pfp' src={postData.img ?? ''} alt='profile picture' />}
         <InfoBar insights={postData.insights} />
         {postData.text && <p>{postData.text}</p>}
       </div>

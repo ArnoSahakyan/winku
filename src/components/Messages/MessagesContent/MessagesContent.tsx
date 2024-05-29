@@ -36,7 +36,7 @@ export default function MessagesContent() {
       </div>
       <div className="MessagesContent__box">
         <div className="content">
-          <img src={friends[selectedFriendIndex]?.img} />
+          <img src={friends[selectedFriendIndex]?.img} alt={friends[selectedFriendIndex].name} />
           <div className="content-info">
             <h4>{friends[selectedFriendIndex]?.name}</h4>
             <span>{friends[selectedFriendIndex]?.onlineStatus}</span>

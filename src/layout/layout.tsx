@@ -1,18 +1,21 @@
 import { Outlet } from "react-router-dom";
-import Navigation from "./Navigation/Navigation";
+import Navigation from "../components/Navigation/Navigation";
 import Footer from "../components/Footer/Footer";
+import useAuth from "../hooks/useAuth";
 
 const Layout = () => {
+  const { isAuthenticated } = useAuth();
+  const isAuth = isAuthenticated()
 
   return (
     <>
-      {/* <Navigation /> */}
+      {isAuth && <Navigation />}
 
       <main>
         <Outlet />
       </main>
 
-      {/* <Footer /> */}
+      {isAuth && <Footer />}
     </>
   );
 };

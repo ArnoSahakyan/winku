@@ -17,7 +17,7 @@ export default function Friend({ user, onlyImg }: FriendProps) {
   return (
     <div className='Friend'>
       <div className="Friend__img">
-        <img src={user.img} />
+        <img src={user.img} alt={user.name} />
         <div className={`status ${user.onlineStatus}`}></div>
       </div>
       {

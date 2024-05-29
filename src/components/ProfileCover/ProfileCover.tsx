@@ -1,10 +1,12 @@
 import './ProfileCover.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoverPhoto, getPfp, setCoverPhoto, setPfp } from '../../store/features/userInfoSlice';
+import { getCoverPhoto, getPfp, getUserID, setCoverPhoto, setPfp } from '../../store/features/userInfo/userInfoSlice';
+import { changeCover, changePfp } from '../../store/features/userInfo/userThunks';
 
 export default function ProfileCover() {
   const dispatch = useDispatch();
-  const profileImage = useSelector(getPfp)
+  const pfp = useSelector(getPfp)
+  const userID = useSelector(getUserID)
   const coverImage = useSelector(getCoverPhoto)
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,32 +22,37 @@ export default function ProfileCover() {
     }
   };
 
-  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      dispatch(setPfp(reader.result as string));
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
+  const handlePfp = (e) => {
+    const file = e.target.files?.[0];
+    const values = {
+      userID,
+      file
     }
-  };
+    dispatch(changePfp(values))
+  }
+
+  const handleCover = (e) => {
+    const file = e.target.files?.[0];
+    const values = {
+      userID,
+      file
+    }
+    dispatch(changeCover(values))
+  }
 
   return (
     <div className='ProfileCoverBG'>
-      <img className='coverBG' src={coverImage} />
+      <img className='coverBG' src={`${coverImage}`} alt='Cover Image' />
       <div className="ProfileCover">
         <div className="ProfileCover__left">
           <div className="pfp">
-            <img src={profileImage} />
+            <img src={`${pfp}`} alt='profile picture' />
             <label htmlFor="upload-pfp" className='editpfp'>Edit Display Photo</label>
             <input
               id="upload-pfp"
               type="file"
               accept="image/*"
-              onChange={handleProfileImageChange}
+              onChange={handlePfp}
               style={{ display: 'none' }} // Hide the input element
             />
           </div>
@@ -54,7 +61,7 @@ export default function ProfileCover() {
             id="upload"
             type="file"
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleCover}
             style={{ display: 'none' }} // Hide the input element
           />
         </div>

@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className='FooterBG'>
       <div className="Footer">
         <div className="Footer__info">
-          <img src="/logo.png" />
+          <img src="/logo.png" alt='winku logo' />
           <p>The trio took this simple idea and built it into the world’s leading carpooling platform.</p>
           <p><span>&#xF47F;</span> 33 new montgomery st.750 san francisco, CA USA 94105.</p>
           <p><span>&#xF4E7;</span>  +1-56-346 345</p>
@@ -47,9 +47,9 @@ export default function Footer() {
         </ul>
       </div>
       <div className="FooterBottom">
-        <p>© Winku 2018. All rights reserved.</p>
+        <p>© Winku 2024. All rights reserved.</p>
         <div className="cards">
-          <img src="/cards.png" />
+          <img src="/cards.png" alt='card companies' />
         </div>
       </div>
 

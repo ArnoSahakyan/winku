@@ -14,6 +14,7 @@
 
   &__logo {
     width: 95px;
+    height: 34px;
 
     img {
       width: 100%;
@@ -188,6 +189,7 @@
         a {
           color: $dark-grey;
           font-size: 13px;
+          cursor: pointer;
 
           span {
             font-size: 13px;

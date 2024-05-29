@@ -54,7 +54,7 @@ export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
     <div className="BurgerMenu">
       <nav>
         <Link to={ROUTES.NEWSFEED}>
-          <img src="/logo2.png" />
+          <img src="/logo2.png" alt="winku-logo" />
         </Link>
         <div className="burger-menu" onClick={updateMenu}>
           <div className={burger_class} ></div>

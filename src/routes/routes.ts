@@ -1,7 +1,7 @@
 const ROUTES = {
   ROOT: '/auth',
-  LOGIN: '/login',
-  SIGNUP: '/signup',
+  LOGIN: '/api/auth/signin',
+  SIGNUP: '/api/auth/signup',
   HOME: '/',
   PHOTOS: 'photos',
   FRIENDS: 'friends',

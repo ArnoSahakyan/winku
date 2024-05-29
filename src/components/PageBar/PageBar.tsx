@@ -1,10 +1,28 @@
 import { NavLink } from 'react-router-dom'
 import ROUTES from '../../routes/routes'
 import './PageBar.scss'
-import { useSelector } from 'react-redux'
-import { getPfp } from '../../store/features/userInfoSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
 
 export default function PageBar() {
+
+  const dispatch = useDispatch();
+  const pfp = useSelector(getPfp)
+
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      dispatch(setPfp(reader.result as string));
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const fname = useSelector(getName)
 
   const pages = [
     {
@@ -24,16 +42,22 @@ export default function PageBar() {
     },
   ]
 
-  const pfp = useSelector(getPfp)
-
   return (
     <div className='PageBar'>
       <div className="PageBar__user">
         <div className="pfp">
-          <img src={pfp} />
+          <img src={pfp} alt='profile picture' />
+          <label htmlFor="upload-pfp" className='editpfp'>Edit Display Photo</label>
+          <input
+            id="upload-pfp"
+            type="file"
+            accept="image/*"
+            onChange={handleProfileImageChange}
+            style={{ display: 'none' }} // Hide the input element
+          />
         </div>
         <div className="name">
-          <h3>Janice Griffith</h3>
+          <h3>{fname}</h3>
           <span>Group Admin</span>
         </div>
       </div>

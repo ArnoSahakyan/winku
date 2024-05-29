@@ -1,4 +1,4 @@
-import { TFriend, TRequest } from '../../store/features/friendsSlice';
+import { TFriend, TRequest } from '../../../store/features/friendsSlice';
 import './FriendBar.scss'
 
 interface FriendBarProps {
@@ -10,7 +10,7 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
   return (
     <div className='FriendBar'>
       <div className="FriendBar__content">
-        <img src={data.img} />
+        <img src={data.img} alt='profile picture' />
         <div className="name">
           <h5>{data.name}</h5>
           <span>{data.job}</span>

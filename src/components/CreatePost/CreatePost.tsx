@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PostState, setPost } from '../../store/features/postSlice';
 import './CreatePost.scss';
 import { nanoid } from 'nanoid';
-import { getName, getPfp } from '../../store/features/userInfoSlice';
+import { getName, getPfp } from '../../store/features/userInfo/userInfoSlice';
 
 
 export default function CreatePost() {
@@ -65,7 +65,7 @@ export default function CreatePost() {
   return (
     <div className='CreatePost'>
       <div className="CreatePost__img">
-        <img src={pfp} alt="Profile" />
+        <img src={`${pfp}`} alt="Profile" />
       </div>
       <div className="CreatePost__form">
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>

@@ -1,5 +1,27 @@
 @use '@assets/webColors' as *;
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('/src/assets/font/Roboto.ttf')
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/src/assets/font/Roboto-Medium.ttf');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/src/assets/font/Roboto-Bold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/src/assets/font/Roboto-Bold.ttf') format('truetype');
+  font-weight: 800;
+}
 
 :root {
   font-family: "Roboto", sans-serif;

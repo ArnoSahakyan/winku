@@ -6,7 +6,7 @@ export default function Comment({ comment, isReply }: { comment: TReplies, isRep
   return (
     <div className={`Comment ${isReply ? 'reply' : ''} `}>
       <div className="Comment__pfp">
-        <img src={comment.pfp} />
+        <img src={comment.pfp} alt='profile picture' />
       </div>
       <div className="Comment__box">
         <div className="top">

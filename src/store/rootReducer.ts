@@ -1,12 +1,19 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import friendsSlice from "./features/friendsSlice";
 import postSlice from "./features/postSlice";
-import userInfoSlice from "./features/userInfoSlice";
+import userInfoSlice from "./features/userInfo/userInfoSlice";
+import storage from 'redux-persist/lib/storage';
+import persistReducer from "redux-persist/es/persistReducer";
 
-const rootReducer = combineReducers({
+export const userInfoPersistConfig = {
+  key: 'userInfo',
+  storage,
+};
+
+export const rootReducer = combineReducers({
   friends_request: friendsSlice,
   posts: postSlice,
-  userInfo: userInfoSlice
+  userInfo: persistReducer(userInfoPersistConfig, userInfoSlice),
 });
 
 export default rootReducer;
