@@ -2,32 +2,32 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeCover, changePfp, loginUser } from "./userThunks";
 
 export type TuserInfo = {
-  id: number | null;
-  fname: string | null;
-  username: string | null;
-  email: string | null;
-  pfp: string | null;
-  coverPhoto: string | null;
-  job: string | null;
-  onlineStatus: 'online' | 'away' | 'offline' | null;
-  accessToken: string | null;
-  refreshToken: string | null;
-  roles: string[] | null;
+  id: number | undefined;
+  fname: string | undefined;
+  username: string | undefined;
+  email: string | undefined;
+  pfp: string | undefined;
+  coverPhoto: string | undefined;
+  job: string | undefined;
+  onlineStatus: string | undefined;
+  accessToken: string | undefined;
+  refreshToken: string | undefined;
+  roles: string[] | undefined;
 }
 
 const initialState: { data: TuserInfo, status: string, error: string | undefined } = {
   data: {
-    id: null,
-    fname: null,
-    username: null,
-    email: null,
-    pfp: null,
-    coverPhoto: null,
-    job: null,
-    onlineStatus: null,
-    accessToken: null,
-    refreshToken: null,
-    roles: null,
+    id: undefined,
+    fname: undefined,
+    username: undefined,
+    email: undefined,
+    pfp: undefined,
+    coverPhoto: undefined,
+    job: undefined,
+    onlineStatus: undefined,
+    accessToken: undefined,
+    refreshToken: undefined,
+    roles: undefined,
   },
   status: 'idle',
   error: undefined
@@ -37,7 +37,7 @@ const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: initialState,
   reducers: {
-    setStatus: (state, action: PayloadAction<'online' | 'away' | 'offline'>) => {
+    setStatus: (state, action: PayloadAction<string>) => {
       state.data.onlineStatus = action.payload;
     },
     setPfp: (state, action: PayloadAction<string>) => {
@@ -60,11 +60,10 @@ const userInfoSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = {
           ...action.payload,
-          pfp: `${import.meta.env.VITE_PICTURE_PATH}${action.payload.pfp}`,
-          coverPhoto: `${import.meta.env.VITE_PICTURE_PATH}${action.payload.coverPhoto}`
+          pfp: `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.pfp}`,
+          coverPhoto: `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.coverPhoto}`
         };
         state.status = 'succeeded';
-        console.log('State:', state.data);
       })
       .addCase(loginUser.pending, (state) => {
         state.status = 'loading';
@@ -75,10 +74,10 @@ const userInfoSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(changePfp.fulfilled, (state, action) => {
-        state.data.pfp = `${import.meta.env.VITE_PICTURE_PATH}${action.payload.relativePath}`
+        state.data.pfp = `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.relativePath}`
       })
       .addCase(changeCover.fulfilled, (state, action) => {
-        state.data.coverPhoto = `${import.meta.env.VITE_PICTURE_PATH}${action.payload.relativePath}`
+        state.data.coverPhoto = `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.relativePath}`
       })
 
   },

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken, getUserID } from '../store/features/userInfo/userInfoSlice'
 import { userLogout } from '../store/features/userInfo/userInfoSlice';
-import { useNavigate } from "react-router-dom";
-import { persistor } from "../store/setup";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { AppDispatch, persistor, store } from "../store/setup";
 import { loginUser, signupUser } from "../store/features/userInfo/userThunks";
 import { toast } from 'react-toastify';
 import { TlogInFormState } from "../pages/NotProtected/LogIn/LogIn";
@@ -17,7 +17,7 @@ const notifySuccess = (message: string) => {
 }
 
 const useAuth = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const userID = useSelector(getUserID);
@@ -76,7 +76,6 @@ const useAuth = () => {
     try {
       dispatch(userLogout());
       await persistor.purge();
-      // localStorage.clear();
       navigate('/api/auth/signin');
     } catch (error) {
       console.error("Logout failed", error);
@@ -91,21 +90,16 @@ const useAuth = () => {
   }
 }
 
-export const useAuthLogout = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const logout = async () => {
-    try {
-      dispatch(userLogout());
-      await persistor.purge();
+export const performLogout = async (navigate?: NavigateFunction) => {
+  try {
+    store.dispatch(userLogout());
+    await persistor.purge();
+    if (navigate) {
       navigate('/api/auth/signin');
-    } catch (error) {
-      console.error("Logout failed", error);
     }
-  };
-
-  return { logout };
-}
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
 
 export default useAuth;

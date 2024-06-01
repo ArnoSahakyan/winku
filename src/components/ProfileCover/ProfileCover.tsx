@@ -1,28 +1,16 @@
 import './ProfileCover.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoverPhoto, getPfp, getUserID, setCoverPhoto, setPfp } from '../../store/features/userInfo/userInfoSlice';
+import { getCoverPhoto, getPfp, getUserID } from '../../store/features/userInfo/userInfoSlice';
 import { changeCover, changePfp } from '../../store/features/userInfo/userThunks';
+import { AppDispatch } from '../../store/setup';
 
 export default function ProfileCover() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
   const userID = useSelector(getUserID)
   const coverImage = useSelector(getCoverPhoto)
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      dispatch(setCoverPhoto(reader.result as string));
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handlePfp = (e) => {
+  const handlePfp = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const values = {
       userID,
@@ -31,7 +19,7 @@ export default function ProfileCover() {
     dispatch(changePfp(values))
   }
 
-  const handleCover = (e) => {
+  const handleCover = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const values = {
       userID,

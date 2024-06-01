@@ -17,4 +17,5 @@ const AuthRoute = () => {
 
   return shouldRedirect ? null : <Outlet />;
 };
+
 export default AuthRoute;

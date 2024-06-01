@@ -1,8 +1,7 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { store } from "../store/setup";
 import { setAccessToken } from "../store/features/userInfo/userInfoSlice";
-import { useAuthLogout } from "../hooks/useAuth";
-
+import { performLogout } from "../hooks/useAuth";
 
 export const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL;
 
@@ -10,7 +9,6 @@ export const api = axios.create({
   baseURL: VITE_BACK_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    // "X-platform": "web"
   },
 
   withCredentials: true,
@@ -18,7 +16,6 @@ export const api = axios.create({
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const userInfo = store.getState().userInfo;
-  console.log(userInfo);
 
   if (userInfo?.data?.accessToken) {
     config.headers["Authorization"] = `Bearer ${userInfo.data.accessToken}`;
@@ -31,24 +28,21 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("Try AGAIN");
+    const userInfo = store.getState().userInfo;
     const prevRequest = error?.config;
     if (error?.response?.status === 401 && !prevRequest?.sent) {
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.get(`${VITE_BACK_BASE_URL}/api/auth/refresh`, {
-            withCredentials: true,
-            // headers: { "X-platform": "web" },
+          await axios.post(`${VITE_BACK_BASE_URL}/api/auth/refresh`, {
+            refreshToken: userInfo.data.refreshToken
           })
-        ).data.accessToken;
-        store.dispatch(setAccessToken(newAccessToken));
+        );
+        store.dispatch(setAccessToken(newAccessToken.data.accessToken));
         prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return api(prevRequest);
       } catch (error) {
-        console.log(error);
-        const { logout } = useAuthLogout();
-        logout();
+        await performLogout()
       }
     }
     return Promise.reject(error);

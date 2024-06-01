@@ -1,105 +1,117 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { api } from '../../../api/axios';
+import { TuserInfo } from './userInfoSlice';
 
-const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL
+const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL as string;
 
-export const signupUser = createAsyncThunk('userInfo/signupAsync',
+type APIError = {
+  message: string;
+}
+
+interface LoginResponse {
+  data: TuserInfo;
+  status: number;
+  statusText: string;
+  headers: {
+    [key: string]: string;
+  };
+  config: unknown;
+  request: unknown;
+}
+
+interface SignupResponse {
+  data: APIError;
+}
+
+interface UploadResponse {
+  data: {
+    relativePath: string;
+  };
+}
+
+export type TuploadValues = {
+  file: File | undefined;
+};
+
+type SignupData = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+type LoginData = Omit<SignupData, 'email'>;
+
+export const signupUser = createAsyncThunk<SignupResponse, SignupData, { rejectValue: APIError }>(
+  'userInfo/signupAsync',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${VITE_BACK_BASE_URL}api/auth/signup`, data);
+      const response = await axios.post<SignupResponse>(`${VITE_BACK_BASE_URL}/api/auth/signup`, data);
       console.log('Signup Response:', response);
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError;
+      const axiosError = error as AxiosError<APIError>;
       console.error('Signup Error:', axiosError);
-      return rejectWithValue(axiosError.response?.data);
+      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
   }
 );
 
-export const loginUser = createAsyncThunk('userInfo/loginAsync',
+export const loginUser = createAsyncThunk<LoginResponse, LoginData, { rejectValue: APIError }>(
+  'userInfo/loginAsync',
   async (data, { rejectWithValue }) => {
     try {
       console.log("Login Data: ", data);
-      const response = await axios.post(`${VITE_BACK_BASE_URL}api/auth/signin`, data);
+      const response = await axios.post<LoginResponse>(`${VITE_BACK_BASE_URL}/api/auth/signin`, data);
       console.log('Login Response:', response);
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError;
+      const axiosError = error as AxiosError<APIError>;
       console.error('Login Error:', axiosError);
-      return rejectWithValue(axiosError.response?.data);
+      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
   }
 );
 
-// export const changePfp = createAsyncThunk(
-//   'userInfo/changePfpAsync',
-//   async (file, { rejectWithValue }) => {
-//     try {
-//       console.log("Upload Data: ", file);
-
-//       const formData = new FormData();
-//       formData.append('file', file);
-
-//       const response = await axios.post(`${VITE_BACK_BASE_URL}api/upload`, formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       });
-
-//       console.log('Upload Response:', response);
-//       return response.data;
-//     } catch (error) {
-//       const axiosError = error;
-//       console.error('Upload Error:', axiosError);
-//       return rejectWithValue(axiosError.response?.data);
-//     }
-//   }
-// );
-
-export const changePfp = createAsyncThunk(
+export const changePfp = createAsyncThunk<UploadResponse, TuploadValues, { rejectValue: APIError }>(
   'userInfo/changePfpAsync',
-  async ({ userID, file }, { rejectWithValue }) => {
+  async ({ file }, { rejectWithValue }) => {
     try {
       const formData = new FormData();
-      formData.append('userID', userID);
       formData.append('file', file);
 
-      const response = await api.post(`${VITE_BACK_BASE_URL}api/upload/pfp`, formData, {
+      const response = await api.post<UploadResponse>(`${VITE_BACK_BASE_URL}/api/upload/pfp`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log("1111111111111", response.data);
+      console.log("Profile Picture Upload Response:", response.data);
 
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.response?.data);
+      const axiosError = error as AxiosError<APIError>;
+      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
   }
 );
 
-
-export const changeCover = createAsyncThunk(
+export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rejectValue: APIError }>(
   'userInfo/changeCoverAsync',
-  async ({ userID, file }, { rejectWithValue }) => {
+  async ({ file }, { rejectWithValue }) => {
     try {
       const formData = new FormData();
-      formData.append('userID', userID);
       formData.append('file', file);
 
-      const response = await api.post(`${VITE_BACK_BASE_URL}api/upload/cover`, formData, {
+      const response = await api.post<UploadResponse>(`${VITE_BACK_BASE_URL}/api/upload/cover`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-
+      console.log("Upload response", response);
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.response?.data);
+      const axiosError = error as AxiosError<APIError>;
+      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
   }
 );
