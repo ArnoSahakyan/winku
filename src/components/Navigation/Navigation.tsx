@@ -58,10 +58,10 @@ export default function Navigation() {
         <ul className='Navigation__menu'>
           {dropDownMenu.map((menuItem) => (
             <li key={menuItem.id}>
-              <a href='#'>{menuItem.title} <span>&#xF282;</span> </a>
+              <a href=''>{menuItem.title} <span>&#xF282;</span> </a>
               <ul className='submenu'>
                 {menuItem.subtitles.map((subtitle, index) => (
-                  <li key={index}><a href="#">{subtitle}</a></li>
+                  <li key={index}><a href="">{subtitle}</a></li>
                 ))}
               </ul>
             </li>

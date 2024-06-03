@@ -1,26 +1,41 @@
-import { Field, Formik, Form, FormikValues } from 'formik'
 import './CommentInput.scss'
+import { Field, Formik, Form, FormikValues } from 'formik'
 import { useDispatch, useSelector } from 'react-redux';
-import { PostState, postComment } from '../../../store/features/postSlice';
+import { PostState, TComments, TReplies } from '../../../store/features/post/postSlice';
 import { getPfp } from '../../../store/features/userInfo/userInfoSlice';
+import { object, string } from 'yup';
+import { createComment } from '../../../store/features/post/postThunks';
 
-const initialValues = {
-  comment: ''
+type TcommentInput = {
+  post: PostState,
+  replyData: TComments | null,
+  setReplyData: React.Dispatch<React.SetStateAction<TReplies | null>>
 }
 
-export default function CommentInput({ post }: { post: PostState }) {
+const validationSchema = object({
+  content: string().required()
+})
+
+const initialValues = {
+  content: ''
+}
+
+export default function CommentInput({ post, replyData, setReplyData }: TcommentInput) {
   const dispatch = useDispatch();
   const pfp = useSelector(getPfp)
 
   const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
+    const newParentId = replyData?.parentId ? replyData.parentId : replyData?.commentId
+
     const updatedValues = {
       ...values,
-      postID: post.id,
-      pfp: pfp
+      uploaderId: post.userId,
+      postId: post.postId,
+      parentId: newParentId
     }
-    dispatch(postComment(updatedValues))
+    dispatch(createComment(updatedValues))
     resetForm();
-
+    setReplyData(null)
   };
 
 
@@ -29,11 +44,12 @@ export default function CommentInput({ post }: { post: PostState }) {
       <img src={pfp} alt='profile picture' />
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         <Form className="CommentInput__input">
-          <Field type="text" placeholder='Post Your Comment' name="comment" />
-          <img alt='emoji' src="https://images.vexels.com/media/users/3/134594/isolated/lists/cb4dd9ad3fa5ad833e9b38cb75baa18a-happy-emoji-emoticon.png" />
+          <Field type="text" placeholder={`${replyData ? `Reply to ${replyData.fname}` : 'Post Your Comment'}`} name="content" />
+          <img alt='emoji' src="/emoji.webp" />
         </Form>
       </Formik>
 

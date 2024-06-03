@@ -1,8 +1,20 @@
-import { TReplies } from '../../../store/features/postSlice'
+import { formatDate } from '../../../hooks/dateFormat'
+import { TComments, TReplies } from '../../../store/features/post/postSlice'
 import './Comment.scss'
 
+interface commentComponent {
+  comment: TReplies,
+  isReply: boolean,
+  replyData: TComments | null
+  setReplyData: React.Dispatch<React.SetStateAction<TReplies | null>>
+}
 
-export default function Comment({ comment, isReply }: { comment: TReplies, isReply: boolean }) {
+export default function Comment({ comment, isReply, replyData, setReplyData }: commentComponent) {
+  const handleClick = (comment: TReplies) => {
+    replyData?.commentId === comment.commentId
+      ? setReplyData(null)
+      : setReplyData(comment)
+  }
   return (
     <div className={`Comment ${isReply ? 'reply' : ''} `}>
       <div className="Comment__pfp">
@@ -10,11 +22,11 @@ export default function Comment({ comment, isReply }: { comment: TReplies, isRep
       </div>
       <div className="Comment__box">
         <div className="top">
-          <h5>{comment.name}</h5>
-          <p>{comment.date}</p>
-          <span>&#xF51F;</span>
+          <h5>{comment.fname}</h5>
+          <p>{formatDate(comment.createdAt)}</p>
+          <span onClick={() => handleClick(comment)}>&#xF51F;</span>
         </div>
-        <p>{comment.message}</p>
+        <p>{comment.content}</p>
       </div>
     </div>
   )

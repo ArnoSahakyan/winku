@@ -1,51 +1,54 @@
 import InfoBar from './InfoBar/InfoBar'
 import './Post.scss'
-import { PostState } from '../../store/features/postSlice';
+import { PostState, TComments } from '../../store/features/post/postSlice';
 import CommentBar from './CommentBar/CommentBar';
 import CommentInput from './CommentInput/CommentInput';
+import { useState } from 'react';
+import { formatDate } from '../../hooks/dateFormat';
 
 export type TInsigths = {
-  id: string;
-  views: number;
-  comments: number;
-  likes: number;
-  dislikes: number;
+  likesCount: number,
+  commentsCount: number
 }
 
-const dateOptions: Intl.DateTimeFormatOptions = {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true
-};
 
 export default function Post({ postData }: { postData: PostState }) {
 
-  const formatDate = (date: Date) => new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+  const [replyData, setReplyData] = useState<TComments | null>(null)
+
+  const countComments = (comments: TComments[] | null) => {
+    if (!comments) {
+      return 0;
+    }
+
+    const commentCount = comments.length + comments.reduce((acc, comment) => {
+      return acc + (comment.replies ? comment.replies.length : 0);
+    }, 0);
+
+    return commentCount;
+  };
 
   return (
     <div className='Post'>
       <div className="Post__user">
         <img className='pfp' src={postData.pfp} alt='profile picture' />
         <div className="name">
-          <h5>{postData.name}</h5>
-          <span>Published: {formatDate(postData.date)}</span>
+          <h5>{postData.fname}</h5>
+          <span>Published: {formatDate(postData.createdAt)}</span>
         </div>
       </div>
       <div className="Post__content">
-        {(postData.img || postData.file) && <img className='pfp' src={postData.img ?? ''} alt='profile picture' />}
-        <InfoBar insights={postData.insights} />
-        {postData.text && <p>{postData.text}</p>}
+        {(postData.image) && <img className='pfp' src={postData.image} alt='profile picture' />}
+        <InfoBar likesCount={postData.likes} commentsCount={countComments(postData.comments)} />
+        {postData.content && <p>{postData.content}</p>}
       </div>
       {
         postData.comments &&
         <div className="Post__comments">
-          <CommentBar comments={postData.comments} />
+          <CommentBar replyData={replyData} setReplyData={setReplyData} comments={postData.comments} />
         </div>
       }
-      <CommentInput post={postData} />
+      <CommentInput replyData={replyData} setReplyData={setReplyData} post={postData} />
     </div>
   )
 }

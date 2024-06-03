@@ -11,26 +11,18 @@ const formatNumber = (number: number) => {
   return scaled.toFixed(1) + suffix;
 };
 
-export default function InfoBar({ insights }: { insights: TInsigths }) {
+export default function InfoBar({ likesCount, commentsCount }: TInsigths) {
 
   return (
     <div className='InfoBar'>
       <ul>
         <li>
-          &#xF341; <span>{formatNumber(insights.views)}</span>
-          <p>Views</p>
-        </li>
-        <li>
-          &#xF268; <span>{formatNumber(insights.comments)}</span>
-          <p>Comments</p>
-        </li>
-        <li>
-          &#xF417; <span>{formatNumber(insights.likes)}</span>
+          &#xF417; <span>{formatNumber(likesCount)}</span>
           <p>Likes</p>
         </li>
         <li>
-          &#xF771; <span>{formatNumber(insights.dislikes)}</span>
-          <p>Dislikes</p>
+          &#xF268; <span>{formatNumber(commentsCount)}</span>
+          <p>Comments</p>
         </li>
         <li className='share'>
           &#xF52D;

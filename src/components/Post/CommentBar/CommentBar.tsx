@@ -1,21 +1,23 @@
-import { TComments } from '../../../store/features/postSlice'
+import { TComments, TReplies } from '../../../store/features/post/postSlice'
 import Comment from '../Comment/Comment'
 import './CommentBar.scss'
 
 interface ICommentBar {
-  comments: TComments[]
+  comments: TComments[],
+  replyData: TComments | null,
+  setReplyData: React.Dispatch<React.SetStateAction<TReplies | null>>
 }
 
-export default function CommentBar({ comments }: ICommentBar) {
+export default function CommentBar({ comments, replyData, setReplyData }: ICommentBar) {
   return (
     <>
       {
         comments.map(comment => {
-          return <div key={comment.id} className='CommentBar'>
-            <Comment isReply={false} comment={comment} />
+          return <div key={comment.commentId} className='CommentBar'>
+            <Comment replyData={replyData} setReplyData={setReplyData} isReply={false} comment={comment} />
             {
               comment.replies ? comment.replies.map(reply => {
-                return <Comment key={reply.id} comment={reply} isReply={true} />
+                return <Comment replyData={replyData} setReplyData={setReplyData} key={reply.commentId} comment={reply} isReply={true} />
               }) : null
             }
           </div>
