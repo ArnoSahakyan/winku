@@ -2,12 +2,13 @@ import { NavLink } from 'react-router-dom'
 import ROUTES from '../../routes/routes'
 import './PageBar.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
+import { getJob, getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
 
 export default function PageBar() {
 
   const dispatch = useDispatch();
   const pfp = useSelector(getPfp)
+  const job = useSelector(getJob)
 
   const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -58,7 +59,7 @@ export default function PageBar() {
         </div>
         <div className="name">
           <h3>{fname}</h3>
-          <span>Group Admin</span>
+          <span>{job}</span>
         </div>
       </div>
       <div className="PageBar__menu">

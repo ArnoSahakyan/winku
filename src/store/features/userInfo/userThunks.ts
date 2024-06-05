@@ -115,3 +115,18 @@ export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rej
     }
   }
 );
+
+export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
+  async (data) => {
+    const modifiedData = { onlineStatus: data }
+    const response = await api.patch(`${VITE_BACK_BASE_URL}/api/user/status`, modifiedData)
+    return response.data
+  }
+)
+
+export const changeUserData = createAsyncThunk('userInfo/changeUserData',
+  async (data) => {
+    const response = await api.patch(`${VITE_BACK_BASE_URL}/api/user/update`, data)
+    return response.data
+  }
+)

@@ -89,3 +89,16 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
   }
   return modifiedData
 })
+
+export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async () => {
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/photos`)
+  console.log("RESPONSE DATA", response.data);
+
+  const modifiedData = response.data.map(elem => {
+    return {
+      ...elem,
+      image: `${VITE_BACK_BASE_URL}${elem.image}`
+    }
+  })
+  return modifiedData
+})

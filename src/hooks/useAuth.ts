@@ -3,7 +3,7 @@ import { getAccessToken, getUserID } from '../store/features/userInfo/userInfoSl
 import { userLogout } from '../store/features/userInfo/userInfoSlice';
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { AppDispatch, persistor, store } from "../store/setup";
-import { loginUser, signupUser } from "../store/features/userInfo/userThunks";
+import { changeOnlineStatus, loginUser, signupUser } from "../store/features/userInfo/userThunks";
 import { toast } from 'react-toastify';
 import { TlogInFormState } from "../pages/NotProtected/LogIn/LogIn";
 import { TsignUpFormState } from "../pages/NotProtected/SignUp/SignUp";
@@ -34,14 +34,12 @@ const useAuth = () => {
   const signin = (values: TlogInFormState) => {
     dispatch(loginUser(values))
       .then((res) => {
-        console.log("AAAA", res);
-
-        if (res.meta.requestStatus === "fulfilled") {
-          navigate('/');
-        } else {
+        if (res.meta.requestStatus !== "fulfilled") {
           notifyError(res.payload.message);
+          // navigate('/');
         }
-      });
+      })
+      .then(() => dispatch(changeOnlineStatus('online')))
   }
 
   const signup = async (values: TsignUpFormState, { resetForm }: { resetForm: () => void }) => {
@@ -70,17 +68,24 @@ const useAuth = () => {
     }
   };
 
-
+  // const logout = async () => {
+  //   try {
+  //     dispatch(userLogout());
+  //     await persistor.purge();
+  //     navigate('/api/auth/signin');
+  //   } catch (error) {
+  //     console.error("Logout failed", error);
+  //   }
+  // };
 
   const logout = async () => {
-    try {
-      dispatch(userLogout());
-      await persistor.purge();
-      navigate('/api/auth/signin');
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+    dispatch(changeOnlineStatus("offline"))
+      .then(() => dispatch(userLogout()))
+      .then(() => persistor.purge())
+      .then(() => navigate('/api/auth/signin'))
+      .catch((error) => console.error("Logout failed", error))
   };
+
 
   return {
     isAuthenticated,

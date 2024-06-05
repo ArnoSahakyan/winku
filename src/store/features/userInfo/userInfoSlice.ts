@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { changeCover, changePfp, loginUser } from "./userThunks";
+import { changeCover, changeOnlineStatus, changePfp, changeUserData, loginUser } from "./userThunks";
 
 export type TuserInfo = {
   id: number | undefined;
@@ -80,11 +80,30 @@ const userInfoSlice = createSlice({
         state.data.coverPhoto = `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.relativePath}`
       })
 
+      .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {
+        state.data.onlineStatus = payload.onlineStatus
+      })
+      .addCase(changeOnlineStatus.rejected, (state, action) => {
+        state.error = action.error.message
+      })
+
+      .addCase(changeUserData.fulfilled, (state, { payload }) => {
+        state.data = {
+          ...state.data,
+          ...payload
+        }
+      })
+      .addCase(changeUserData.rejected, (state, action) => {
+        state.error = action.error.message
+      })
+
   },
   selectors: {
     getUserID: (state) => state.data.id,
     getUsername: (state) => state.data.username,
     getName: (state) => state.data.fname,
+    getEmail: (state) => state.data.email,
+    getJob: (state) => state.data.job,
     getPfp: (state) => state.data.pfp,
     getCoverPhoto: (state) => state.data.coverPhoto,
     getStatus: (state) => state.data.onlineStatus,
@@ -94,6 +113,6 @@ const userInfoSlice = createSlice({
 });
 
 export const { setStatus, setPfp, setCoverPhoto, setAccessToken, userLogout } = userInfoSlice.actions;
-export const { getUserID, getUsername, getName, getPfp, getCoverPhoto, getStatus, getAccessToken, getRefreshToken } = userInfoSlice.selectors;
+export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken } = userInfoSlice.selectors;
 
 export default userInfoSlice.reducer;

@@ -1,31 +1,28 @@
 import { useEffect, useState } from 'react'
 import './Photos.scss'
-import axios from 'axios'
+import { useDispatch } from 'react-redux';
+import { getUserPhotos } from '../../../store/features/post/postThunks';
 
-interface UnsplashPhoto {
-  id: string;
-  urls: {
-    regular: string;
-  };
-  slug: string;
+type Timages = {
+  postId: number;
+  image: string
 }
 
 export default function Photos() {
-
-  const [pictures, setPictures] = useState<UnsplashPhoto[]>([])
+  const dispatch = useDispatch()
+  const [pictures, setPictures] = useState<Timages[]>([])
 
   useEffect(() => {
-    axios.get('https://api.unsplash.com/photos?page=1&client_id=tz9G4oRnN-QAEYqOoS-D4ucLXOj5ZoV29prxgTs7C5c')
-      .then(res => setPictures(res.data))
-  }, []);
+    dispatch(getUserPhotos())
+      .then(res => setPictures(res.payload))
+  }, [dispatch]);
 
   return (
     <div className='Photos'>
-
       {
         pictures.map(pic => {
-          return <div key={pic.id} className="Photos__img">
-            <img src={pic.urls.regular} alt={pic.slug} />
+          return <div key={pic.postId} className="Photos__img">
+            <img src={pic.image} alt={`Post N${pic.postId.toString()}`} />
           </div>
         })
       }

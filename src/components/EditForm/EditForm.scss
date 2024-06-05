@@ -1,0 +1,49 @@
+@use '@assets/webColors' as *;
+
+.EditForm {
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+
+    .input-wrapper {
+      position: relative;
+
+      .error {
+        font-size: 14px;
+        color: $red;
+        position: absolute;
+        // white-space: nowrap;
+        bottom: -25px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid $blue;
+      }
+    }
+
+    .SignUp-button,
+    button {
+      padding: 15px;
+      background-color: $blue;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      color: $white;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+
+      &:disabled {
+        background-color: $blue-disabled;
+      }
+    }
+  }
+}

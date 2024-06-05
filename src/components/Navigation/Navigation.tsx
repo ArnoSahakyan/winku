@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom';
 import './Navigation.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ROUTES from '../../routes/routes';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPfp, getStatus, setStatus } from '../../store/features/userInfo/userInfoSlice';
+import { getPfp, getStatus } from '../../store/features/userInfo/userInfoSlice';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+import { changeOnlineStatus } from '../../store/features/userInfo/userThunks';
+import Modal from '../shared/Modal/Modal'
+import { Formik } from 'formik';
+import EditForm from '../EditForm/EditForm';
 
 export type MenuItem = {
   id: number;
@@ -41,14 +45,31 @@ const dropDownMenu: MenuItem[] = [
 export default function Navigation() {
   const [statusOpen, setStatusOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen)
+  }
+
   const status = useSelector(getStatus);
   const pfp = useSelector(getPfp);
-  const { logout } = useAuth()
+  const { logout } = useAuth();
 
   const dispatch = useDispatch();
 
   return (
     <>
+
+      {isOpen
+        ? <Modal toggleModal={toggleModal} isOpen={isOpen}>
+          <div className="EditForm">
+            <h2>Edit Your Info</h2>
+            <EditForm toggleModal={toggleModal} />
+          </div>
+        </Modal>
+        : null
+      }
+
       <BurgerMenu menuLinks={dropDownMenu} />
 
       <div className='Navigation'>
@@ -97,11 +118,11 @@ export default function Navigation() {
           <ul className={`${statusOpen ? 'open' : ''} actions`}>
             {
               onlineStatus.map(status => (
-                <li className={`${status} status`} onClick={() => dispatch(setStatus(status))} key={status}>{status}</li>
+                <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus(status))} key={status}>{status}</li>
               ))
             }
             <li><Link to={ROUTES.HOME}><span>&#xF4E1;</span> View Profile</Link></li>
-            <li><Link to={ROUTES.HOME}><span>&#xF4CB;</span> Edit Profile</Link></li>
+            <li><a onClick={() => toggleModal()} ><span>&#xF4CB;</span> Edit Profile</a></li>
             <li><a onClick={() => logout()}><span>&#xF4FF;</span> Log Out</a></li>
           </ul>
         </div>
