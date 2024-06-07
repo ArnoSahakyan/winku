@@ -13,7 +13,7 @@ export type TlogInFormState = {
 }
 
 const validationSchema = object({
-  username: string().min(4).max(20).required(),
+  username: string().min(3).max(20).required(),
   password: string()
     .min(8, 'Password must be 8 characters long')
     .matches(/[0-9]/, 'Password requires a number')

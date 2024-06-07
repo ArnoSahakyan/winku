@@ -50,7 +50,7 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async () => {
 });
 
 export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async () => {
-  const response = await api.get(`${VITE_BACK_BASE_URL}/api/newsfeed`);
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/posts`);
   const modifiedData = response.data.map((post: PostState) => ({
     ...post,
     image: post.image ? `${VITE_BACK_BASE_URL}${post.image}` : null,
@@ -90,8 +90,8 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
   return modifiedData
 })
 
-export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async () => {
-  const response = await api.get(`${VITE_BACK_BASE_URL}/api/photos`)
+export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async (id) => {
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/photos/${id}`)
   console.log("RESPONSE DATA", response.data);
 
   const modifiedData = response.data.map(elem => {

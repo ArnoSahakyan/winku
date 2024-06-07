@@ -56,15 +56,17 @@
     }
   }
 
-  &__comments{
+  &__comments {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    max-height: 200px;
+    overflow-y: auto;
   }
 }
 
 @media screen and (max-width: 450px) {
-  .Post{
+  .Post {
     padding: 10px;
     width: 100%;
   }
