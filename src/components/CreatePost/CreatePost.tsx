@@ -18,12 +18,14 @@ const initialValues: formType = {
 }
 
 const validationSchema = object().shape({
-  content: string(),
-  file: mixed().test('file-or-content', 'Please enter some content or upload an image', function () {
+  content: string().nullable(),
+  file: mixed().nullable().test('file-or-content', 'Please enter some content or upload an image', function () {
     const { content, file } = this.parent;
-    return !!content || !!file;
+    return content?.trim() !== '' || !!file;
   })
 });
+
+
 
 export default function CreatePost() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -44,6 +46,7 @@ export default function CreatePost() {
   };
 
   const handleSubmit = (values: formType, { resetForm }: { resetForm: () => void }) => {
+    if (values.file === null && values.content == '') return
     dispatch(createPost(values));
     resetForm();
     setFilePreview(null);

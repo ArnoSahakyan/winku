@@ -1,14 +1,18 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import ROUTES from '../../routes/routes'
 import './PageBar.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { getJob, getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
+import { TuserData } from '../../pages/Protected/HomePage/HomePage'
 
-export default function PageBar() {
+export default function PageBar({ userData }: { userData: TuserData | undefined }) {
 
   const dispatch = useDispatch();
   const pfp = useSelector(getPfp)
   const job = useSelector(getJob)
+  const fname = useSelector(getName)
+  const location = useLocation();
+
 
   const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -23,13 +27,11 @@ export default function PageBar() {
     }
   };
 
-  const fname = useSelector(getName)
-
   const pages = [
     {
       id: 0,
       title: 'Timeline',
-      route: ROUTES.HOME
+      route: ''
     },
     {
       id: 1,
@@ -58,8 +60,8 @@ export default function PageBar() {
           />
         </div>
         <div className="name">
-          <h3>{fname}</h3>
-          <span>{job}</span>
+          <h3>{location.pathname.startsWith('/user') && userData ? userData.fname : fname}</h3>
+          <span>{location.pathname.startsWith('/user') && userData ? userData.job : job}</span>
         </div>
       </div>
       <div className="PageBar__menu">

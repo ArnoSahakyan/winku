@@ -73,6 +73,18 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginData, { rejectValu
   }
 );
 
+export const getUserDataById = createAsyncThunk('userInfo/getUserDataById',
+  async (id) => {
+    const response = await api.get(`${VITE_BACK_BASE_URL}/api/user/${id}`)
+    const modifiedData = {
+      ...response.data,
+      pfp: `${VITE_BACK_BASE_URL}${response.data.pfp}`,
+      coverPhoto: `${VITE_BACK_BASE_URL}${response.data.coverPhoto}`
+    }
+    return modifiedData
+  }
+)
+
 export const changePfp = createAsyncThunk<UploadResponse, TuploadValues, { rejectValue: APIError }>(
   'userInfo/changePfpAsync',
   async ({ file }, { rejectWithValue }) => {

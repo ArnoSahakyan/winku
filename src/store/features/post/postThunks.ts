@@ -10,9 +10,17 @@ type TcreateComment = {
   parentId: number | null
 }
 
-export type TresponseComment = TReplies & {
-  postId: number,
-  userId: number
+export type TresponseComment = {
+  data: {
+    commentId: number;
+    content: string;
+    createdAt: Date;
+    fname: string;
+    parentId: number | null;
+    pfp: string;
+    postId: number,
+    userId: number,
+  }
 }
 
 const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL as string;
@@ -50,7 +58,19 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async () => {
 });
 
 export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async () => {
-  const response = await api.get(`${VITE_BACK_BASE_URL}/api/newsfeed`);
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/posts`);
+  const modifiedData = response.data.map((post: PostState) => ({
+    ...post,
+    image: post.image ? `${VITE_BACK_BASE_URL}${post.image}` : null,
+    pfp: `${VITE_BACK_BASE_URL}${post.pfp}`,
+    createdAt: new Date(post.createdAt),
+    comments: updatePfpPaths(post.comments)
+  }));
+  return modifiedData;
+});
+
+export const getPostsById = createAsyncThunk('post/getPostsById', async (id) => {
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/posts/${id}`);
   const modifiedData = response.data.map((post: PostState) => ({
     ...post,
     image: post.image ? `${VITE_BACK_BASE_URL}${post.image}` : null,
@@ -77,8 +97,8 @@ export const createPost = createAsyncThunk('post/createPost', async (data: formT
   return responseData
 })
 
-export const createComment = createAsyncThunk('post/createComment', async (data: TcreateComment) => {
-  const response = await api.post<TresponseComment>(`${VITE_BACK_BASE_URL}/api/comment`, data)
+export const createComment = createAsyncThunk<TresponseComment, TcreateComment>('post/createComment', async (data) => {
+  const response = await api.post(`${VITE_BACK_BASE_URL}/api/comment`, data)
 
   const modifiedData = {
     ...response.data,
@@ -90,8 +110,8 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
   return modifiedData
 })
 
-export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async () => {
-  const response = await api.get(`${VITE_BACK_BASE_URL}/api/photos`)
+export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async (id) => {
+  const response = await api.get(`${VITE_BACK_BASE_URL}/api/photos/${id}`)
   console.log("RESPONSE DATA", response.data);
 
   const modifiedData = response.data.map(elem => {

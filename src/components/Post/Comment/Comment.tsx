@@ -24,7 +24,7 @@ export default function Comment({ comment, isReply, replyData, setReplyData }: c
         <div className="top">
           <h5>{comment.fname}</h5>
           <p>{formatDate(comment.createdAt)}</p>
-          <span onClick={() => handleClick(comment)}>&#xF51F;</span>
+          <span className={`${comment.commentId === replyData?.commentId ? 'clicked' : ''}`} onClick={() => handleClick(comment)}>&#xF51F;</span>
         </div>
         <p>{comment.content}</p>
       </div>

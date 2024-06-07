@@ -21,8 +21,8 @@ const initialValues: TsignUpFormState = {
 };
 
 const validationSchema = object({
-  fname: string().min(4).max(30).required("full name is a required field"),
-  username: string().min(4).max(20).required(),
+  fname: string().min(3).max(30).required("full name is a required field"),
+  username: string().min(3).max(20).required(),
   email: string().email().required(),
   password: string()
     .min(8, 'Password must be 8 characters long')

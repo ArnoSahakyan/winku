@@ -32,8 +32,8 @@
     padding: 10px;
     flex-grow: 1;
     width: 60%;
-    
-    p{
+
+    p {
       font-size: 14px;
       color: $grey1;
     }
@@ -55,12 +55,12 @@
 
       span {
         font-family: "Bootstrap-icons";
-        color: $blue;
         font-size: 20px;
         cursor: pointer;
+        color: $grey1;
 
-        &:hover {
-          color: $grey1;
+        &.clicked {
+          color: $blue;
         }
       }
     }
