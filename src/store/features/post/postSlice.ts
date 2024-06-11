@@ -95,8 +95,8 @@ const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, { payload }) => {
         const modifiedData = {
           ...payload,
-          image: payload.image ? `${import.meta.env.VITE_BACK_BASE_URL}${payload.image}` : null,
-          pfp: `${import.meta.env.VITE_BACK_BASE_URL}${payload.pfp}`
+          image: payload.image ? `/api${payload.image}` : null,
+          pfp: `/api${payload.pfp}`
         };
         state.userPosts.unshift(modifiedData)
       })

@@ -3,10 +3,8 @@ import { store } from "../store/setup";
 import { setAccessToken } from "../store/features/userInfo/userInfoSlice";
 import { performLogout } from "../hooks/useAuth";
 
-export const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL;
-
 export const api = axios.create({
-  baseURL: VITE_BACK_BASE_URL,
+  baseURL: '/api',
   headers: {
     "Content-Type": "application/json",
   },
@@ -34,7 +32,7 @@ api.interceptors.response.use(
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.post(`${VITE_BACK_BASE_URL}/api/auth/refresh`, {
+          await axios.post(`/api/auth/refresh`, {
             refreshToken: userInfo.data.refreshToken
           })
         );

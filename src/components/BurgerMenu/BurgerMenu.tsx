@@ -10,7 +10,13 @@ export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
   // to change burger classes
   const [burger_class, setBurgerClass] = useState("burger-bar unclicked")
   const [menu_class, setMenuClass] = useState("menu hidden")
-  const [isMenuClicked, setIsMenuClicked] = useState(false)
+  const [isMenuClicked, setIsMenuClicked] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState(null)
+
+  const handleSubmenu = (id) => {
+    if (openSubmenu === id) setOpenSubmenu(null)
+    else setOpenSubmenu(id)
+  }
 
   // toggle burger menu change
   const updateMenu = () => {
@@ -68,9 +74,9 @@ export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
         <ul className="bLinks">
           {
             menuLinks.map(link => {
-              return <li key={link.id}>
-                {link.title}
-                <ul className='bSublinks'>
+              return <li key={link.id} onClick={() => handleSubmenu(link.id)}>
+                <span>{link.title}</span>
+                <ul className={`${link.id === openSubmenu ? 'active' : 'not-active'} bSublinks`}>
                   {
                     link.subtitles.map((sub, index) => {
                       return <li key={index}>{sub}</li>

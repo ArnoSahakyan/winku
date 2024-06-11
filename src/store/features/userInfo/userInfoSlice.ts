@@ -60,8 +60,8 @@ const userInfoSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = {
           ...action.payload,
-          pfp: `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.pfp}`,
-          coverPhoto: `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.coverPhoto}`
+          pfp: `/api${action.payload.pfp}`,
+          coverPhoto: `/api${action.payload.coverPhoto}`
         };
         state.status = 'succeeded';
       })
@@ -74,10 +74,10 @@ const userInfoSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(changePfp.fulfilled, (state, action) => {
-        state.data.pfp = `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.relativePath}`
+        state.data.pfp = `/api${action.payload.relativePath}`
       })
       .addCase(changeCover.fulfilled, (state, action) => {
-        state.data.coverPhoto = `${import.meta.env.VITE_BACK_BASE_URL}${action.payload.relativePath}`
+        state.data.coverPhoto = `/api${action.payload.relativePath}`
       })
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {

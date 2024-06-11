@@ -3,8 +3,6 @@ import axios, { AxiosError } from 'axios';
 import { api } from '../../../api/axios';
 import { TuserInfo } from './userInfoSlice';
 
-const VITE_BACK_BASE_URL = import.meta.env.VITE_BACK_BASE_URL as string;
-
 type APIError = {
   message: string;
 }
@@ -46,7 +44,7 @@ export const signupUser = createAsyncThunk<SignupResponse, SignupData, { rejectV
   'userInfo/signupAsync',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post<SignupResponse>(`${VITE_BACK_BASE_URL}/api/auth/signup`, data);
+      const response = await axios.post<SignupResponse>(`/api/api/auth/signup`, data);
       console.log('Signup Response:', response);
       return response.data;
     } catch (error) {
@@ -62,7 +60,7 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginData, { rejectValu
   async (data, { rejectWithValue }) => {
     try {
       console.log("Login Data: ", data);
-      const response = await axios.post<LoginResponse>(`${VITE_BACK_BASE_URL}/api/auth/signin`, data);
+      const response = await axios.post<LoginResponse>(`/api/api/auth/signin`, data);
       console.log('Login Response:', response);
       return response.data;
     } catch (error) {
@@ -80,7 +78,7 @@ export const changePfp = createAsyncThunk<UploadResponse, TuploadValues, { rejec
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await api.post<UploadResponse>(`${VITE_BACK_BASE_URL}/api/upload/pfp`, formData, {
+      const response = await api.post<UploadResponse>(`/api/upload/pfp`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -102,7 +100,7 @@ export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rej
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await api.post<UploadResponse>(`${VITE_BACK_BASE_URL}/api/upload/cover`, formData, {
+      const response = await api.post<UploadResponse>(`/api/upload/cover`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -119,14 +117,14 @@ export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rej
 export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
   async (data) => {
     const modifiedData = { onlineStatus: data }
-    const response = await api.patch(`${VITE_BACK_BASE_URL}/api/user/status`, modifiedData)
+    const response = await api.patch(`/api/user/status`, modifiedData)
     return response.data
   }
 )
 
 export const changeUserData = createAsyncThunk('userInfo/changeUserData',
   async (data) => {
-    const response = await api.patch(`${VITE_BACK_BASE_URL}/api/user/update`, data)
+    const response = await api.patch(`/api/user/update`, data)
     return response.data
   }
 )

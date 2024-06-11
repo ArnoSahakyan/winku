@@ -7,7 +7,17 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@assets' : path.resolve(__dirname, './src/assets')
+      '@assets': path.resolve(__dirname, './src/assets')
     }
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    },
+    host: 'localhost',
   }
 })

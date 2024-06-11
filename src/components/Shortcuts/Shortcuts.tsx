@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import ROUTES from '../../routes/routes';
-import './Shortcuts.scss'
 import Title from '../shared/Title/Title';
+import useAuth from '../../hooks/useAuth';
+import Modal from '../shared/Modal/Modal';
+import EditForm from '../EditForm/EditForm';
+import { useState } from 'react';
+import './Shortcuts.scss'
 
 type TshortcutList = {
   id: number,
@@ -11,6 +15,13 @@ type TshortcutList = {
 }
 
 export default function Shortcuts() {
+  const [isOpen, setIsOpen] = useState(false)
+  const { logout } = useAuth();
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen)
+  }
+
   const shortcuts: TshortcutList[] = [
     {
       id: 1,
@@ -50,15 +61,29 @@ export default function Shortcuts() {
   ];
 
   return (
-    <div className='Shortcuts'>
-      <Title title={<>Shortcuts</>} />
-      <ul>
-        {
-          shortcuts.map(elem => {
-            return <li key={elem.id}> {elem.icon} <Link to={elem.route}>{elem.title}</Link> </li>
-          })
-        }
-      </ul>
-    </div>
+    <>
+      {isOpen
+        ? <Modal toggleModal={toggleModal} isOpen={isOpen}>
+          <div className="EditForm">
+            <h2>Edit Your Info</h2>
+            <EditForm toggleModal={toggleModal} />
+          </div>
+        </Modal>
+        : null
+      }
+
+      <div className='Shortcuts'>
+        <Title title={<>Shortcuts</>} />
+        <ul>
+          {
+            shortcuts.map(elem => {
+              return <li key={elem.id}> {elem.icon} <Link to={elem.route}>{elem.title}</Link> </li>
+            })
+          }
+          <li className='mobile'><a onClick={() => toggleModal()} ><span>&#xF4CB;</span> Edit Profile</a></li>
+          <li className='mobile'><a onClick={() => logout()}><span>&#xF4FF;</span> Log Out</a></li>
+        </ul>
+      </div>
+    </>
   )
 }
