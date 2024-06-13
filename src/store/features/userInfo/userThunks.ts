@@ -45,7 +45,6 @@ export const signupUser = createAsyncThunk<SignupResponse, SignupData, { rejectV
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post<SignupResponse>(`/api/api/auth/signup`, data);
-      console.log('Signup Response:', response);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<APIError>;
@@ -59,9 +58,7 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginData, { rejectValu
   'userInfo/loginAsync',
   async (data, { rejectWithValue }) => {
     try {
-      console.log("Login Data: ", data);
       const response = await axios.post<LoginResponse>(`/api/api/auth/signin`, data);
-      console.log('Login Response:', response);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<APIError>;
@@ -83,8 +80,6 @@ export const changePfp = createAsyncThunk<UploadResponse, TuploadValues, { rejec
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log("Profile Picture Upload Response:", response.data);
-
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<APIError>;
@@ -105,7 +100,6 @@ export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rej
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log("Upload response", response);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<APIError>;

@@ -61,6 +61,12 @@
 
       &.confirm {
         background-color: $blue;
+
+        &:disabled {
+          background-color: $blue-disabled;
+          cursor: unset;
+          opacity: 0.5;
+        }
       }
     }
   }
@@ -94,6 +100,12 @@
 
         &.span-confirm {
           background-color: $blue;
+
+          &.disabled {
+            background-color: $blue-disabled;
+            pointer-events: none;
+            opacity: 0.5;
+          }
         }
       }
 

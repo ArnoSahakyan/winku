@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { TFriend, TMessages } from '../../../store/features/friendsSlice'
+import { TFriend, TMessages } from '../../../store/features/friends/friendsSlice'
 import './MessageChat.scss'
 import { getPfp } from '../../../store/features/userInfo/userInfoSlice';
 
@@ -15,7 +15,7 @@ export default function MessageChat({ content, user }: IMessageChat) {
       {
         content.senderId === 'friend' ?
           <div className='MessageChat friend'>
-            <img src={user.img} alt={user.name} />
+            <img src={user.pfp} alt={user.fname} />
             <p>{content.message}</p>
           </div>
           : <div className='MessageChat user'>

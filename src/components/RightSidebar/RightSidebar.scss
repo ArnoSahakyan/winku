@@ -10,12 +10,12 @@
   box-shadow: 0 0 34px 0 rgba(63, 66, 87, .1);
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
 
   &__friends {
     overflow-y: auto;
-    padding: 100px 0 0 0;
+    padding: 70px 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: center;

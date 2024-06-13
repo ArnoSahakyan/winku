@@ -43,7 +43,6 @@ const useAuth = () => {
   }
 
   const signup = async (values: TsignUpFormState, { resetForm }: { resetForm: () => void }) => {
-    console.log(values);
     const newValues = {
       ...values,
       roles: ['user']
@@ -51,12 +50,11 @@ const useAuth = () => {
 
     try {
       const res = await dispatch(signupUser(newValues)).unwrap();
-      console.log(res);
       if (res) {
         resetForm();
         notifySuccess(res.message);
         setTimeout(() => {
-          navigate('/api/auth/signin');
+          navigate('/auth/signin');
         }, 1500);
       }
     } catch (err) {
@@ -72,7 +70,7 @@ const useAuth = () => {
   //   try {
   //     dispatch(userLogout());
   //     await persistor.purge();
-  //     navigate('/api/auth/signin');
+  //     navigate('/auth/signin');
   //   } catch (error) {
   //     console.error("Logout failed", error);
   //   }
@@ -82,7 +80,7 @@ const useAuth = () => {
     dispatch(changeOnlineStatus("offline"))
       .then(() => dispatch(userLogout()))
       .then(() => persistor.purge())
-      .then(() => navigate('/api/auth/signin'))
+      .then(() => navigate('/auth/signin'))
       .catch((error) => console.error("Logout failed", error))
   };
 
@@ -100,7 +98,7 @@ export const performLogout = async (navigate?: NavigateFunction) => {
     store.dispatch(userLogout());
     await persistor.purge();
     if (navigate) {
-      navigate('/api/auth/signin');
+      navigate('/auth/signin');
     }
   } catch (error) {
     console.error("Logout failed", error);

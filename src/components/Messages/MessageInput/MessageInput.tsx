@@ -1,7 +1,7 @@
 import { Field, Formik, Form, FormikValues } from 'formik';
 import './MessageInput.scss';
 import { useDispatch } from 'react-redux';
-import { TFriend, sendMessage } from '../../../store/features/friendsSlice';
+import { TFriend, sendMessage } from '../../../store/features/friends/friendsSlice';
 
 const initialValues = {
   message: ''

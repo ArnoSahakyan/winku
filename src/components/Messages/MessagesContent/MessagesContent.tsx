@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import './MessagesContent.scss'
-import { getFriends } from '../../../store/features/friendsSlice'
+import { getFriends } from '../../../store/features/friends/friendsSlice'
 import Friend from '../../FriendsBar/Friend/Friend'
 import { useEffect, useState, useRef } from 'react'
 import MessageChat from '../MessageChat/MessageChat'
@@ -36,9 +36,9 @@ export default function MessagesContent() {
       </div>
       <div className="MessagesContent__box">
         <div className="content">
-          <img src={friends[selectedFriendIndex]?.img} alt={friends[selectedFriendIndex].name} />
+          <img src={friends[selectedFriendIndex]?.pfp} alt={friends[selectedFriendIndex].fname} />
           <div className="content-info">
-            <h4>{friends[selectedFriendIndex]?.name}</h4>
+            <h4>{friends[selectedFriendIndex]?.fname}</h4>
             <span>{friends[selectedFriendIndex]?.onlineStatus}</span>
           </div>
         </div>

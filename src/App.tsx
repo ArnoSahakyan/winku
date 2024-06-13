@@ -13,7 +13,6 @@ import Loader from './components/shared/Loader/Loader.tsx';
 import AuthRoute from './components/AuthRoute/AuthRoute.tsx';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.tsx';
 
-const LazyRoot = lazy(() => import('./routes/Root.tsx'));
 const LazyHomePage = lazy(() => import('./pages/Protected/HomePage/HomePage.tsx'));
 const LazySignUp = lazy(() => import('./pages/NotProtected/SignUp/SignUp.tsx'));
 const LazyPhotos = lazy(() => import('./pages/Protected/Photos/Photos.tsx'));
@@ -29,7 +28,6 @@ export const App = () => {
       <Route element={<Layout />} errorElement={<ErrorPage />}>
 
         <Route element={<AuthRoute />}>
-          <Route path={ROUTES.ROOT} element={<Suspense fallback={<Loader />}><LazyRoot /> </Suspense>} />
           <Route path={ROUTES.LOGIN} element={<Suspense fallback={<Loader />}><LazyLogIn /> </Suspense>} />
           <Route path={ROUTES.SIGNUP} element={<Suspense fallback={<Loader />}><LazySignUp /> </Suspense>} />
         </Route>

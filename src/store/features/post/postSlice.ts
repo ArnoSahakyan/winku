@@ -17,7 +17,7 @@ export type TComments = TReplies & {
 export type PostState = {
   postId: number;
   content: string | null;
-  image: string | null;
+  image: string | undefined;
   likes: number;
   createdAt: Date;
   fname: string;
@@ -60,16 +60,7 @@ const addComment = (post: PostState, comment: TComments) => {
 const postSlice = createSlice({
   name: 'posts',
   initialState: initialState,
-  reducers: {
-    // setPost: (state, action) => {
-    //   console.log('AAA');
-
-    // },
-    // postComment: (state, { payload }) => {
-    //   console.log('AAA');
-    // }
-
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getUserPosts.fulfilled, (state, { payload }) => {
@@ -138,6 +129,5 @@ const postSlice = createSlice({
   }
 });
 
-// export const { setPost, postComment } = postSlice.actions;
 export const { userPostsSelector, newsfeedPostsSelector } = postSlice.selectors
 export default postSlice.reducer;

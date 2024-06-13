@@ -69,7 +69,6 @@ const userInfoSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(loginUser.rejected, (state, action) => {
-        console.log('Login Failed:', action.error.message);
         state.status = 'failed';
         state.error = action.error.message;
       })

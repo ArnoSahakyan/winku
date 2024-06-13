@@ -1,12 +1,12 @@
 import './RightSidebar.scss'
 import Friend from '../FriendsBar/Friend/Friend';
 import { useSelector } from 'react-redux';
-import { getFriends } from '../../store/features/friendsSlice';
+import { getFriendsBack } from '../../store/features/friends/friendsSlice';
 
 
 export default function RightSidebar() {
 
-  const friends = useSelector(getFriends)
+  const friends = useSelector(getFriendsBack)
 
   return (
     <div className='RightSidebar'>

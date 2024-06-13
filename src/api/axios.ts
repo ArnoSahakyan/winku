@@ -32,7 +32,7 @@ api.interceptors.response.use(
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.post(`/api/auth/refresh`, {
+          await axios.post(`/api/api/auth/refresh`, {
             refreshToken: userInfo.data.refreshToken
           })
         );

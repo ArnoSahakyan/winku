@@ -36,7 +36,7 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
 };
 
 export const getUserPosts = createAsyncThunk('post/getUserPosts', async () => {
-  const response = await api.get(`/api/userPosts`);
+  const response = await api.get(`/api/userPosts`);  
   const modifiedData = response.data.map((post: PostState) => ({
     ...post,
     image: post.image ? `/api${post.image}` : null,
@@ -90,8 +90,6 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
 
 export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async (id) => {
   const response = await api.get(`/api/photos/${id}`)
-  console.log("RESPONSE DATA", response.data);
-
   const modifiedData = response.data.map(elem => {
     return {
       ...elem,

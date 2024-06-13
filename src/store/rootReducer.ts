@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import friendsSlice from "./features/friendsSlice";
+import friendsSlice from "./features/friends/friendsSlice";
 import postSlice from "./features/post/postSlice";
 import userInfoSlice from "./features/userInfo/userInfoSlice";
 import storage from 'redux-persist/lib/storage';

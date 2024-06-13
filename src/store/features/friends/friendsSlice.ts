@@ -1,21 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
+import { deleteFriend, getFriendsApi, getRequestsApi, getUnassociatedApi, respondRequest } from "./friendThunks";
 
 export type TFriend = {
   id: string;
-  name: string;
+  fname: string;
   email: string;
   onlineStatus: string;
   job: string;
-  img: string;
+  pfp: string;
   messages: TMessages[];
 }
 
-export type TRequest = Omit<TFriend, "messages">
+export type TRequest = {
+  requestId: number,
+  senderId: number,
+  status: string,
+  fname: string,
+  pfp: string
+}
+
+export type TFriendBack = {
+  id: number;
+  fname: string;
+  username: string;
+  pfp: string;
+  job: string;
+  email: string;
+  onlineStatus: string;
+}
+
+export type Tunassocitaed = {
+  id: number,
+  fname: string,
+  username: string
+  job: string,
+  pfp: string,
+}
 
 type TUsers = {
   friends: TFriend[]
-  requests: TRequest[]
+  requests: TRequest[],
+  friendsBack: TFriendBack[],
+  unassociated: Tunassocitaed[]
 }
 
 export type TMessages = {
@@ -24,15 +51,17 @@ export type TMessages = {
   message: string;
 }
 
+
+
 const initialState: TUsers = {
   friends: [
     {
       id: nanoid(5),
-      name: 'Alice Diaz',
+      fname: 'Alice Diaz',
       email: 'alice1998@gmail.com',
       onlineStatus: 'online',
       job: 'Bartender',
-      img: '/friend1.jpg',
+      pfp: '/friend1.jpg',
       messages: [
         {
           id: nanoid(5),
@@ -78,11 +107,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: 'Bob Smith',
+      fname: 'Bob Smith',
       email: ' bob1985@example.com',
       onlineStatus: 'away',
       job: 'Ftv Model',
-      img: '/friend2.jpg',
+      pfp: '/friend2.jpg',
       messages: [
         {
           id: nanoid(5),
@@ -128,11 +157,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Carol Black",
+      fname: "Carol Black",
       email: "carol1976@gmail.com",
       onlineStatus: "online",
       job: 'Work at IMB',
-      img: "/friend3.jpg",
+      pfp: "/friend3.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -179,11 +208,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "David Goggins",
+      fname: "David Goggins",
       email: "david1990@gmail.com",
       onlineStatus: "offline",
       job: 'Football Pundit',
-      img: "/friend4.jpg",
+      pfp: "/friend4.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -205,11 +234,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Eve Evangeline",
+      fname: "Eve Evangeline",
       email: "eve1983@gmail.com",
       onlineStatus: "offline",
       job: 'Actress',
-      img: "/friend5.jpg",
+      pfp: "/friend5.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -246,11 +275,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Frank Sinatra",
+      fname: "Frank Sinatra",
       email: "frank1978@gmail.com",
       onlineStatus: "away",
       job: 'Student',
-      img: "/friend6.jpg",
+      pfp: "/friend6.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -271,11 +300,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Grace Johnson",
+      fname: "Grace Johnson",
       email: "grace1986@gmail.com",
       onlineStatus: "online",
       job: 'Personal Business',
-      img: "/friend7.jpg",
+      pfp: "/friend7.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -296,11 +325,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Hannah Carey",
+      fname: "Hannah Carey",
       email: "hannah1989@gmail.com",
       onlineStatus: "offline",
       job: 'Actress',
-      img: "/friend8.jpg",
+      pfp: "/friend8.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -321,11 +350,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Alexander Isak",
+      fname: "Alexander Isak",
       email: "isaac1980@gmail.com",
       onlineStatus: "away",
       job: 'Teacher',
-      img: "/friend9.jpg",
+      pfp: "/friend9.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -371,11 +400,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Bran Brown",
+      fname: "Bran Brown",
       email: "bramn1970@gmail.com",
       onlineStatus: "offline",
       job: 'Driver',
-      img: "/friend10.jpg",
+      pfp: "/friend10.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -396,11 +425,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Lilly Morgan",
+      fname: "Lilly Morgan",
       email: "lillu1960@gmail.com",
       onlineStatus: "offline",
       job: 'Teacher',
-      img: "/friend11.jpg",
+      pfp: "/friend11.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -426,11 +455,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Elizabeth Robbie",
+      fname: "Elizabeth Robbie",
       email: "eliza1970@gmail.com",
       onlineStatus: "away",
       job: 'Gardener',
-      img: "/friend12.jpg",
+      pfp: "/friend12.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -476,11 +505,11 @@ const initialState: TUsers = {
     },
     {
       id: nanoid(5),
-      name: "Margott Olsen",
+      fname: "Margott Olsen",
       email: "margott1997@gmail.com",
       onlineStatus: "online",
       job: 'Model',
-      img: "/friend13.jpg",
+      pfp: "/friend13.jpg",
       messages: [
         {
           id: nanoid(5),
@@ -526,88 +555,9 @@ const initialState: TUsers = {
     },
 
   ],
-  requests: [
-    {
-      id: nanoid(5),
-      name: 'Mary Smith',
-      email: 'mary1998@gmail.com',
-      onlineStatus: 'online',
-      job: 'Bartender',
-      img: '/request1.jpg'
-    },
-    {
-      id: nanoid(5),
-      name: 'Phil Foden',
-      email: ' phil1985@example.com',
-      onlineStatus: 'away',
-      job: 'Ftv Model',
-      img: '/request2.jpg'
-    },
-    {
-      id: nanoid(5),
-      name: "Andy Caroll",
-      email: "andy1976@gmail.com",
-      onlineStatus: "online",
-      job: 'Work at IMB',
-      img: "/request3.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "John Krasinski",
-      email: "john1990@gmail.com",
-      onlineStatus: "offline",
-      job: 'Football Pundit',
-      img: "/request4.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Ketty Hatheway",
-      email: "ketty1983@gmail.com",
-      onlineStatus: "offline",
-      job: 'Actress',
-      img: "/request5.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Arwen Undomiel",
-      email: "arwen1978@gmail.com",
-      onlineStatus: "away",
-      job: 'Student',
-      img: "/request6.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Grace Gosling",
-      email: "grace1986@gmail.com",
-      onlineStatus: "online",
-      job: 'Personal Business',
-      img: "/request7.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Hannah Montanna",
-      email: "hannah1989@gmail.com",
-      onlineStatus: "offline",
-      job: 'Actress',
-      img: "/request8.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Isaac Gordon",
-      email: "isaac1980@gmail.com",
-      onlineStatus: "away",
-      job: 'Teacher',
-      img: "/request9.jpg"
-    },
-    {
-      id: nanoid(5),
-      name: "Bran Stark",
-      email: "bramn1970@gmail.com",
-      onlineStatus: "offline",
-      job: 'Driver',
-      img: "/request10.jpg"
-    },
-  ]
+  requests: [],
+  friendsBack: [],
+  unassociated: []
 };
 
 const friendsSlice = createSlice({
@@ -627,12 +577,34 @@ const friendsSlice = createSlice({
       }
     }
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getFriendsApi.fulfilled, (state, { payload }) => {
+        state.friendsBack = [...payload];
+      })
+      .addCase(getRequestsApi.fulfilled, (state, { payload }) => {
+        state.requests = [...payload];
+      })
+      .addCase(deleteFriend.fulfilled, (state, { payload }) => {
+        state.friendsBack = state.friendsBack.filter(friend => friend.id != payload.friendId);
+      })
+      .addCase(respondRequest.fulfilled, (state, { payload }) => {
+        state.requests = state.requests.filter(request => request.requestId != payload.requestId);
+      })
+      .addCase(getUnassociatedApi.fulfilled, (state, { payload }) => {
+        state.unassociated = [...payload]
+      });
+
+
+  },
   selectors: {
     getFriends: (state) => state.friends,
-    getRequests: (state) => state.requests
+    getRequests: (state) => state.requests,
+    getFriendsBack: (state) => state.friendsBack,
+    getUnassociated: (state) => state.unassociated,
   }
 });
 
 export const { sendMessage } = friendsSlice.actions
-export const { getFriends, getRequests } = friendsSlice.selectors
+export const { getFriends, getRequests, getFriendsBack, getUnassociated } = friendsSlice.selectors
 export default friendsSlice.reducer;

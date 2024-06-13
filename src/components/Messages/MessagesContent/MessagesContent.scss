@@ -6,6 +6,8 @@
   height: 450px;
 
   &__friends {
+    outline: 2px solid $grey-bg;
+    padding-left: 10px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -75,8 +77,14 @@
     flex-direction: column;
     gap: 20px;
 
-    &__friends{
-      max-height: 200px;
+    &__box {
+      .chat {
+        height: 500px;
+      }
+    }
+
+    &__friends {
+      max-height: 130px;
     }
   }
 }

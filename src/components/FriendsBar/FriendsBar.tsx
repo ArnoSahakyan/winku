@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './FriendsBar.scss'
 import Friend from './Friend/Friend';
-import { useSelector } from 'react-redux';
-import { getFriends } from '../../store/features/friendsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFriendsBack } from '../../store/features/friends/friendsSlice';
 import Title from '../shared/Title/Title';
+import { getFriendsApi } from '../../store/features/friends/friendThunks';
 
 export default function FriendsBar() {
-
-  const friends = useSelector(getFriends);
+  const dispatch = useDispatch()
+  const friends = useSelector(getFriendsBack);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredFriends = friends.filter((friend) =>
-    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+    friend.fname.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    dispatch(getFriendsApi())
+  }, [dispatch])
+
 
   return (
     <div className='FriendsBar'>
@@ -33,9 +39,11 @@ export default function FriendsBar() {
 
       <div className="FriendsBar__list">
         {
-          filteredFriends.map(user => {
-            return <Friend key={user.id} user={user} onlyImg={false} />
-          })
+          filteredFriends.length > 0
+            ? filteredFriends.map(user => {
+              return <Friend key={user.id} user={user} onlyImg={false} />
+            })
+            : <h4 className='no-users'>No friends available</h4>
         }
       </div>
     </div>

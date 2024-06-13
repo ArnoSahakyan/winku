@@ -16,10 +16,10 @@ export default function Feed() {
   useEffect(() => {
     if (isNewsfeed) {
       dispatch(getNewsfeed());
-    } else {
+    } else if (posts.length == 0) {
       dispatch(getUserPosts());
     }
-  }, [dispatch, isNewsfeed]);
+  }, [dispatch, isNewsfeed, posts.length]);
 
   return (
     <div className='Feed'>

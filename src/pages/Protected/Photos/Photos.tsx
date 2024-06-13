@@ -1,23 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import './Photos.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserPhotos } from '../../../store/features/post/postThunks';
-import { getUserID } from '../../../store/features/userInfo/userInfoSlice';
-
-type Timages = {
-  postId: number;
-  image: string
-}
+import { getUserPosts } from '../../../store/features/post/postThunks';
+import { userPostsSelector } from '../../../store/features/post/postSlice';
 
 export default function Photos() {
+  const pictures = useSelector(userPostsSelector)
+
   const dispatch = useDispatch();
-  const id = useSelector(getUserID)
-  const [pictures, setPictures] = useState<Timages[]>([])
 
   useEffect(() => {
-    dispatch(getUserPhotos(id))
-      .then(res => setPictures(res.payload))
-  }, [dispatch, id]);
+    if (pictures.length == 0) {
+      dispatch(getUserPosts());
+    }
+  }, [dispatch, pictures.length]);
 
   return (
     <div className='Photos'>

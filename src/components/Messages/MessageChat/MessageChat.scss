@@ -25,7 +25,17 @@
   }
 
   p {
+    max-width: 90%;
     padding: 5px 10px;
     background-color: $chat-green;
   }
+}
+
+@media screen and (max-width: 450px) {
+  .MessageChat{
+    img{
+      display: none;
+    }
+  }
+  
 }

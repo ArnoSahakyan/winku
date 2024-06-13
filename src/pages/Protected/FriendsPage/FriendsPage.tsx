@@ -1,15 +1,24 @@
-import { useSelector } from 'react-redux'
-import './FriendsPage.scss'
-import { getFriends, getRequests } from '../../../store/features/friendsSlice'
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getFriendsBack, getRequests, getUnassociated } from '../../../store/features/friends/friendsSlice'
+import { useEffect, useState } from 'react'
 import FriendBar from './FriendBar'
+import { getRequestsApi, getUnassociatedApi } from '../../../store/features/friends/friendThunks'
+import './FriendsPage.scss'
 
 export default function FriendsPage() {
-
-  const friends = useSelector(getFriends)
-  const requests = useSelector(getRequests)
-
   const [activePage, setActivePage] = useState('friends')
+  const dispatch = useDispatch();
+  const friends = useSelector(getFriendsBack)
+  const requests = useSelector(getRequests)
+  const unassociated = useSelector(getUnassociated);
+
+  useEffect(() => {
+    dispatch(getRequestsApi())
+
+    if (activePage === 'explore') {
+      dispatch(getUnassociatedApi())
+    }
+  }, [activePage, dispatch, unassociated.length])
 
   return (
     <div className='FriendsPage'>
@@ -24,17 +33,34 @@ export default function FriendsPage() {
           onClick={() => setActivePage('requests')}>
           Friend Requests <span>{requests.length}</span>
         </h4>
+        <h4
+          className={activePage === 'explore' ? 'active' : ''}
+          onClick={() => setActivePage('explore')}>
+          Explore People
+        </h4>
       </div>
       <div className="FriendsPage__list">
-        {
-          activePage === 'friends' ?
+        {activePage === 'friends' && (
+          friends.length > 0 ?
             friends.map((friend) => {
-              return <FriendBar key={friend.id} data={friend} isFriend={true} />
+              return <FriendBar key={friend.id} data={friend} isFriend={'friend'} />
             })
-            : requests.map((request) => {
-              return <FriendBar key={request.id} data={request} isFriend={false} />
+            : <h4 className='no-users'>No Friends Available</h4>
+        )}
+        {activePage === 'requests' && (
+          requests.length > 0 ?
+            requests.map((request) => {
+              return <FriendBar key={request.requestId} data={request} isFriend={'request'} />
             })
-        }
+            : <h4 className='no-users'>No Requests Available</h4>
+        )}
+        {activePage === 'explore' && (
+          unassociated.length > 0 ?
+            unassociated.map((user) => {
+              return <FriendBar key={user.username} data={user} isFriend={'none'} />
+            })
+            : <h4 className='no-users'>No Users To Explore</h4>
+        )}
       </div>
     </div>
   )

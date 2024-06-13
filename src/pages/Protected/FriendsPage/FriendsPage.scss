@@ -38,6 +38,14 @@
   }
 }
 
+.no-users {
+  text-align: center;
+  padding: 10px 0;
+  margin: 20px 0;
+  color: $dark-grey;
+  font-weight: 400;
+}
+
 
 @media screen and (max-width: 450px) {
   .FriendsPage {
