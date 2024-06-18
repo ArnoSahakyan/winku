@@ -20,7 +20,6 @@ export default function FriendsBar() {
     dispatch(getFriendsApi())
   }, [dispatch])
 
-
   return (
     <div className='FriendsBar'>
       <Title title={<>Friends</>} />

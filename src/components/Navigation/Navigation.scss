@@ -91,6 +91,9 @@
 
     li {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       .searchFriend {
         position: absolute;

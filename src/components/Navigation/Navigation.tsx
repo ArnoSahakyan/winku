@@ -9,8 +9,8 @@ import useAuth from '../../hooks/useAuth';
 import { changeOnlineStatus } from '../../store/features/userInfo/userThunks';
 import Modal from '../shared/Modal/Modal'
 import EditForm from '../EditForm/EditForm';
-import IconSearch from '../shared/Icons/IconSearch';
 import IconHome from '../shared/Icons/IconHome';
+import SearchUser from '../SearchUser/SearchUser';
 
 export type MenuItem = {
   id: number;
@@ -45,7 +45,6 @@ const dropDownMenu: MenuItem[] = [
 
 export default function Navigation() {
   const [statusOpen, setStatusOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleModal = () => {
@@ -92,10 +91,7 @@ export default function Navigation() {
 
         <ul className='Navigation__icons'>
           <li>
-            <a onClick={() => setSearchOpen(!searchOpen)}>
-              <IconSearch />
-            </a>
-            <input className={`${searchOpen ? 'active' : ''} searchFriend`} type="search" name="search" id="search" placeholder='Search Friend' />
+            <SearchUser />
           </li>
           <li>
             <Link to={ROUTES.HOME}>

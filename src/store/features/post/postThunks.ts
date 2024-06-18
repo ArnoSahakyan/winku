@@ -35,28 +35,44 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
   });
 };
 
-export const getUserPosts = createAsyncThunk('post/getUserPosts', async () => {
-  const response = await api.get(`/api/userPosts`);  
-  const modifiedData = response.data.map((post: PostState) => ({
+export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit, offset }) => {
+  const response = await api.get(`/api/userPosts`, {
+    params: { limit, offset }
+  });
+
+  const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
     image: post.image ? `/api${post.image}` : null,
     pfp: `/api${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
-  return modifiedData;
+  return {
+    totalItems: response.data.totalItems,
+    totalPages: response.data.totalPages,
+    currentPage: response.data.currentPage,
+    data: modifiedData,
+  };
 });
 
-export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async () => {
-  const response = await api.get(`/api/posts`);
-  const modifiedData = response.data.map((post: PostState) => ({
+export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, offset }) => {
+  const response = await api.get(`/api/posts`, {
+    params: { limit, offset }
+  });
+  const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
     image: post.image ? `/api${post.image}` : null,
     pfp: `/api${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
-  return modifiedData;
+
+  return {
+    totalItems: response.data.totalItems,
+    totalPages: response.data.totalPages,
+    currentPage: response.data.currentPage,
+    data: modifiedData,
+  };
 });
 
 export const createPost = createAsyncThunk('post/createPost', async (data: formType) => {

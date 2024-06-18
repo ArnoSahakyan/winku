@@ -122,3 +122,27 @@ export const changeUserData = createAsyncThunk('userInfo/changeUserData',
     return response.data
   }
 )
+
+export const searchUsers = createAsyncThunk('user/searchUser',
+  async ({ query, limit, offset }) => {
+    const response = await api.get('/api/searchUser', {
+      params: {
+        query,
+        limit,
+        offset
+      }
+    });
+    console.log("SEARCH USER RESPONSE", response.data);
+    const modifiedData = response.data.users.map((user) => ({
+      ...user,
+      pfp: `/api${user.pfp}`,
+    }))
+
+    return {
+      totalUsers: response.data.totalUsers,
+      totalPages: response.data.totalPages,
+      currentPage: response.data.currentPage,
+      users: modifiedData,
+    };
+  }
+)

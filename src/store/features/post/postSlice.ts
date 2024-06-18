@@ -63,24 +63,36 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUserPosts.fulfilled, (state, { payload }) => {
-        state.userPosts = [...payload]
+      .addCase(getUserPosts.fulfilled, (state, { payload, meta }) => {
+        if (meta.arg.offset === 0) {
+          state.userPosts = payload.data;
+        } else {
+          state.userPosts.push(...payload.data);
+        }
+        state.loading = false;
       })
       .addCase(getUserPosts.pending, (state) => {
-        state.loading = true
+        state.loading = true;
       })
       .addCase(getUserPosts.rejected, (state, action) => {
         state.error = action.error.message;
+        state.loading = false;
       })
 
-      .addCase(getNewsfeed.fulfilled, (state, { payload }) => {
-        state.newsfeedPosts = [...payload]
+      .addCase(getNewsfeed.fulfilled, (state, { payload, meta }) => {
+        if (meta.arg.offset === 0) {
+          state.newsfeedPosts = payload.data;
+        } else {
+          state.newsfeedPosts.push(...payload.data);
+        }
+        state.loading = false;
       })
       .addCase(getNewsfeed.pending, (state) => {
-        state.loading = true
+        state.loading = true;
       })
       .addCase(getNewsfeed.rejected, (state, action) => {
         state.error = action.error.message;
+        state.loading = false;
       })
 
       .addCase(createPost.fulfilled, (state, { payload }) => {

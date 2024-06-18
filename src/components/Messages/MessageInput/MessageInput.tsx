@@ -2,10 +2,15 @@ import { Field, Formik, Form, FormikValues } from 'formik';
 import './MessageInput.scss';
 import { useDispatch } from 'react-redux';
 import { TFriend, sendMessage } from '../../../store/features/friends/friendsSlice';
+import { object, string } from 'yup';
 
 const initialValues = {
   message: ''
 };
+
+const validationSchema = object({
+  message: string().required()
+})
 
 export default function MessageInput({ friend }: { friend: TFriend }) {
 
@@ -13,7 +18,7 @@ export default function MessageInput({ friend }: { friend: TFriend }) {
 
   const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
     const updatedValues = {
-      ...values,
+      message: values.message.trim(),
       friendId: friend.id
     }
 
@@ -32,6 +37,7 @@ export default function MessageInput({ friend }: { friend: TFriend }) {
     <div className='MessageInput'>
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ submitForm }) => (

@@ -1,0 +1,60 @@
+@use '@assets/webColors' as *;
+
+.SearchUser {
+  .searchFriend {
+    position: absolute;
+    width: 260px;
+    padding: 15px 18px;
+    font-size: 15px;
+    top: 40px;
+    right: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border: none;
+    border-bottom: 2px solid $dark-grey;
+    outline: none;
+
+    &:focus {
+      border-bottom: 2px solid $blue;
+    }
+
+    &.inactive {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__results {
+    padding: 10px 0px 10px 15px;
+    position: absolute;
+    width: 260px;
+    top: 89px;
+    right: 0;
+    background-color: $white;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 2px solid $blue;
+    max-height: 230px;
+    overflow-y: auto;
+
+    .load {
+      color: $blue;
+      font-size: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    &.inactive {
+      display: none;
+    }
+
+    &.active {
+      display: flex;
+    }
+  }
+}

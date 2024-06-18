@@ -1,10 +1,19 @@
+@use '@assets/webColors' as *;
+
 .Feed {
   display: flex;
   flex-direction: column;
   gap: 20px;
-&__list{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+
+  .no-users {
+    color: $blue;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 }
