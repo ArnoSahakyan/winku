@@ -6,7 +6,6 @@ import './HomePage.scss'
 import FriendsBar from '../../../components/FriendsBar/FriendsBar'
 
 export default function HomePage() {
-
   return (
     <>
       <div className='HomePage'>

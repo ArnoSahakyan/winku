@@ -5,7 +5,8 @@ const ROUTES = {
   PHOTOS: 'photos',
   FRIENDS: 'friends',
   MESSAGES: 'messages',
-  NEWSFEED: '/newsfeed'
+  NEWSFEED: '/newsfeed',
+  CHAT: '/chat'
 };
 
 export default ROUTES;
