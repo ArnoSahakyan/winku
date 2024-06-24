@@ -1,8 +1,9 @@
 import { Field, Formik, Form, FormikValues } from 'formik';
-import './MessageInput.scss';
-import { useDispatch } from 'react-redux';
-import { TFriend, sendMessage } from '../../../store/features/friends/friendsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { TFriendBack, sendMessage } from '../../../store/features/friends/friendsSlice';
 import { object, string } from 'yup';
+import './MessageInput.scss';
+import { getUserID } from '../../../store/features/userInfo/userInfoSlice';
 
 const initialValues = {
   message: ''
@@ -12,17 +13,37 @@ const validationSchema = object({
   message: string().required()
 })
 
-export default function MessageInput({ friend }: { friend: TFriend }) {
-
+export default function MessageInput({ friend, socket }: { friend: TFriendBack }) {
+  const userId = useSelector(getUserID)
   const dispatch = useDispatch();
 
-  const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
-    const updatedValues = {
-      message: values.message.trim(),
-      friendId: friend.id
-    }
 
-    dispatch(sendMessage(updatedValues));
+  // const sendMessage = () => {
+  //   if (newMessage.trim() && friend && room && socket) {
+  //     const messageData = {
+  //       message: newMessage.trim(),
+  //       receiverId: friend,
+  //       room,
+  //       senderId: userId, // Include the sender ID
+  //     };
+  //     socket.emit('send_message', messageData);
+  //     setMessages((prevMessages) => [...prevMessages, messageData]); // Update messages locally for immediate feedback
+  //     setNewMessage('');
+  //   }
+  // };
+
+  const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
+    const newValues = {
+      message: values.message.trim(),
+      receiverId: friend.id,
+      senderId: userId
+    }
+    const updatedValues = {
+      ...newValues,
+      room: friend.friendshipId,
+    }
+    socket.emit('send_message', updatedValues);
+    dispatch(sendMessage(newValues));
     resetForm();
   };
 

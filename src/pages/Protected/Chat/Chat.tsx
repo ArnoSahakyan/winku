@@ -11,7 +11,7 @@ export default function Chat() {
   const [newMessage, setNewMessage] = useState('');
   const [socket, setSocket] = useState(null);
   const token = useSelector(getAccessToken);
-  const userId = useSelector(getUserID); // Assume this selector gets the logged-in user's ID
+  const userId = useSelector(getUserID);
 
   useEffect(() => {
     // Initialize socket connection

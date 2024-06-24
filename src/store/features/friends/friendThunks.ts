@@ -6,6 +6,7 @@ export const getFriendsApi = createAsyncThunk('friends_request/getFriends', asyn
   const modifiedData = response.data.map((friend) => ({
     ...friend,
     pfp: `/api${friend.pfp}`,
+    messages: []
   }));
   return modifiedData;
 });
@@ -29,7 +30,6 @@ export const getUnassociatedApi = createAsyncThunk('friends_request/getUnassocia
 });
 
 export const sendRequest = createAsyncThunk('friends_request/sendRequest', async (data) => {
-  console.log(data);
   const newData = { receiverId: data }
   const response = await api.post(`/api/send-request`, newData);
   return response.data;
@@ -46,3 +46,7 @@ export const deleteFriend = createAsyncThunk('friends_request/deleteFriend', asy
   return response.data;
 });
 
+export const getMessages = createAsyncThunk('friends_request/getMessages', async (data) => {
+  const response = await api.get(`/api/messages/${data}`);
+  return response.data;
+});

@@ -1,20 +1,57 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import './MessagesContent.scss'
-import { getFriends } from '../../../store/features/friends/friendsSlice'
+import { getFriendsBack, receiveMessage, sendMessage } from '../../../store/features/friends/friendsSlice'
 import Friend from '../../FriendsBar/Friend/Friend'
 import { useEffect, useState, useRef } from 'react'
 import MessageChat from '../MessageChat/MessageChat'
 import MessageInput from '../MessageInput/MessageInput'
+import { getMessages } from '../../../store/features/friends/friendThunks'
+import { getAccessToken } from '../../../store/features/userInfo/userInfoSlice'
+import io from 'socket.io-client';
 
 export default function MessagesContent() {
-
-  const friends = useSelector(getFriends)
+  const dispatch = useDispatch();
+  const friends = useSelector(getFriendsBack)
+  const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
+  const [socket, setSocket] = useState(null);
+  const token = useSelector(getAccessToken);
+
+  useEffect(() => {
+    console.log(token, "token") 
+    // Initialize socket connection
+    const newSocket = io('http://localhost:8080', {
+      auth: {
+        token,
+      },
+    });
+
+    // Handle received messages
+    newSocket.on('receive_message', (data) => {
+      dispatch(receiveMessage(data))
+    });
+
+    setSocket(newSocket);
+
+    // Clean up on unmount
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, [token]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('join_room', friends[selectedFriendIndex]?.friendshipId);
+    }
+  }, [friends, selectedFriendIndex, socket]);
 
   const selectFriend = (index: number) => {
+    dispatch(getMessages(friends[index].id))
     setSelectedFriendIndex(index);
+    socket.emit('join_room', friends[index].friendshipId);
   }
 
   useEffect(() => {
@@ -36,7 +73,7 @@ export default function MessagesContent() {
       </div>
       <div className="MessagesContent__box">
         <div className="content">
-          <img src={friends[selectedFriendIndex]?.pfp} alt={friends[selectedFriendIndex].fname} />
+          <img src={friends[selectedFriendIndex]?.pfp} alt={friends[selectedFriendIndex]?.fname} />
           <div className="content-info">
             <h4>{friends[selectedFriendIndex]?.fname}</h4>
             <span>{friends[selectedFriendIndex]?.onlineStatus}</span>
@@ -46,12 +83,12 @@ export default function MessagesContent() {
         <div className="chat" ref={chatRef}>
           {
             friends[selectedFriendIndex]?.messages.map(message => {
-              return <MessageChat key={message.id} content={message} user={friends[selectedFriendIndex]} />
+              return <MessageChat key={message.messageId} content={message} user={friends[selectedFriendIndex]} />
             })
           }
         </div>
 
-        <MessageInput friend={friends[selectedFriendIndex]} />
+        <MessageInput friend={friends[selectedFriendIndex]} socket={socket} />
 
       </div>
     </div>

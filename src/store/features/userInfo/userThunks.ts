@@ -132,7 +132,6 @@ export const searchUsers = createAsyncThunk('user/searchUser',
         offset
       }
     });
-    console.log("SEARCH USER RESPONSE", response.data);
     const modifiedData = response.data.users.map((user) => ({
       ...user,
       pfp: `/api${user.pfp}`,

@@ -2,6 +2,7 @@
 
 .MessageInput {
   padding: 15px;
+
   form {
     position: relative;
     display: flex;
@@ -14,7 +15,8 @@
       padding: 10px;
       font-family: 'Roboto';
     }
-    button{
+
+    button {
       cursor: pointer;
       position: absolute;
       right: -20px;
@@ -27,6 +29,9 @@
       border: none;
       outline: none;
       border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

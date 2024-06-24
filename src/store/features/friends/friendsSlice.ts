@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
-import { deleteFriend, getFriendsApi, getRequestsApi, getUnassociatedApi, respondRequest } from "./friendThunks";
+import { deleteFriend, getFriendsApi, getMessages, getRequestsApi, getUnassociatedApi, respondRequest } from "./friendThunks";
 
 export type TFriend = {
   id: string;
@@ -21,6 +21,7 @@ export type TRequest = {
 }
 
 export type TFriendBack = {
+  friendshipId: number;
   id: number;
   fname: string;
   username: string;
@@ -46,12 +47,11 @@ type TUsers = {
 }
 
 export type TMessages = {
-  id: string;
-  senderId: string;
+  messageId: number;
+  senderId: number;
+  receiverId: number;
   message: string;
 }
-
-
 
 const initialState: TUsers = {
   friends: [
@@ -564,15 +564,27 @@ const friendsSlice = createSlice({
   name: 'friends_request',
   initialState: initialState,
   reducers: {
-    sendMessage: (state, { payload }) => {
-      const { friendId, message } = payload;
-      const friend = state.friends.find(friend => friend.id === friendId);
+    receiveMessage: (state, { payload }) => {
+      // const { friendId, message } = payload;
+      const friend = state.friendsBack.find(friend => friend.id === payload.senderId);
+
       if (friend) {
         const newMessage = {
-          id: nanoid(5),
-          senderId: 'user',
-          message: message
+          messageId: nanoid(5),
+          ...payload
         };
+        friend.messages.push(newMessage);
+      }
+    },
+    sendMessage: (state, { payload }) => {
+      // const { friendId, message } = payload;
+      const friend = state.friendsBack.find(friend => friend.id === payload.receiverId);
+      if (friend) {
+        const newMessage = {
+          messageId: nanoid(5),
+          ...payload
+        };
+
         friend.messages.push(newMessage);
       }
     }
@@ -593,8 +605,11 @@ const friendsSlice = createSlice({
       })
       .addCase(getUnassociatedApi.fulfilled, (state, { payload }) => {
         state.unassociated = [...payload]
-      });
-
+      })
+      .addCase(getMessages.fulfilled, (state, { payload }) => {
+        const friend = state.friendsBack.find(friend => friend.id == payload.friendId)
+        friend['messages'] = payload.messages
+      })
 
   },
   selectors: {
@@ -605,6 +620,6 @@ const friendsSlice = createSlice({
   }
 });
 
-export const { sendMessage } = friendsSlice.actions
+export const { sendMessage, receiveMessage } = friendsSlice.actions
 export const { getFriends, getRequests, getFriendsBack, getUnassociated } = friendsSlice.selectors
 export default friendsSlice.reducer;

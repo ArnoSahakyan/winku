@@ -1,19 +1,20 @@
 import { useSelector } from 'react-redux';
-import { TFriend, TMessages } from '../../../store/features/friends/friendsSlice'
+import { TFriendBack, TMessages } from '../../../store/features/friends/friendsSlice'
 import './MessageChat.scss'
-import { getPfp } from '../../../store/features/userInfo/userInfoSlice';
+import { getPfp, getUserID } from '../../../store/features/userInfo/userInfoSlice';
 
 interface IMessageChat {
   content: TMessages;
-  user: TFriend;
+  user: TFriendBack;
 }
 
 export default function MessageChat({ content, user }: IMessageChat) {
+  const userId = useSelector(getUserID)
   const pfp = useSelector(getPfp)
   return (
     <>
       {
-        content.senderId === 'friend' ?
+        content.senderId != userId ?
           <div className='MessageChat friend'>
             <img src={user.pfp} alt={user.fname} />
             <p>{content.message}</p>
