@@ -39,7 +39,7 @@ const useAuth = () => {
           // navigate('/');
         }
       })
-      .then(() => dispatch(changeOnlineStatus('online')))
+      .then(() => dispatch(changeOnlineStatus({ onlineStatus: 'online' })))
   }
 
   const signup = async (values: TsignUpFormState, { resetForm }: { resetForm: () => void }) => {
@@ -77,7 +77,7 @@ const useAuth = () => {
   // };
 
   const logout = async () => {
-    dispatch(changeOnlineStatus("offline"))
+    dispatch(changeOnlineStatus({ onlineStatus: "offline" }))
       .then(() => dispatch(userLogout()))
       .then(() => persistor.purge())
       .then(() => navigate('/auth/signin'))

@@ -1,31 +1,22 @@
 import './ProfileCover.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoverPhoto, getPfp, getUserID } from '../../store/features/userInfo/userInfoSlice';
+import { getCoverPhoto, getPfp } from '../../store/features/userInfo/userInfoSlice';
 import { changeCover, changePfp } from '../../store/features/userInfo/userThunks';
 import { AppDispatch } from '../../store/setup';
 
 export default function ProfileCover() {
   const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
-  const userID = useSelector(getUserID)
   const coverImage = useSelector(getCoverPhoto)
 
   const handlePfp = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    const values = {
-      userID,
-      file
-    }
-    dispatch(changePfp(values))
+    dispatch(changePfp(file))
   }
 
   const handleCover = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    const values = {
-      userID,
-      file
-    }
-    dispatch(changeCover(values))
+    dispatch(changeCover(file))
   }
 
   return (

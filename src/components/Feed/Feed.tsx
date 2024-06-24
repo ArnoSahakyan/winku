@@ -1,30 +1,38 @@
 import { useDispatch, useSelector } from 'react-redux';
 import CreatePost from '../CreatePost/CreatePost';
-import './Feed.scss';
-import { newsfeedPostsSelector, userPostsSelector } from '../../store/features/post/postSlice';
+import { PostState, newsfeedPostsSelector, userPostsSelector } from '../../store/features/post/postSlice';
 import { getNewsfeed, getUserPosts } from '../../store/features/post/postThunks';
 import { useEffect, useState } from 'react';
 import Post from '../Post/Post';
 import { useLocation } from 'react-router-dom';
 import Reload from '../shared/Reload/Reload'
+import { AppDispatch } from '../../store/setup';
+import './Feed.scss';
+
+export type ServerResponse = {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  data: PostState[];
+}
 
 export default function Feed() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const isNewsfeed = location.pathname === '/newsfeed';
   const posts = useSelector(isNewsfeed ? newsfeedPostsSelector : userPostsSelector);
   const limit = 3;
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(null);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
 
-  const callNewPosts = (limit, offset) => {
-    if (currentPage < totalPages || totalPages === null) {
+  const callNewPosts = (limit: number, offset: number) => {
+    if (currentPage < totalPages! || totalPages === null) {
       if (isNewsfeed) {
         dispatch(getNewsfeed({ limit, offset }))
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
-              const { totalPages } = response.payload;
+              const { totalPages } = response.payload as ServerResponse;
               setOffset(offset + limit);
               setCurrentPage(currentPage + 1);
               setTotalPages(totalPages);
@@ -34,7 +42,7 @@ export default function Feed() {
         dispatch(getUserPosts({ limit, offset }))
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
-              const { totalPages } = response.payload;
+              const { totalPages } = response.payload as ServerResponse;
               setOffset(offset + limit);
               setCurrentPage(currentPage + 1);
               setTotalPages(totalPages);
@@ -50,7 +58,7 @@ export default function Feed() {
         dispatch(getNewsfeed({ limit, offset }))
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
-              const { totalPages } = response.payload;
+              const { totalPages } = response.payload as ServerResponse;
               setOffset(offset + limit);
               setTotalPages(totalPages);
             }
@@ -62,7 +70,7 @@ export default function Feed() {
           dispatch(getUserPosts({ limit, offset }))
             .then((response) => {
               if (response.meta.requestStatus === 'fulfilled') {
-                const { totalPages } = response.payload;
+                const { totalPages } = response.payload as ServerResponse;
                 setOffset(offset + limit);
                 setTotalPages(totalPages);
               }

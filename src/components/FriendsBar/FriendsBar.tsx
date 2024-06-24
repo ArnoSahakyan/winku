@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFriendsBack } from '../../store/features/friends/friendsSlice';
 import Title from '../shared/Title/Title';
 import { getFriendsApi } from '../../store/features/friends/friendThunks';
+import { AppDispatch } from '../../store/setup';
 
 export default function FriendsBar() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const friends = useSelector(getFriendsBack);
 
   const [searchQuery, setSearchQuery] = useState<string>('');

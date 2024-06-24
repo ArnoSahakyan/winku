@@ -1,36 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { api } from '../../../api/axios';
-import { TuserInfo } from './userInfoSlice';
-
-type APIError = {
-  message: string;
-}
-
-interface LoginResponse {
-  data: TuserInfo;
-  status: number;
-  statusText: string;
-  headers: {
-    [key: string]: string;
-  };
-  config: unknown;
-  request: unknown;
-}
-
-interface SignupResponse {
-  data: APIError;
-}
-
-interface UploadResponse {
-  data: {
-    relativePath: string;
-  };
-}
-
-export type TuploadValues = {
-  file: File | undefined;
-};
+import { Tunassocitaed } from '../friends/friendsSlice';
 
 type SignupData = {
   username: string;
@@ -40,91 +11,80 @@ type SignupData = {
 
 type LoginData = Omit<SignupData, 'email'>;
 
-export const signupUser = createAsyncThunk<SignupResponse, SignupData, { rejectValue: APIError }>(
+export type TsearchedUsers = Tunassocitaed & {
+  email: string;
+  onlineStatus: string;
+}
+
+export const signupUser = createAsyncThunk(
   'userInfo/signupAsync',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post<SignupResponse>(`/api/api/auth/signup`, data);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError<APIError>;
-      console.error('Signup Error:', axiosError);
-      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
-    }
+  async (data: SignupData) => {
+    const response = await axios.post(`/api/api/auth/signup`, data);
+    return response.data;
+
   }
 );
 
-export const loginUser = createAsyncThunk<LoginResponse, LoginData, { rejectValue: APIError }>(
+export const loginUser = createAsyncThunk(
   'userInfo/loginAsync',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post<LoginResponse>(`/api/api/auth/signin`, data);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError<APIError>;
-      console.error('Login Error:', axiosError);
-      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
-    }
+  async (data: LoginData) => {
+    const response = await axios.post(`/api/api/auth/signin`, data);
+    return response.data;
   }
 );
 
-export const changePfp = createAsyncThunk<UploadResponse, TuploadValues, { rejectValue: APIError }>(
+export const changePfp = createAsyncThunk(
   'userInfo/changePfpAsync',
-  async ({ file }, { rejectWithValue }) => {
-    try {
+  async (data: File | undefined) => {
+    if (data) {
       const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await api.post<UploadResponse>(`/api/upload/pfp`, formData, {
+      formData.append('file', data);
+      const response = await api.post(`/api/upload/pfp`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError<APIError>;
-      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
+    else return;
   }
 );
 
-export const changeCover = createAsyncThunk<UploadResponse, TuploadValues, { rejectValue: APIError }>(
+export const changeCover = createAsyncThunk(
   'userInfo/changeCoverAsync',
-  async ({ file }, { rejectWithValue }) => {
-    try {
+  async (data: File | undefined) => {
+    if (data) {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', data);
 
-      const response = await api.post<UploadResponse>(`/api/upload/cover`, formData, {
+      const response = await api.post(`/api/upload/cover`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError<APIError>;
-      return rejectWithValue(axiosError.response?.data || { message: 'An unknown error occurred' });
     }
+    else return;
+
   }
 );
 
 export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
-  async (data) => {
-    const modifiedData = { onlineStatus: data }
-    const response = await api.patch(`/api/user/status`, modifiedData)
+  async (data: { onlineStatus: string }) => {
+    const response = await api.patch(`/api/user/status`, data)
     return response.data
   }
 )
 
 export const changeUserData = createAsyncThunk('userInfo/changeUserData',
-  async (data) => {
+  async (data: { fname: string, job: string }) => {
     const response = await api.patch(`/api/user/update`, data)
     return response.data
   }
 )
 
 export const searchUsers = createAsyncThunk('user/searchUser',
-  async ({ query, limit, offset }) => {
+  async ({ query, limit, offset }: { query: string, limit: number, offset: number }) => {
     const response = await api.get('/api/searchUser', {
       params: {
         query,
@@ -132,7 +92,7 @@ export const searchUsers = createAsyncThunk('user/searchUser',
         offset
       }
     });
-    const modifiedData = response.data.users.map((user) => ({
+    const modifiedData = response.data.users.map((user: TsearchedUsers) => ({
       ...user,
       pfp: `/api${user.pfp}`,
     }))

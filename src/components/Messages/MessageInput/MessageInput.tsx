@@ -4,6 +4,8 @@ import { TFriendBack, sendMessage } from '../../../store/features/friends/friend
 import { object, string } from 'yup';
 import './MessageInput.scss';
 import { getUserID } from '../../../store/features/userInfo/userInfoSlice';
+import { AppDispatch } from '../../../store/setup';
+import { Socket } from 'socket.io-client';
 
 const initialValues = {
   message: ''
@@ -13,24 +15,9 @@ const validationSchema = object({
   message: string().required()
 })
 
-export default function MessageInput({ friend, socket }: { friend: TFriendBack }) {
+export default function MessageInput({ friend, socket }: { friend: TFriendBack, socket: Socket }) {
   const userId = useSelector(getUserID)
-  const dispatch = useDispatch();
-
-
-  // const sendMessage = () => {
-  //   if (newMessage.trim() && friend && room && socket) {
-  //     const messageData = {
-  //       message: newMessage.trim(),
-  //       receiverId: friend,
-  //       room,
-  //       senderId: userId, // Include the sender ID
-  //     };
-  //     socket.emit('send_message', messageData);
-  //     setMessages((prevMessages) => [...prevMessages, messageData]); // Update messages locally for immediate feedback
-  //     setNewMessage('');
-  //   }
-  // };
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
     const newValues = {

@@ -35,7 +35,7 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
   });
 };
 
-export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit, offset }) => {
+export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit, offset }: { limit: number, offset: number }) => {
   const response = await api.get(`/api/userPosts`, {
     params: { limit, offset }
   });
@@ -55,7 +55,7 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit
   };
 });
 
-export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, offset }) => {
+export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, offset }: { limit: number, offset: number }) => {
   const response = await api.get(`/api/posts`, {
     params: { limit, offset }
   });
@@ -88,29 +88,19 @@ export const createPost = createAsyncThunk('post/createPost', async (data: formT
     ...response.data,
     createdAt: new Date(response.data.createdAt)
   }
-  return responseData
+  return responseData;
 })
 
 export const createComment = createAsyncThunk('post/createComment', async (data: TcreateComment) => {
-  const response = await api.post<TresponseComment>(`/api/comment`, data)
+  const response = await api.post(`/api/comment`, data)
 
   const modifiedData = {
     ...response.data,
     uploaderId: data.uploaderId,
     pfp: `/api${response.data.pfp}`,
     createdAt: new Date(response.data.createdAt),
-    parentId: data.parentId
+    parentId: data.parentId,
+    replies: null
   }
-  return modifiedData
-})
-
-export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async (id) => {
-  const response = await api.get(`/api/photos/${id}`)
-  const modifiedData = response.data.map(elem => {
-    return {
-      ...elem,
-      image: `/api${elem.image}`
-    }
-  })
   return modifiedData
 })

@@ -1,37 +1,45 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import IconSearch from '../shared/Icons/IconSearch';
 import './SearchUser.scss';
 import { useDispatch } from 'react-redux';
-import { searchUsers } from '../../store/features/userInfo/userThunks';
+import { TsearchedUsers, searchUsers } from '../../store/features/userInfo/userThunks';
 import { debounce } from 'lodash';
 import Friend from '../FriendsBar/Friend/Friend';
+import { AppDispatch } from '../../store/setup';
 
 export default function SearchUser() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<TsearchedUsers[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const limit = 4;
 
   const debouncedSearch = useCallback(
-    debounce((term, newOffset = 0) => {
+    debounce((term: string, newOffset: number = 0) => {
       if (term) {
         setLoading(true);
         setError(null);
         dispatch(searchUsers({ query: term, limit, offset: newOffset }))
-          .then(({ payload }) => {
-            if (newOffset === 0) {
-              setResults(payload.users);
+          .then((action) => {
+            if (searchUsers.fulfilled.match(action)) {
+              const { payload } = action;
+
+              if (newOffset === 0) {
+                setResults(payload.users);
+              } else {
+                setResults(prevResults => [...prevResults, ...payload.users]);
+              }
+              setOffset(newOffset + limit);
+              setHasMore(payload.currentPage < payload.totalPages);
+              setLoading(false);
             } else {
-              setResults(prevResults => [...prevResults, ...payload.users]);
+              setLoading(false);
             }
-            setOffset(newOffset + limit);
-            setHasMore(payload.currentPage < payload.totalPages);
-            setLoading(false);
           })
           .catch((err) => {
             setError(err.message || 'Failed to fetch users');
@@ -69,7 +77,6 @@ export default function SearchUser() {
           value={searchTerm}
           onChange={handleChange}
         />
-
 
         {
           results.length > 0 &&

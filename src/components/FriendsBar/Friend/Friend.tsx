@@ -1,9 +1,9 @@
 import { TFriendBack } from '../../../store/features/friends/friendsSlice';
+import { TsearchedUsers } from '../../../store/features/userInfo/userThunks';
 import './Friend.scss'
 
-
 type FriendProps = {
-  user: TFriendBack;
+  user: TFriendBack | TsearchedUsers;
   onlyImg: boolean
 }
 

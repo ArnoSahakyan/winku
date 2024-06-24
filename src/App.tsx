@@ -12,7 +12,6 @@ import ROUTES from './routes/routes.ts';
 import Loader from './components/shared/Loader/Loader.tsx';
 import AuthRoute from './components/AuthRoute/AuthRoute.tsx';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.tsx';
-import Chat from './pages/Protected/Chat/Chat.tsx';
 
 const LazyHomePage = lazy(() => import('./pages/Protected/HomePage/HomePage.tsx'));
 const LazySignUp = lazy(() => import('./pages/NotProtected/SignUp/SignUp.tsx'));
@@ -39,7 +38,6 @@ export const App = () => {
             <Route path={ROUTES.PHOTOS} element={<LazyPhotos />} />
             <Route path={ROUTES.FRIENDS} element={<LazyFriendsPage />} />
             <Route path={ROUTES.MESSAGES} element={<LazyMessages />} />
-            <Route path={ROUTES.CHAT} element={<Chat />} />
           </Route>
 
           <Route path={ROUTES.NEWSFEED} element={<Suspense fallback={<Loader />}> <LazyNewsFeed /> </Suspense>} />

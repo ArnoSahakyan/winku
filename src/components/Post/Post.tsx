@@ -11,7 +11,6 @@ export type TInsigths = {
   commentsCount: number
 }
 
-
 export default function Post({ postData }: { postData: PostState }) {
 
   const [replyData, setReplyData] = useState<TComments | null>(null)

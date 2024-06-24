@@ -3,10 +3,11 @@ import ROUTES from '../../routes/routes'
 import './PageBar.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { getJob, getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
+import { AppDispatch } from '../../store/setup'
 
 export default function PageBar() {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
   const job = useSelector(getJob)
 

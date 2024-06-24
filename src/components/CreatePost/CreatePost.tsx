@@ -5,6 +5,7 @@ import './CreatePost.scss';
 import { getPfp } from '../../store/features/userInfo/userInfoSlice';
 import { createPost } from '../../store/features/post/postThunks';
 import { mixed, object, string } from 'yup';
+import { AppDispatch } from '../../store/setup';
 
 export type formType =
   {
@@ -27,7 +28,7 @@ const validationSchema = object().shape({
 
 export default function CreatePost() {
   const [filePreview, setFilePreview] = useState<string | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

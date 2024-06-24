@@ -4,21 +4,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserPosts } from '../../../store/features/post/postThunks';
 import { userPostsSelector } from '../../../store/features/post/postSlice';
 import Reload from '../../../components/shared/Reload/Reload';
+import { AppDispatch } from '../../../store/setup';
+import { ServerResponse } from '../../../components/Feed/Feed';
 
 export default function Photos() {
   const pictures = useSelector(userPostsSelector)
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const limit = 3;
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(null);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
 
-  const callNewPosts = (limit, offset) => {
-    if (currentPage < totalPages || totalPages === null) {
+  const callNewPosts = (limit: number, offset: number) => {
+    if (currentPage < totalPages! || totalPages === null) {
       dispatch(getUserPosts({ limit, offset }))
         .then((response) => {
           if (response.meta.requestStatus === 'fulfilled') {
-            const { totalPages } = response.payload;
+            const { totalPages } = response.payload as ServerResponse;
             setOffset(offset + limit);
             setCurrentPage(currentPage + 1);
             setTotalPages(totalPages);
@@ -33,7 +35,7 @@ export default function Photos() {
         dispatch(getUserPosts({ limit, offset }))
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
-              const { totalPages } = response.payload;
+              const { totalPages } = response.payload as ServerResponse;
               setOffset(offset + limit);
               setTotalPages(totalPages);
             }

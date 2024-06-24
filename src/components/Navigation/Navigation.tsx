@@ -11,6 +11,7 @@ import Modal from '../shared/Modal/Modal'
 import EditForm from '../EditForm/EditForm';
 import IconHome from '../shared/Icons/IconHome';
 import SearchUser from '../SearchUser/SearchUser';
+import { AppDispatch } from '../../store/setup';
 
 export type MenuItem = {
   id: number;
@@ -18,7 +19,7 @@ export type MenuItem = {
   subtitles: string[];
 }
 
-const onlineStatus = ['online', 'away', 'offline'];
+const onlineStatus: string[] = ['online', 'away', 'offline'];
 
 const dropDownMenu: MenuItem[] = [
   {
@@ -55,7 +56,7 @@ export default function Navigation() {
   const pfp = useSelector(getPfp);
   const { logout } = useAuth();
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <>
@@ -70,7 +71,7 @@ export default function Navigation() {
         : null
       }
 
-      <BurgerMenu menuLinks={dropDownMenu} toggleModal={toggleModal} isOpen={isOpen} />
+      <BurgerMenu menuLinks={dropDownMenu} />
 
       <div className='Navigation'>
         <div className="Navigation__logo">
@@ -109,7 +110,7 @@ export default function Navigation() {
           <ul className={`${statusOpen ? 'open' : ''} actions`}>
             {
               onlineStatus.map(status => (
-                <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus(status))} key={status}>{status}</li>
+                <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus({ onlineStatus: status }))} key={status}>{status}</li>
               ))
             }
             <li><Link to={ROUTES.HOME}><span>&#xF4E1;</span> View Profile</Link></li>

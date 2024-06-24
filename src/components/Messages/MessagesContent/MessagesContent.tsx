@@ -1,25 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux'
 import './MessagesContent.scss'
-import { getFriendsBack, receiveMessage, sendMessage } from '../../../store/features/friends/friendsSlice'
+import { getFriendsBack, receiveMessage } from '../../../store/features/friends/friendsSlice'
 import Friend from '../../FriendsBar/Friend/Friend'
 import { useEffect, useState, useRef } from 'react'
 import MessageChat from '../MessageChat/MessageChat'
 import MessageInput from '../MessageInput/MessageInput'
 import { getMessages } from '../../../store/features/friends/friendThunks'
 import { getAccessToken } from '../../../store/features/userInfo/userInfoSlice'
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
+import { AppDispatch } from '../../../store/setup'
 
 export default function MessagesContent() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const friends = useSelector(getFriendsBack)
   const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket>(null);
   const token = useSelector(getAccessToken);
 
   useEffect(() => {
-    console.log(token, "token") 
     // Initialize socket connection
     const newSocket = io('http://localhost:8080', {
       auth: {
@@ -40,7 +40,7 @@ export default function MessagesContent() {
         newSocket.disconnect();
       }
     };
-  }, [token]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (socket) {

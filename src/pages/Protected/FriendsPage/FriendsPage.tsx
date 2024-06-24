@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 import FriendBar from './FriendBar'
 import { getRequestsApi, getUnassociatedApi } from '../../../store/features/friends/friendThunks'
 import './FriendsPage.scss'
+import { AppDispatch } from '../../../store/setup'
 
 export default function FriendsPage() {
   const [activePage, setActivePage] = useState('friends')
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const friends = useSelector(getFriendsBack)
   const requests = useSelector(getRequests)
   const unassociated = useSelector(getUnassociated);

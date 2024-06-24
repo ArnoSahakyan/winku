@@ -3,6 +3,7 @@ import { TFriendBack, TRequest, Tunassocitaed } from '../../../store/features/fr
 import './FriendBar.scss'
 import { deleteFriend, respondRequest, sendRequest } from '../../../store/features/friends/friendThunks';
 import { useState } from 'react';
+import { AppDispatch } from '../../../store/setup';
 
 interface FriendBarProps {
   data: TFriendBack | TRequest | Tunassocitaed;
@@ -10,7 +11,7 @@ interface FriendBarProps {
 }
 
 export default function FriendBar({ data, isFriend }: FriendBarProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [sentFriend, setSentFriend] = useState(false);
   const id = (isFriend === 'friend' || isFriend === 'none') ? (data as TFriendBack).id : (data as TRequest).senderId;
   const fname = (isFriend === 'friend' || isFriend === 'none') ? (data as TFriendBack).fname : (data as TRequest).fname;
@@ -28,8 +29,8 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
 
   const handleRequest = (status: string, senderId: number) => {
     const data = {
-      status,
-      senderId
+      senderId,
+      status
     }
     dispatch(respondRequest(data))
   }

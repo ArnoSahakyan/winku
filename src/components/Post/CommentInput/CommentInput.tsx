@@ -5,6 +5,7 @@ import { PostState, TComments, TReplies } from '../../../store/features/post/pos
 import { getPfp } from '../../../store/features/userInfo/userInfoSlice';
 import { object, string } from 'yup';
 import { createComment } from '../../../store/features/post/postThunks';
+import { AppDispatch } from '../../../store/setup';
 
 type TcommentInput = {
   post: PostState,
@@ -21,14 +22,13 @@ const initialValues = {
 }
 
 export default function CommentInput({ post, replyData, setReplyData }: TcommentInput) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
 
   const handleSubmit = (values: FormikValues, { resetForm }: { resetForm: () => void }) => {
     const newParentId = replyData?.parentId ? replyData.parentId : replyData?.commentId
-
     const updatedValues = {
-      ...values,
+      content: values.content,
       uploaderId: post.userId,
       postId: post.postId,
       parentId: newParentId
