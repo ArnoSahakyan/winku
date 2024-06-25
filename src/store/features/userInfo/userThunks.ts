@@ -19,7 +19,7 @@ export type TsearchedUsers = Tunassocitaed & {
 export const signupUser = createAsyncThunk(
   'userInfo/signupAsync',
   async (data: SignupData) => {
-    const response = await axios.post(`/api/auth/signup`, data);
+    const response = await axios.post(`https://winkuback.onrender.com/api/auth/signup`, data);
     return response.data;
 
   }
@@ -28,7 +28,7 @@ export const signupUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'userInfo/loginAsync',
   async (data: LoginData) => {
-    const response = await axios.post(`/api/auth/signin`, data);
+    const response = await axios.post(`https://winkuback.onrender.com/api/auth/signin`, data);
     return response.data;
   }
 );
