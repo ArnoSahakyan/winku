@@ -21,7 +21,7 @@ export default function MessagesContent() {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io('http://localhost:8080', {
+    const newSocket = io('https://winkuback.onrender.com/', {
       auth: {
         token,
       },
