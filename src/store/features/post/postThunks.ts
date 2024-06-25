@@ -23,7 +23,7 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
   return comments.map(comment => {
     const updatedComment = {
       ...comment,
-      pfp: `/api${comment.pfp}`,
+      pfp: `https://winkuback.onrender.com/${comment.pfp}`,
       createdAt: new Date(comment.createdAt)
     };
 
@@ -36,14 +36,14 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
 };
 
 export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit, offset }: { limit: number, offset: number }) => {
-  const response = await api.get(`/api/userPosts`, {
+  const response = await api.get(`https://winkuback.onrender.com/api/userPosts`, {
     params: { limit, offset }
   });
 
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `/api${post.image}` : null,
-    pfp: `/api${post.pfp}`,
+    image: post.image ? `https://winkuback.onrender.com/${post.image}` : null,
+    pfp: `https://winkuback.onrender.com/${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -56,13 +56,13 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit
 });
 
 export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, offset }: { limit: number, offset: number }) => {
-  const response = await api.get(`/api/posts`, {
+  const response = await api.get(`https://winkuback.onrender.com/api/posts`, {
     params: { limit, offset }
   });
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `/api${post.image}` : null,
-    pfp: `/api${post.pfp}`,
+    image: post.image ? `https://winkuback.onrender.com/${post.image}` : null,
+    pfp: `https://winkuback.onrender.com/${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -79,7 +79,7 @@ export const createPost = createAsyncThunk('post/createPost', async (data: formT
   const formData = new FormData();
   data.file ? formData.append('file', data.file) : null
   data.content ? formData.append('content', data.content) : null
-  const response = await api.post(`/api/post`, formData, {
+  const response = await api.post(`https://winkuback.onrender.com/api/post`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -92,12 +92,12 @@ export const createPost = createAsyncThunk('post/createPost', async (data: formT
 })
 
 export const createComment = createAsyncThunk('post/createComment', async (data: TcreateComment) => {
-  const response = await api.post(`/api/comment`, data)
+  const response = await api.post(`https://winkuback.onrender.com/api/comment`, data)
 
   const modifiedData = {
     ...response.data,
     uploaderId: data.uploaderId,
-    pfp: `/api${response.data.pfp}`,
+    pfp: `https://winkuback.onrender.com/${response.data.pfp}`,
     createdAt: new Date(response.data.createdAt),
     parentId: data.parentId,
     replies: null

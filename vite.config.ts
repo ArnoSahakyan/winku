@@ -10,14 +10,14 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, './src/assets')
     }
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://winkuback.onrender.com/",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    },
-    host: 'localhost',
-  }
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "https://winkuback.onrender.com/",
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, '')
+  //     }
+  //   },
+  //   host: 'localhost',
+  // }
 })

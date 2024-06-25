@@ -98,8 +98,8 @@ const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, { payload }) => {
         const modifiedData = {
           ...payload,
-          image: payload.image ? `/api${payload.image}` : null,
-          pfp: `/api${payload.pfp}`
+          image: payload.image ? `https://winkuback.onrender.com/${payload.image}` : null,
+          pfp: `https://winkuback.onrender.com/${payload.pfp}`
         };
         state.userPosts.unshift(modifiedData)
       })

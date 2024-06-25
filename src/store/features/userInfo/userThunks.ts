@@ -21,7 +21,6 @@ export const signupUser = createAsyncThunk(
   async (data: SignupData) => {
     const response = await axios.post(`https://winkuback.onrender.com/api/auth/signup`, data);
     return response.data;
-
   }
 );
 
@@ -39,7 +38,7 @@ export const changePfp = createAsyncThunk(
     if (data) {
       const formData = new FormData();
       formData.append('file', data);
-      const response = await api.post(`/api/upload/pfp`, formData, {
+      const response = await api.post(`https://winkuback.onrender.com/api/upload/pfp`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -57,7 +56,7 @@ export const changeCover = createAsyncThunk(
       const formData = new FormData();
       formData.append('file', data);
 
-      const response = await api.post(`/api/upload/cover`, formData, {
+      const response = await api.post(`https://winkuback.onrender.com/api/upload/cover`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -71,21 +70,21 @@ export const changeCover = createAsyncThunk(
 
 export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
   async (data: { onlineStatus: string }) => {
-    const response = await api.patch(`/api/user/status`, data)
+    const response = await api.patch(`https://winkuback.onrender.com/api/user/status`, data)
     return response.data
   }
 )
 
 export const changeUserData = createAsyncThunk('userInfo/changeUserData',
   async (data: { fname: string, job: string }) => {
-    const response = await api.patch(`/api/user/update`, data)
+    const response = await api.patch(`https://winkuback.onrender.com/api/user/update`, data)
     return response.data
   }
 )
 
 export const searchUsers = createAsyncThunk('user/searchUser',
   async ({ query, limit, offset }: { query: string, limit: number, offset: number }) => {
-    const response = await api.get('/api/searchUser', {
+    const response = await api.get('https://winkuback.onrender.com/api/searchUser', {
       params: {
         query,
         limit,
@@ -94,7 +93,7 @@ export const searchUsers = createAsyncThunk('user/searchUser',
     });
     const modifiedData = response.data.users.map((user: TsearchedUsers) => ({
       ...user,
-      pfp: `/api${user.pfp}`,
+      pfp: `https://winkuback.onrender.com/${user.pfp}`,
     }))
 
     return {

@@ -4,7 +4,7 @@ import { setAccessToken } from "../store/features/userInfo/userInfoSlice";
 import { performLogout } from "../hooks/useAuth";
 
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://winkuback.onrender.com/',
   headers: {
     "Content-Type": "application/json",
   },
@@ -32,7 +32,7 @@ api.interceptors.response.use(
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.post(`/api/auth/refresh`, {
+          await axios.post(`https://winkuback.onrender.com/api/auth/refresh`, {
             refreshToken: userInfo.data.refreshToken
           })
         );
