@@ -6,7 +6,7 @@ export const getFriendsApi = createAsyncThunk('friends_request/getFriends', asyn
   const response = await api.get(`https://winkuback.onrender.com/api/friends`);
   const modifiedData = response.data.map((friend: TFriend) => ({
     ...friend,
-    pfp: `https://winkuback.onrender.com/${friend.pfp}`,
+    pfp: `https://winkuback.onrender.com${friend.pfp}`,
     messages: []
   }));
   return modifiedData;
@@ -16,7 +16,7 @@ export const getRequestsApi = createAsyncThunk('friends_request/getRequests', as
   const response = await api.get(`https://winkuback.onrender.com/api/requests`);
   const modifiedData = response.data.map((request: TRequest) => ({
     ...request,
-    pfp: `https://winkuback.onrender.com/${request.pfp}`,
+    pfp: `https://winkuback.onrender.com${request.pfp}`,
   }));
   return modifiedData;
 });
@@ -25,7 +25,7 @@ export const getUnassociatedApi = createAsyncThunk('friends_request/getUnassocia
   const response = await api.get(`https://winkuback.onrender.com/api/unassociated-users`);
   const modifiedData = response.data.map((user: Tunassocitaed) => ({
     ...user,
-    pfp: `https://winkuback.onrender.com/${user.pfp}`,
+    pfp: `https://winkuback.onrender.com${user.pfp}`,
   }));
   return modifiedData;
 });

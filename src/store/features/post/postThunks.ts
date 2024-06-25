@@ -23,7 +23,7 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
   return comments.map(comment => {
     const updatedComment = {
       ...comment,
-      pfp: `https://winkuback.onrender.com/${comment.pfp}`,
+      pfp: `https://winkuback.onrender.com${comment.pfp}`,
       createdAt: new Date(comment.createdAt)
     };
 
@@ -42,8 +42,8 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit
 
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `https://winkuback.onrender.com/${post.image}` : null,
-    pfp: `https://winkuback.onrender.com/${post.pfp}`,
+    image: post.image ? `https://winkuback.onrender.com${post.image}` : null,
+    pfp: `https://winkuback.onrender.com${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -61,8 +61,8 @@ export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, 
   });
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `https://winkuback.onrender.com/${post.image}` : null,
-    pfp: `https://winkuback.onrender.com/${post.pfp}`,
+    image: post.image ? `https://winkuback.onrender.com${post.image}` : null,
+    pfp: `https://winkuback.onrender.com${post.pfp}`,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -97,7 +97,7 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
   const modifiedData = {
     ...response.data,
     uploaderId: data.uploaderId,
-    pfp: `https://winkuback.onrender.com/${response.data.pfp}`,
+    pfp: `https://winkuback.onrender.com${response.data.pfp}`,
     createdAt: new Date(response.data.createdAt),
     parentId: data.parentId,
     replies: null

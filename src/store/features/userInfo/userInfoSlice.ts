@@ -60,8 +60,8 @@ const userInfoSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = {
           ...action.payload,
-          pfp: `https://winkuback.onrender.com/${action.payload.pfp}`,
-          coverPhoto: `https://winkuback.onrender.com/${action.payload.coverPhoto}`
+          pfp: `https://winkuback.onrender.com${action.payload.pfp}`,
+          coverPhoto: `https://winkuback.onrender.com${action.payload.coverPhoto}`
         };
         state.status = 'succeeded';
       })
@@ -73,10 +73,10 @@ const userInfoSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(changePfp.fulfilled, (state, action) => {
-        state.data.pfp = `https://winkuback.onrender.com/${action.payload.relativePath}`
+        state.data.pfp = `https://winkuback.onrender.com${action.payload.relativePath}`
       })
       .addCase(changeCover.fulfilled, (state, action) => {
-        state.data.coverPhoto = `https://winkuback.onrender.com/${action.payload.relativePath}`
+        state.data.coverPhoto = `https://winkuback.onrender.com${action.payload.relativePath}`
       })
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {

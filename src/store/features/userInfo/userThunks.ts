@@ -93,7 +93,7 @@ export const searchUsers = createAsyncThunk('user/searchUser',
     });
     const modifiedData = response.data.users.map((user: TsearchedUsers) => ({
       ...user,
-      pfp: `https://winkuback.onrender.com/${user.pfp}`,
+      pfp: `https://winkuback.onrender.com${user.pfp}`,
     }))
 
     return {
