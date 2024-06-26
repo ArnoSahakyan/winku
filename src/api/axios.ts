@@ -9,7 +9,6 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-
   withCredentials: true,
 });
 
@@ -33,9 +32,10 @@ api.interceptors.response.use(
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.post(`${url}/api/auth/refresh`, {
-            refreshToken: userInfo.data.refreshToken
-          })
+          await axios.post(`${url}/api/auth/refresh`,
+            { refreshToken: userInfo.data.refreshToken },
+            { withCredentials: true }
+          )
         );
         store.dispatch(setAccessToken(newAccessToken.data.accessToken));
         prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
