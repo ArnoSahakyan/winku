@@ -89,7 +89,7 @@ export const changeUserData = createAsyncThunk('userInfo/changeUserData',
 
 export const searchUsers = createAsyncThunk('user/searchUser',
   async ({ query, limit, offset }: { query: string, limit: number, offset: number }) => {
-    const response = await api.get('${url}/api/searchUser', {
+    const response = await api.get(`${url}/api/searchUser`, {
       params: {
         query,
         limit,
