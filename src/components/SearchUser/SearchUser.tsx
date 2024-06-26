@@ -11,7 +11,7 @@ import { AppDispatch } from '../../store/setup';
 export default function SearchUser() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState<TsearchedUsers[]>([]);
+  const [results, setResults] = useState<TsearchedUsers[] | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [offset, setOffset] = useState(0);
@@ -21,6 +21,10 @@ export default function SearchUser() {
 
   const debouncedSearch = useCallback(
     debounce((term: string, newOffset: number = 0) => {
+      if (!term.trim()) {
+        setResults(undefined);
+        return;
+      }
       if (term) {
         setLoading(true);
         setError(null);
@@ -79,12 +83,15 @@ export default function SearchUser() {
         />
 
         {
-          results.length > 0 &&
+          results &&
           <div className={`${searchOpen ? 'active' : 'inactive'} SearchUser__results`}>
             {error && <p>Error: {error}</p>}
-            {results?.map((user) => (
-              <Friend key={user.id} user={user} onlyImg={false} />
-            ))}
+            {
+              results.length > 0 ? results.map((user) => (
+                <Friend key={user.id} user={user} onlyImg={false} />
+              ))
+                : <p className='no-users'>No Users Available</p>
+            }
             {hasMore && (!loading ? (
               <p className='load' onClick={handleLoadMore}>Load More</p>
             )

@@ -16,7 +16,12 @@ import { AppDispatch } from '../../store/setup';
 export type MenuItem = {
   id: number;
   title: string;
-  subtitles: string[];
+  subtitles: SubMenu[];
+}
+
+type SubMenu = {
+  title: string;
+  link: string;
 }
 
 const onlineStatus: string[] = ['online', 'away', 'offline'];
@@ -25,22 +30,34 @@ const dropDownMenu: MenuItem[] = [
   {
     id: 1,
     title: 'Home',
-    subtitles: ['Home Social', 'Home Social 2', 'Home Company', 'Login Page', 'Logout Page', 'News Feed']
+    subtitles: [
+      {
+        title: 'Home Page',
+        link: ROUTES.HOME
+      },
+      {
+        title: 'News Feed',
+        link: ROUTES.NEWSFEED
+      },
+    ]
   },
   {
     id: 2,
     title: 'Timeline',
-    subtitles: ['Timeline Friends', 'Timeline Groups', 'Timeline Pages', 'Timeline Photos', 'Timeline Videos', 'Post Single', 'Favourite Page', 'Groups Page', 'Likes Page', 'People Nearby']
-  },
-  {
-    id: 3,
-    title: 'Account Settings',
-    subtitles: ['Create Fav Page', 'Edit Account Settings', 'Edit-Interest', 'Edit-Password', 'Edit Profile Basics', 'Edit Work Educations', 'Message Box', 'Inbox', 'Notifications Page']
-  },
-  {
-    id: 4,
-    title: 'More Pages',
-    subtitles: ['404 Error Page', 'About', 'Contact', 'Faqs Page', 'Insights', 'Knowledge Base', 'Widgets']
+    subtitles: [
+      {
+        title: 'Timeline Friends',
+        link: '/' + ROUTES.FRIENDS
+      },
+      {
+        title: 'Timeline Photos',
+        link: '/' + ROUTES.PHOTOS
+      },
+      {
+        title: 'Message Box',
+        link: '/' + ROUTES.MESSAGES
+      },
+    ]
   },
 ];
 
@@ -83,7 +100,7 @@ export default function Navigation() {
               <a href=''>{menuItem.title} <span>&#xF282;</span> </a>
               <ul className='submenu'>
                 {menuItem.subtitles.map((subtitle, index) => (
-                  <li key={index}><a href="">{subtitle}</a></li>
+                  <li key={index}><Link to={subtitle.link}>{subtitle.title}</Link></li>
                 ))}
               </ul>
             </li>

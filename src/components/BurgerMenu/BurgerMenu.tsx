@@ -70,10 +70,10 @@ export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
         <ul className="bLinks">
           {menuLinks.map(link => (
             <li key={link.id} onClick={() => handleSubmenu(link.id)}>
-              <span>{link.title}</span>
+              <p>{link.title} <span className={`${link.id === openSubmenu ? 'active' : 'not-active'} arrow`}>&#xF282;</span></p>
               <ul className={`${link.id === openSubmenu ? 'active' : 'not-active'} bSublinks`}>
                 {link.subtitles.map((sub, index) => (
-                  <li key={index}>{sub}</li>
+                  <li key={index}><Link to={sub.link}>{sub.title}</Link></li>
                 ))}
               </ul>
             </li>

@@ -29,7 +29,7 @@
   }
 
   &__results {
-    padding: 10px 0px 10px 15px;
+    padding: 10px 15px;
     position: absolute;
     width: 260px;
     top: 89px;
@@ -40,6 +40,10 @@
     border-bottom: 2px solid $blue;
     max-height: 230px;
     overflow-y: auto;
+
+    .no-users {
+      margin: 0;
+    }
 
     .load {
       color: $blue;

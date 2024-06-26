@@ -96,6 +96,7 @@ export const searchUsers = createAsyncThunk('user/searchUser',
         offset
       }
     });
+
     const modifiedData = response.data.users.map((user: TsearchedUsers) => ({
       ...user,
       pfp: `${url}${user.pfp}`,
