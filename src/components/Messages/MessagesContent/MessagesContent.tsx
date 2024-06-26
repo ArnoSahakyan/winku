@@ -9,6 +9,7 @@ import { getMessages } from '../../../store/features/friends/friendThunks'
 import { getAccessToken } from '../../../store/features/userInfo/userInfoSlice'
 import io, { Socket } from 'socket.io-client';
 import { AppDispatch } from '../../../store/setup'
+const url = import.meta.env.VITE_BACK_BASE_URL;
 
 export default function MessagesContent() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +22,7 @@ export default function MessagesContent() {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io('https://winkuback.onrender.com/', {
+    const newSocket = io(url, {
       auth: {
         token,
       },

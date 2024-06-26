@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeCover, changeOnlineStatus, changePfp, changeUserData, loginUser } from "./userThunks";
+const url = import.meta.env.VITE_BACK_BASE_URL
 
 export type TuserInfo = {
   id: number | undefined;
@@ -60,8 +61,8 @@ const userInfoSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = {
           ...action.payload,
-          pfp: `https://winkuback.onrender.com${action.payload.pfp}`,
-          coverPhoto: `https://winkuback.onrender.com${action.payload.coverPhoto}`
+          pfp: `${url}${action.payload.pfp}`,
+          coverPhoto: `${url}${action.payload.coverPhoto}`
         };
         state.status = 'succeeded';
       })
@@ -73,10 +74,10 @@ const userInfoSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(changePfp.fulfilled, (state, action) => {
-        state.data.pfp = `https://winkuback.onrender.com${action.payload.relativePath}`
+        state.data.pfp = `${url}${action.payload.relativePath}`
       })
       .addCase(changeCover.fulfilled, (state, action) => {
-        state.data.coverPhoto = `https://winkuback.onrender.com${action.payload.relativePath}`
+        state.data.coverPhoto = `${url}${action.payload.relativePath}`
       })
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {

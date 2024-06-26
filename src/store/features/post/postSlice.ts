@@ -40,6 +40,8 @@ const initialState: TpostInitialState = {
   error: undefined
 }
 
+const url = import.meta.env.VITE_BACK_BASE_URL;
+
 const addComment = (post: PostState, comment: TComments) => {
   if (comment.parentId) {
     const parentComment = post.comments!.find(c => c.commentId === comment.parentId);
@@ -98,8 +100,8 @@ const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, { payload }) => {
         const modifiedData = {
           ...payload,
-          image: payload.image ? `https://winkuback.onrender.com${payload.image}` : null,
-          pfp: `https://winkuback.onrender.com${payload.pfp}`
+          image: payload.image ? `${url}${payload.image}` : null,
+          pfp: `${url}${payload.pfp}`
         };
         state.userPosts.unshift(modifiedData)
       })

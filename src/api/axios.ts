@@ -2,9 +2,10 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { store } from "../store/setup";
 import { setAccessToken } from "../store/features/userInfo/userInfoSlice";
 import { performLogout } from "../hooks/useAuth";
+const url = import.meta.env.VITE_BACK_BASE_URL;
 
 export const api = axios.create({
-  baseURL: 'https://winkuback.onrender.com/',
+  baseURL: url,
   headers: {
     "Content-Type": "application/json",
   },
@@ -32,7 +33,7 @@ api.interceptors.response.use(
       prevRequest.sent = true;
       try {
         const newAccessToken = (
-          await axios.post(`https://winkuback.onrender.com/api/auth/refresh`, {
+          await axios.post(`${url}/api/auth/refresh`, {
             refreshToken: userInfo.data.refreshToken
           })
         );
