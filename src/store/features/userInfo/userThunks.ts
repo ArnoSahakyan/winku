@@ -12,6 +12,11 @@ type SignupData = {
 
 type LoginData = Omit<SignupData, 'email'>;
 
+type TimageType = {
+  file: File | undefined;
+  type: string
+}
+
 export type TsearchedUsers = Tunassocitaed & {
   email: string;
   onlineStatus: string;
@@ -37,41 +42,43 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const changePfp = createAsyncThunk(
+export const changeUserImage = createAsyncThunk(
   'userInfo/changePfpAsync',
-  async (data: File | undefined) => {
+  async (data: TimageType) => {
     if (data) {
       const formData = new FormData();
-      formData.append('file', data);
-      const response = await api.post(`${url}/api/upload/pfp`, formData, {
+      formData.append('file', data.file);
+      formData.append('type', data.type)
+      const response = await api.post(`${url}/api/upload/user-images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log("RESPONSE", response);
+
       return response.data;
     }
     else return;
   }
 );
 
-export const changeCover = createAsyncThunk(
-  'userInfo/changeCoverAsync',
-  async (data: File | undefined) => {
-    if (data) {
-      const formData = new FormData();
-      formData.append('file', data);
+// export const changeCover = createAsyncThunk(
+//   'userInfo/changeCoverAsync',
+//   async (data: File | undefined) => {
+//     if (data) {
+//       const formData = new FormData();
+//       formData.append('file', data);
 
-      const response = await api.post(`${url}/api/upload/cover`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      return response.data;
-    }
-    else return;
-
-  }
-);
+//       const response = await api.post(`${url}/api/upload/cover`, formData, {
+//         headers: {
+//           'Content-Type': 'multipart/form-data'
+//         }
+//       });
+//       return response.data;
+//     }
+//     else return;
+//   }
+// );
 
 export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
   async (data: { onlineStatus: string }) => {
@@ -89,7 +96,7 @@ export const changeUserData = createAsyncThunk('userInfo/changeUserData',
 
 export const searchUsers = createAsyncThunk('user/searchUser',
   async ({ query, limit, offset }: { query: string, limit: number, offset: number }) => {
-    const response = await api.get(`${url}/api/searchUser`, {
+    const response = await api.get(`${url}/api/search-user`, {
       params: {
         query,
         limit,
@@ -97,16 +104,11 @@ export const searchUsers = createAsyncThunk('user/searchUser',
       }
     });
 
-    const modifiedData = response.data.users.map((user: TsearchedUsers) => ({
-      ...user,
-      pfp: `${url}${user.pfp}`,
-    }))
-
     return {
       totalUsers: response.data.totalUsers,
       totalPages: response.data.totalPages,
       currentPage: response.data.currentPage,
-      users: modifiedData,
+      users: response.data.users,
     };
   }
 )

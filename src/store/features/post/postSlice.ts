@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createComment, createPost, getNewsfeed, getUserPosts } from "./postThunks";
+import { createComment, createPost, deletePost, getNewsfeed, getUserPosts } from "./postThunks";
 
 export type TReplies = {
   commentId: number;
@@ -39,8 +39,6 @@ const initialState: TpostInitialState = {
   loading: false,
   error: undefined
 }
-
-const url = import.meta.env.VITE_BACK_BASE_URL;
 
 const addComment = (post: PostState, comment: TComments) => {
   if (comment.parentId) {
@@ -100,8 +98,7 @@ const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, { payload }) => {
         const modifiedData = {
           ...payload,
-          image: payload.image ? `${url}${payload.image}` : null,
-          pfp: `${url}${payload.pfp}`
+          image: payload.image ? payload.image : null,
         };
         state.userPosts.unshift(modifiedData)
       })
@@ -109,6 +106,16 @@ const postSlice = createSlice({
         state.loading = true
       })
       .addCase(createPost.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+
+      .addCase(deletePost.fulfilled, (state, { payload }) => {
+        state.userPosts = state.userPosts.filter(post => post.postId != payload.postId)
+      })
+      .addCase(deletePost.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(deletePost.rejected, (state, action) => {
         state.error = action.error.message;
       })
 

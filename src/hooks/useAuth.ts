@@ -55,7 +55,7 @@ const useAuth = () => {
         notifySuccess(res.message);
         setTimeout(() => {
           navigate('/auth/signin');
-        }, 1500);
+        }, 750);
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -65,16 +65,6 @@ const useAuth = () => {
       }
     }
   };
-
-  // const logout = async () => {
-  //   try {
-  //     dispatch(userLogout());
-  //     await persistor.purge();
-  //     navigate('/auth/signin');
-  //   } catch (error) {
-  //     console.error("Logout failed", error);
-  //   }
-  // };
 
   const logout = async () => {
     dispatch(changeOnlineStatus({ onlineStatus: "offline" }))

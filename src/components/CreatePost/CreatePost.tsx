@@ -54,7 +54,7 @@ export default function CreatePost() {
   return (
     <div className='CreatePost'>
       <div className="CreatePost__img">
-        <img src={`${pfp}`} alt="Profile" />
+        <img src={pfp} alt="Profile" />
       </div>
       <div className="CreatePost__form">
         <Formik
