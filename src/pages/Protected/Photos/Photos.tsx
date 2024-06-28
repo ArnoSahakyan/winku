@@ -49,11 +49,11 @@ export default function Photos() {
       {
         pictures.length === 0
           ? <p className='no-users'>no pictures available</p>
-          : pictures.map(pic => {
-            return <div key={pic.postId} className="Photos__img">
+          : pictures.map(pic =>
+            pic.image && <div key={pic.postId} className="Photos__img">
               <img src={pic.image} alt={`Post N${pic.postId.toString()}`} />
             </div>
-          })
+          )
       }
       {pictures.length > 0 && (totalPages && currentPage < totalPages) && (
         <Reload func={() => callNewPosts(limit, offset)} />
