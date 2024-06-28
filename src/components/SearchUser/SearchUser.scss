@@ -35,6 +35,7 @@
     top: 89px;
     right: 0;
     background-color: $white;
+    display: flex;
     flex-direction: column;
     gap: 10px;
     border-bottom: 2px solid $blue;
@@ -83,10 +84,6 @@
       left: 0;
       width: 100%;
       z-index: 1;
-
-      .Friend {
-        gap: 30px;
-      }
     }
   }
 }
