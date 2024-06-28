@@ -17,8 +17,10 @@ export default function MessagesContent() {
   const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  const [socket, setSocket] = useState<Socket>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const token = useSelector(getAccessToken);
+
+  const initialLoad = useRef(true);
 
   useEffect(() => {
     // Initialize socket connection
@@ -44,15 +46,22 @@ export default function MessagesContent() {
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (socket) {
-      socket.emit('join_room', friends[selectedFriendIndex]?.friendshipId);
+    if (socket && friends.length > 0) {
+      if (initialLoad.current) {
+        selectFriend(0);
+        initialLoad.current = false;
+      } else {
+        socket.emit('join_room', friends[selectedFriendIndex]?.friendshipId);
+      }
     }
   }, [friends, selectedFriendIndex, socket]);
 
   const selectFriend = (index: number) => {
     dispatch(getMessages(friends[index].id))
     setSelectedFriendIndex(index);
-    socket.emit('join_room', friends[index].friendshipId);
+    if (socket) {
+      socket.emit('join_room', friends[index].friendshipId);
+    }
   }
 
   useEffect(() => {
