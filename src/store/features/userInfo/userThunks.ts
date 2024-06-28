@@ -54,8 +54,6 @@ export const changeUserImage = createAsyncThunk(
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log("RESPONSE", response);
-
       return response.data;
     }
     else return;

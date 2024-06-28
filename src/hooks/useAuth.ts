@@ -34,7 +34,6 @@ const useAuth = () => {
   const signin = (values: TlogInFormState) => {
     dispatch(loginUser(values))
       .then((res) => {
-        console.log("AAAAAAAAAA", res);
         if (res.meta.requestStatus != "fulfilled") {
           notifyError("Something went wrong, please try again");
         }

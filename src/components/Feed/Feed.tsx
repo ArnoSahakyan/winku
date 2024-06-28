@@ -5,7 +5,7 @@ import { getNewsfeed, getUserPosts } from '../../store/features/post/postThunks'
 import { useEffect, useState } from 'react';
 import Post from '../Post/Post';
 import { useLocation } from 'react-router-dom';
-import Reload from '../shared/Reload/Reload'
+import Reload from '../shared/Reload/Reload';
 import { AppDispatch } from '../../store/setup';
 import './Feed.scss';
 
@@ -14,7 +14,7 @@ export type ServerResponse = {
   totalPages: number;
   currentPage: number;
   data: PostState[];
-}
+};
 
 export default function Feed() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,8 +33,8 @@ export default function Feed() {
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
               const { totalPages } = response.payload as ServerResponse;
-              setOffset(offset + limit);
-              setCurrentPage(currentPage + 1);
+              setOffset((prevOffset) => prevOffset + limit);
+              setCurrentPage((prevPage) => prevPage + 1);
               setTotalPages(totalPages);
             }
           });
@@ -43,8 +43,8 @@ export default function Feed() {
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
               const { totalPages } = response.payload as ServerResponse;
-              setOffset(offset + limit);
-              setCurrentPage(currentPage + 1);
+              setOffset((prevOffset) => prevOffset + limit);
+              setCurrentPage((prevPage) => prevPage + 1);
               setTotalPages(totalPages);
             }
           });
@@ -59,7 +59,6 @@ export default function Feed() {
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
               const { totalPages } = response.payload as ServerResponse;
-              setOffset(offset + limit);
               setTotalPages(totalPages);
             }
           });
@@ -69,7 +68,6 @@ export default function Feed() {
             .then((response) => {
               if (response.meta.requestStatus === 'fulfilled') {
                 const { totalPages } = response.payload as ServerResponse;
-                setOffset(offset + limit);
                 setTotalPages(totalPages);
               }
             });
@@ -87,13 +85,11 @@ export default function Feed() {
       <CreatePost />
 
       <div className="Feed__list">
-        {
-          posts.length === 0
-            ? <p className='no-users'>no posts available</p>
-            : posts?.map((post) => (
-              <Post key={post.postId} postData={post} />
-            ))
-        }
+        {posts.length === 0
+          ? <p className='no-users'>no posts available</p>
+          : posts.map((post) => (
+            <Post key={post.postId} postData={post} />
+          ))}
 
         {posts.length > 0 && (totalPages && currentPage < totalPages) && (
           <Reload func={handleReload} />
