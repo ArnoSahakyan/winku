@@ -37,15 +37,14 @@
         border-radius: 8px;
       }
     }
-
   }
 
   .menu {
     padding-top: 20px;
-    width: 90%;
+    width: 75%;
     height: 100vh;
-    background-color: $white;
-    color: $blue;
+    background-color: $blue-menu;
+    color: $white;
     position: fixed;
     transform-origin: left;
     transition: 200ms;
@@ -54,7 +53,7 @@
     z-index: 9;
 
     a {
-      padding-left: 30px;
+      color: $white;
       display: flex;
       text-decoration: none;
       position: relative;
@@ -75,11 +74,10 @@
 
     h2 {
       text-align: center;
-      border-bottom: 1px solid $grey1;
+      border-bottom: 1px solid $white;
       padding-bottom: 10px;
       text-transform: uppercase;
     }
-
 
     .bLinks {
       display: flex;
@@ -90,17 +88,33 @@
 
       li {
         font-size: 20px;
-        border-bottom: 1px solid $grey1;
+        border-bottom: 1px solid $white;
         transition: 200ms;
 
-        span {
+        p {
           padding-left: 10px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .arrow {
+          font-family: "Bootstrap-icons";
+          transition: 200ms;
+
+          &.active {
+            transform: rotate(-180deg);
+          }
+
+          &.not-active {
+            transform: rotate(0);
+          }
         }
 
         .bSublinks {
           margin-top: 10px;
           width: 100%;
-          background-color: $grey-bg;
+          background-color: $blue-submenu;
           transform-origin: top;
           transition: 200ms;
 
