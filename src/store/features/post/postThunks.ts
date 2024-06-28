@@ -25,7 +25,6 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
   return comments.map(comment => {
     const updatedComment = {
       ...comment,
-      pfp: `${url}${comment.pfp}`,
       createdAt: new Date(comment.createdAt)
     };
 
@@ -38,14 +37,13 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
 };
 
 export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit, offset }: { limit: number, offset: number }) => {
-  const response = await api.get(`${url}/api/userPosts`, {
+  const response = await api.get(`${url}/api/user-posts`, {
     params: { limit, offset }
   });
 
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `${url}${post.image}` : null,
-    pfp: `${url}${post.pfp}`,
+    image: post.image ? post.image : null,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -63,8 +61,7 @@ export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, 
   });
   const modifiedData = response.data.data.map((post: PostState) => ({
     ...post,
-    image: post.image ? `${url}${post.image}` : null,
-    pfp: `${url}${post.pfp}`,
+    image: post.image ? post.image : null,
     createdAt: new Date(post.createdAt),
     comments: updatePfpPaths(post.comments)
   }));
@@ -93,13 +90,17 @@ export const createPost = createAsyncThunk('post/createPost', async (data: formT
   return responseData;
 })
 
+export const deletePost = createAsyncThunk('post/deletePost', async (data: number) => {
+  const response = await api.delete(`${url}/api/delete-post/${data}`);
+  return response.data;
+})
+
 export const createComment = createAsyncThunk('post/createComment', async (data: TcreateComment) => {
   const response = await api.post(`${url}/api/comment`, data)
 
   const modifiedData = {
     ...response.data,
     uploaderId: data.uploaderId,
-    pfp: `${url}${response.data.pfp}`,
     createdAt: new Date(response.data.createdAt),
     parentId: data.parentId,
     replies: null

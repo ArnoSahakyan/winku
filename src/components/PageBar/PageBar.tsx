@@ -1,28 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import ROUTES from '../../routes/routes'
 import './PageBar.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { getJob, getName, getPfp, setPfp } from '../../store/features/userInfo/userInfoSlice'
-import { AppDispatch } from '../../store/setup'
+import { useSelector } from 'react-redux'
+import { getJob, getName, getPfp, } from '../../store/features/userInfo/userInfoSlice'
 
 export default function PageBar() {
 
-  const dispatch = useDispatch<AppDispatch>();
   const pfp = useSelector(getPfp)
   const job = useSelector(getJob)
-
-  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      dispatch(setPfp(reader.result as string));
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
 
   const fname = useSelector(getName)
 
@@ -54,7 +39,6 @@ export default function PageBar() {
             id="upload-pfp"
             type="file"
             accept="image/*"
-            onChange={handleProfileImageChange}
             style={{ display: 'none' }} // Hide the input element
           />
         </div>

@@ -10,8 +10,50 @@
 
   &__user {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 15px;
+
+    .delete {
+      position: relative;
+
+      span {
+        cursor: pointer;
+        font-family: "Bootstrap-icons";
+      }
+
+      button {
+        position: absolute;
+        right: 0;
+        top: 20px;
+        display: none;
+        width: 100px;
+        padding: 5px 0;
+        outline: none;
+        border: none;
+        border-radius: 3px;
+        background-color: $blue;
+        color: $white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 200ms;
+
+        &.active {
+          display: block;
+        }
+
+        &:hover {
+          border: none;
+          background-color: $blue-disabled;
+        }
+      }
+    }
+
+    &>div {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
 
     .pfp {
       width: 45px;

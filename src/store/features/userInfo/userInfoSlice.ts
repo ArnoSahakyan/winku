@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { changeCover, changeOnlineStatus, changePfp, changeUserData, loginUser } from "./userThunks";
-const url = import.meta.env.VITE_BACK_BASE_URL
+import { changeOnlineStatus, changeUserImage, changeUserData, loginUser } from "./userThunks";
 
 export type TuserInfo = {
   id: number | undefined;
@@ -41,12 +40,6 @@ const userInfoSlice = createSlice({
     setStatus: (state, action: PayloadAction<string>) => {
       state.data.onlineStatus = action.payload;
     },
-    setPfp: (state, action: PayloadAction<string>) => {
-      state.data.pfp = action.payload;
-    },
-    setCoverPhoto: (state, action: PayloadAction<string>) => {
-      state.data.coverPhoto = action.payload;
-    },
     setAccessToken: (state, action: PayloadAction<string>) => {
       state.data.accessToken = action.payload
     },
@@ -61,8 +54,8 @@ const userInfoSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = {
           ...action.payload,
-          pfp: `${url}${action.payload.pfp}`,
-          coverPhoto: `${url}${action.payload.coverPhoto}`
+          pfp: action.payload.pfp,
+          coverPhoto: action.payload.coverPhoto
         };
         state.status = 'succeeded';
       })
@@ -73,11 +66,12 @@ const userInfoSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(changePfp.fulfilled, (state, action) => {
-        state.data.pfp = `${url}${action.payload.relativePath}`
-      })
-      .addCase(changeCover.fulfilled, (state, action) => {
-        state.data.coverPhoto = `${url}${action.payload.relativePath}`
+      .addCase(changeUserImage.fulfilled, (state, action) => {
+        if (action.payload.type === "pfp") {
+          state.data.pfp = action.payload.pfp
+        } else if (action.payload.type === "coverPhoto") {
+          state.data.coverPhoto = action.payload.coverPhoto
+        }
       })
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {
@@ -112,7 +106,7 @@ const userInfoSlice = createSlice({
   }
 });
 
-export const { setStatus, setPfp, setCoverPhoto, setAccessToken, userLogout } = userInfoSlice.actions;
+export const { setStatus, setAccessToken, userLogout } = userInfoSlice.actions;
 export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken } = userInfoSlice.selectors;
 
 export default userInfoSlice.reducer;

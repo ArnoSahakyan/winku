@@ -1,7 +1,7 @@
 import './ProfileCover.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { getCoverPhoto, getPfp } from '../../store/features/userInfo/userInfoSlice';
-import { changeCover, changePfp } from '../../store/features/userInfo/userThunks';
+import { changeUserImage } from '../../store/features/userInfo/userThunks';
 import { AppDispatch } from '../../store/setup';
 
 export default function ProfileCover() {
@@ -11,17 +11,17 @@ export default function ProfileCover() {
 
   const handlePfp = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    dispatch(changePfp(file))
+    dispatch(changeUserImage({ file, type: "pfp" }))
   }
 
   const handleCover = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    dispatch(changeCover(file))
+    dispatch(changeUserImage({ file, type: "coverPhoto" }))
   }
 
   return (
     <div className='ProfileCoverBG'>
-      <img className='coverBG' src={`${coverImage}`} alt='Cover Image' />
+      <img className='coverBG' src={coverImage} alt='Cover Photo' />
       <div className="ProfileCover">
         <div className="ProfileCover__left">
           <div className="pfp">

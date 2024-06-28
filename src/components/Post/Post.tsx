@@ -5,6 +5,10 @@ import CommentBar from './CommentBar/CommentBar';
 import CommentInput from './CommentInput/CommentInput';
 import { useState } from 'react';
 import { formatDate } from '../../hooks/dateFormat';
+import { deletePost } from '../../store/features/post/postThunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../store/setup';
+import { getUserID } from '../../store/features/userInfo/userInfoSlice';
 
 export type TInsigths = {
   likesCount: number,
@@ -12,8 +16,15 @@ export type TInsigths = {
 }
 
 export default function Post({ postData }: { postData: PostState }) {
+  const [activeDelete, setActiveDelete] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const [replyData, setReplyData] = useState<TComments | null>(null);
+  const userId = useSelector(getUserID)
 
-  const [replyData, setReplyData] = useState<TComments | null>(null)
+  const handleDeleteButton = (postId: number) => {
+    if (activeDelete === postId) setActiveDelete(null)
+    else setActiveDelete(postId)
+  }
 
   const countComments = (comments: TComments[] | null) => {
     if (!comments) {
@@ -30,10 +41,24 @@ export default function Post({ postData }: { postData: PostState }) {
   return (
     <div className='Post'>
       <div className="Post__user">
-        <img className='pfp' src={postData.pfp} alt='profile picture' />
-        <div className="name">
-          <h5>{postData.fname}</h5>
-          <span>Published: {formatDate(postData.createdAt)}</span>
+        <div>
+          <img className='pfp' src={postData.pfp} alt='profile picture' />
+          <div className="name">
+            <h5>{postData.fname}</h5>
+            <span>Published: {formatDate(postData.createdAt)}</span>
+          </div>
+        </div>
+        <div className="delete">
+          <span onClick={() => handleDeleteButton(postData.postId)}>&#xF5D4;</span>
+          {
+            postData.userId == userId &&
+            <button
+              onClick={() => dispatch(deletePost(postData.postId))}
+              className={activeDelete ? 'active' : 'not-active'}
+            >
+              Delete Post
+            </button>
+          }
         </div>
       </div>
       <div className="Post__content">

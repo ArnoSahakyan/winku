@@ -85,7 +85,7 @@ export default function LeftSidebar() {
         {
           leftSide.map(icon => {
             return <li key={icon.id}>
-              <a href="">{icon.icon}</a>
+              <a>{icon.icon}</a>
               <p className='desc'>{icon.title}</p>
             </li>
           })
