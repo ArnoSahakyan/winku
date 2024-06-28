@@ -53,8 +53,8 @@ export default function Feed() {
   };
 
   useEffect(() => {
-    if (isNewsfeed) {
-      if (posts.length === 0) {
+    if (posts.length === 0) {
+      if (isNewsfeed) {
         dispatch(getNewsfeed({ limit, offset }))
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
@@ -63,9 +63,7 @@ export default function Feed() {
               setTotalPages(totalPages);
             }
           });
-      }
-    } else {
-      if (posts.length === 0) {
+      } else {
         if (totalPages !== 0) {
           dispatch(getUserPosts({ limit, offset }))
             .then((response) => {
@@ -78,7 +76,11 @@ export default function Feed() {
         }
       }
     }
-  }, [dispatch, isNewsfeed, posts.length, offset, limit, totalPages]);
+  }, [dispatch, isNewsfeed, posts.length, limit, offset, totalPages]);
+
+  const handleReload = () => {
+    callNewPosts(limit, offset);
+  };
 
   return (
     <div className='Feed'>
@@ -94,7 +96,7 @@ export default function Feed() {
         }
 
         {posts.length > 0 && (totalPages && currentPage < totalPages) && (
-          <Reload func={() => callNewPosts(limit, offset)} />
+          <Reload func={handleReload} />
         )}
       </div>
     </div>
