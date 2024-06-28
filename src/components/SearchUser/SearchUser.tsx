@@ -67,39 +67,36 @@ export default function SearchUser() {
   };
 
   return (
-    <>
+    <div className='SearchUser'>
       <a onClick={() => setSearchOpen(!searchOpen)}>
         <IconSearch />
       </a>
+      <input className={`${searchOpen ? 'active' : 'inactive'} searchFriend`}
+        type="search"
+        name="search"
+        id="search"
+        placeholder='Search User'
+        value={searchTerm}
+        onChange={handleChange}
+      />
 
-      <div className='SearchUser'>
-        <input className={`${searchOpen ? 'active' : 'inactive'} searchFriend`}
-          type="search"
-          name="search"
-          id="search"
-          placeholder='Search User'
-          value={searchTerm}
-          onChange={handleChange}
-        />
-
-        {
-          results &&
-          <div className={`${searchOpen ? 'active' : 'inactive'} SearchUser__results`}>
-            {error && <p>Error: {error}</p>}
-            {
-              results.length > 0 ? results.map((user) => (
-                <Friend key={user.id} user={user} onlyImg={false} />
-              ))
-                : <p className='no-users'>No Users Available</p>
-            }
-            {hasMore && (!loading ? (
-              <p className='load' onClick={handleLoadMore}>Load More</p>
-            )
-              : <p className='load'>...Loading</p>)
-            }
-          </div>
-        }
-      </div>
-    </>
+      {
+        results &&
+        <div className={`SearchUser__results`}>
+          {error && <p>Error: {error}</p>}
+          {
+            results.length > 0 ? results.map((user) => (
+              <Friend key={user.id} user={user} onlyImg={false} />
+            ))
+              : <p className='no-users'>No Users Available</p>
+          }
+          {hasMore && (!loading ? (
+            <p className='load' onClick={handleLoadMore}>Load More</p>
+          )
+            : <p className='load'>...Loading</p>)
+          }
+        </div>
+      }
+    </div>
   )
 }

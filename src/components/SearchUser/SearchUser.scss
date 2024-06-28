@@ -52,13 +52,41 @@
       cursor: pointer;
       font-weight: 500;
     }
+  }
+}
 
-    &.inactive {
+
+@media screen and (max-width: 450px) {
+  .SearchUser {
+    padding: 10px;
+    background-color: $blue;
+
+    a {
       display: none;
     }
 
-    &.active {
-      display: flex;
+    .searchFriend {
+      position: static;
+      width: 100%;
+      padding: 10px 18px;
+      border-radius: 10px;
+
+      &.inactive {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    &__results {
+      top: 139px;
+      max-height: unset;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+
+      .Friend {
+        gap: 30px;
+      }
     }
   }
 }
