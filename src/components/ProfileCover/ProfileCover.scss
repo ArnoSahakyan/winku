@@ -94,6 +94,7 @@
       display: flex;
       align-items: center;
       gap: 30px;
+      display: none;
 
       p {
         color: $white;
@@ -129,6 +130,7 @@
 @media screen and (max-width: 450px) {
   .ProfileCoverBG {
     margin: 0;
+    height: 250px;
 
     .coverBG {
       object-position: center;

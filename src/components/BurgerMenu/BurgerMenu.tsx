@@ -3,6 +3,7 @@ import './BurgerMenu.scss';
 import ROUTES from "../../routes/routes";
 import { Link } from "react-router-dom";
 import { MenuItem } from '../Navigation/Navigation';
+import SearchUser from "../SearchUser/SearchUser";
 
 export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
   // to change burger classes
@@ -80,6 +81,7 @@ export default function BurgerMenu({ menuLinks }: { menuLinks: MenuItem[] }) {
           ))}
         </ul>
       </div>
+      <SearchUser />
     </div>
   );
 }
