@@ -59,6 +59,7 @@ export default function Feed() {
           .then((response) => {
             if (response.meta.requestStatus === 'fulfilled') {
               const { totalPages } = response.payload as ServerResponse;
+              setOffset(o => o + limit)
               setTotalPages(totalPages);
             }
           });
@@ -68,13 +69,14 @@ export default function Feed() {
             .then((response) => {
               if (response.meta.requestStatus === 'fulfilled') {
                 const { totalPages } = response.payload as ServerResponse;
+                setOffset(o => o + limit)
                 setTotalPages(totalPages);
               }
             });
         }
       }
     }
-  }, [dispatch, isNewsfeed, posts.length, limit, offset, totalPages]);
+  }, [dispatch, isNewsfeed, limit]);
 
   const handleReload = () => {
     callNewPosts(limit, offset);
