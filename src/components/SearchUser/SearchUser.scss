@@ -46,6 +46,14 @@
       margin: 0;
     }
 
+    &.inactive {
+      display: none;
+    }
+
+    &.active {
+      display: flex;
+    }
+
     .load {
       color: $blue;
       font-size: 14px;

@@ -62,9 +62,9 @@ export default function Post({ postData }: { postData: PostState }) {
         </div>
       </div>
       <div className="Post__content">
+        {postData.content && <p>{postData.content}</p>}
         {(postData.image) && <img className='pfp' src={postData.image} alt='profile picture' />}
         <InfoBar likesCount={postData.likes} commentsCount={countComments(postData.comments)} />
-        {postData.content && <p>{postData.content}</p>}
       </div>
       {
         postData.comments &&

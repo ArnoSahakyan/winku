@@ -82,7 +82,7 @@ export default function SearchUser() {
 
       {
         results &&
-        <div className={`SearchUser__results`}>
+        <div className={`${searchOpen ? 'active' : 'inactive'} SearchUser__results`}>
           {error && <p>Error: {error}</p>}
           {
             results.length > 0 ? results.map((user) => (
