@@ -1,11 +1,11 @@
 import { Formik, Form, Field } from 'formik';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './CreatePost.scss';
 import { getPfp } from '../../store/features/userInfo/userInfoSlice';
 import { createPost } from '../../store/features/post/postThunks';
 import { mixed, object, string } from 'yup';
 import { AppDispatch } from '../../store/setup';
+import './CreatePost.scss';
 
 export type formType =
   {
@@ -46,9 +46,12 @@ export default function CreatePost() {
 
   const handleSubmit = (values: formType, { resetForm }: { resetForm: () => void }) => {
     if (values.file === null && values.content == '') return
-    dispatch(createPost(values));
-    resetForm();
-    setFilePreview(null);
+    dispatch(createPost(values))
+      .then(() => {
+        resetForm();
+        setFilePreview(null);
+      })
+
   }
 
   return (
@@ -62,7 +65,7 @@ export default function CreatePost() {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ setFieldValue }) => (
+          {({ setFieldValue, isSubmitting }) => (
             <Form>
               <div className="attachement">
                 <Field className="text-field" as="textarea" name="content" placeholder="Write your post..." />
@@ -90,7 +93,7 @@ export default function CreatePost() {
                     }}
                   />
                 </div>
-                <button type="submit">Post</button>
+                <button disabled={isSubmitting} type="submit">{isSubmitting ? "Posting..." : "Post"}</button>
               </div>
               <div className="preview">
                 {filePreview && (

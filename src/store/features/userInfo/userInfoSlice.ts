@@ -102,7 +102,6 @@ const userInfoSlice = createSlice({
       .addCase(changeUserData.rejected, (state, action) => {
         state.error = action.error.message
       })
-
   },
   selectors: {
     getUserID: (state) => state.data.id,

@@ -27,7 +27,7 @@ export default function EditForm({ toggleModal }: EditFormProps) {
 
   const handleSubmit = (values: { fname: string, job: string }) => {
     dispatch(changeUserData(values))
-    toggleModal()
+      .then(() => toggleModal())
   }
 
   return (
@@ -36,20 +36,25 @@ export default function EditForm({ toggleModal }: EditFormProps) {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <Form>
-        <div className="input-wrapper">
-          <Field type="text" name="fname" id="fname" placeholder='Your Full Name' />
-          <ErrorMessage name="fname" component="div" className="error" />
-        </div>
+      {
+        ({
+          isSubmitting
+        }) =>
+        (
+          <Form>
+            <div className="input-wrapper">
+              <Field type="text" name="fname" id="fname" placeholder='Your Full Name' />
+              <ErrorMessage name="fname" component="div" className="error" />
+            </div>
 
-        <div className="input-wrapper">
-          <Field type="text" name="job" id="job" placeholder='Your Job' />
-          <ErrorMessage name="job" component="div" className="error" />
-        </div>
+            <div className="input-wrapper">
+              <Field type="text" name="job" id="job" placeholder='Your Job' />
+              <ErrorMessage name="job" component="div" className="error" />
+            </div>
 
-        <button type="submit">Save</button>
-
-      </Form>
+            <button disabled={isSubmitting} type="submit">{isSubmitting ? "Saving..." : "Save"}</button>
+          </Form>
+        )}
     </Formik>
   )
 }
