@@ -141,17 +141,17 @@ const friendsSlice = createSlice({
 
       .addCase(getMessages.fulfilled, (state, { payload }) => {
         const friend = state.friendsBack.find(friend => friend.id == payload.friendId)
-        if (friend) friend['messages'] = payload.messages
+        if (friend) friend.messages = payload.messages
       })
-
   },
   selectors: {
     getRequests: (state) => state.requests,
     getFriendsBack: (state) => state.friendsBack,
     getUnassociated: (state) => state.unassociated,
+    getFriendsLoading: (state) => state.loading,
   }
 });
 
 export const { sendMessage, receiveMessage } = friendsSlice.actions
-export const { getRequests, getFriendsBack, getUnassociated } = friendsSlice.selectors
+export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading } = friendsSlice.selectors
 export default friendsSlice.reducer;

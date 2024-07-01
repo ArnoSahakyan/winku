@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { getFriendsBack, getRequests, getUnassociated } from '../../../store/features/friends/friendsSlice'
+import { getFriendsBack, getFriendsLoading, getRequests, getUnassociated } from '../../../store/features/friends/friendsSlice'
 import { useEffect, useState } from 'react'
 import FriendBar from './FriendBar'
 import { getRequestsApi, getUnassociatedApi } from '../../../store/features/friends/friendThunks'
@@ -13,6 +13,7 @@ export default function FriendsPage() {
   const friends = useSelector(getFriendsBack)
   const requests = useSelector(getRequests)
   const unassociated = useSelector(getUnassociated);
+  const loading = useSelector(getFriendsLoading)
 
   useEffect(() => {
     dispatch(getRequestsApi())
@@ -42,27 +43,44 @@ export default function FriendsPage() {
         </h4>
       </div>
       <div className="FriendsPage__list">
-        <FriendSkeleton />
         {activePage === 'friends' && (
-          friends.length > 0 ?
+          (loading && <>
+            <FriendSkeleton />
+            <FriendSkeleton />
+          </>)
+          ||
+          (friends.length > 0 ?
             friends.map((friend) => {
               return <FriendBar key={friend.id} data={friend} isFriend={'friend'} />
             })
-            : <h4 className='no-users'>No Friends Available</h4>
+            : <h4 className='no-users'>No Friends Available</h4>)
         )}
-        {activePage === 'requests' && (
-          requests.length > 0 ?
-            requests.map((request) => {
-              return <FriendBar key={request.requestId} data={request} isFriend={'request'} />
-            })
-            : <h4 className='no-users'>No Requests Available</h4>
-        )}
+        {
+          activePage === 'requests' && (
+            (loading && <>
+              <FriendSkeleton />
+              <FriendSkeleton />
+            </>)
+            ||
+            (requests.length > 0 ?
+              requests.map((request) => {
+                return <FriendBar key={request.requestId} data={request} isFriend={'request'} />
+              })
+              : <h4 className='no-users'>No Requests Available</h4>)
+
+          )
+        }
         {activePage === 'explore' && (
-          unassociated.length > 0 ?
+          (loading && <>
+            <FriendSkeleton />
+            <FriendSkeleton />
+          </>)
+          ||
+          (unassociated.length > 0 ?
             unassociated.map((user) => {
               return <FriendBar key={user.username} data={user} isFriend={'none'} />
             })
-            : <h4 className='no-users'>No Users To Explore</h4>
+            : <h4 className='no-users'>No Users To Explore</h4>)
         )}
       </div>
     </div>

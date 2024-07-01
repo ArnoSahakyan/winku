@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import './FriendsBar.scss'
 import Friend from './Friend/Friend';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFriendsBack } from '../../store/features/friends/friendsSlice';
+import { getFriendsBack, getFriendsLoading } from '../../store/features/friends/friendsSlice';
 import Title from '../shared/Title/Title';
 import { getFriendsApi } from '../../store/features/friends/friendThunks';
 import { AppDispatch } from '../../store/setup';
+import FriendSkeleton from '../shared/Skeletons/FriendSkeleton';
 
 export default function FriendsBar() {
   const dispatch = useDispatch<AppDispatch>()
   const friends = useSelector(getFriendsBack);
-
+  const loading = useSelector(getFriendsLoading)
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredFriends = friends.filter((friend) =>
@@ -39,11 +40,16 @@ export default function FriendsBar() {
 
       <div className="FriendsBar__list">
         {
-          filteredFriends.length > 0
+          (loading && <>
+            <FriendSkeleton />
+            <FriendSkeleton />
+          </>)
+          ||
+          (filteredFriends.length > 0
             ? filteredFriends.map(user => {
               return <Friend key={user.id} user={user} onlyImg={false} />
             })
-            : <h4 className='no-users'>No friends available</h4>
+            : <h4 className='no-users'>No friends available</h4>)
         }
       </div>
     </div>

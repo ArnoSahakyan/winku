@@ -2,6 +2,7 @@ import ContentLoader from "react-content-loader"
 
 const FriendSkeleton = (props) => (
   <ContentLoader
+    className="FriendSkeleton"
     speed={1.5}
     height={60}
     backgroundColor="#f3f3f3"
