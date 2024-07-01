@@ -40,7 +40,7 @@ export default function FriendsBar() {
 
       <div className="FriendsBar__list">
         {
-          (loading && <>
+          (loading && filteredFriends.length === 0 && <>
             <FriendSkeleton />
             <FriendSkeleton />
           </>)

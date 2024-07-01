@@ -10,10 +10,10 @@ import FriendSkeleton from '../../../components/shared/Skeletons/FriendSkeleton'
 export default function FriendsPage() {
   const [activePage, setActivePage] = useState('friends')
   const dispatch = useDispatch<AppDispatch>();
-  const friends = useSelector(getFriendsBack)
-  const requests = useSelector(getRequests)
+  const friends = useSelector(getFriendsBack);
+  const requests = useSelector(getRequests);
   const unassociated = useSelector(getUnassociated);
-  const loading = useSelector(getFriendsLoading)
+  const loading = useSelector(getFriendsLoading);
 
   useEffect(() => {
     dispatch(getRequestsApi())
@@ -44,7 +44,7 @@ export default function FriendsPage() {
       </div>
       <div className="FriendsPage__list">
         {activePage === 'friends' && (
-          (loading && <>
+          (loading && friends.length === 0 && <>
             <FriendSkeleton />
             <FriendSkeleton />
           </>)
@@ -57,7 +57,7 @@ export default function FriendsPage() {
         )}
         {
           activePage === 'requests' && (
-            (loading && <>
+            (loading && requests.length === 0 && <>
               <FriendSkeleton />
               <FriendSkeleton />
             </>)
@@ -71,7 +71,7 @@ export default function FriendsPage() {
           )
         }
         {activePage === 'explore' && (
-          (loading && <>
+          (loading && unassociated.length === 0 && <>
             <FriendSkeleton />
             <FriendSkeleton />
           </>)
