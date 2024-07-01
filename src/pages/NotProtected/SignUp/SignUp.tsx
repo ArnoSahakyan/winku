@@ -70,29 +70,33 @@ export default function SignUp() {
           validateOnMount={true}
           onSubmit={handleSubmit}
         >
-          <Form>
-            <div className="input-wrapper">
-              <Field type="text" name="fname" id="fname" placeholder='Your Full Name' />
-              <ErrorMessage name="fname" component="div" className="error" />
-            </div>
+          {({
+            isSubmitting
+          }) => (
+            <Form>
+              <div className="input-wrapper">
+                <Field type="text" name="fname" id="fname" placeholder='Your Full Name' />
+                <ErrorMessage name="fname" component="div" className="error" />
+              </div>
 
-            <div className="input-wrapper">
-              <Field type="text" name="username" id="username" placeholder='Your Username' />
-              <ErrorMessage name="username" component="div" className="error" />
-            </div>
+              <div className="input-wrapper">
+                <Field type="text" name="username" id="username" placeholder='Your Username' />
+                <ErrorMessage name="username" component="div" className="error" />
+              </div>
 
-            <div className="input-wrapper">
-              <Field type="email" name="email" id="email" placeholder='Your Email' />
-              <ErrorMessage name="email" component="div" className="error" />
-            </div>
+              <div className="input-wrapper">
+                <Field type="email" name="email" id="email" placeholder='Your Email' />
+                <ErrorMessage name="email" component="div" className="error" />
+              </div>
 
-            <div className="input-wrapper">
-              <Field type="password" name="password" id="password" placeholder='Your Password' />
-              <ErrorMessage name="password" component="div" className="error" />
-            </div>
+              <div className="input-wrapper">
+                <Field type="password" name="password" id="password" placeholder='Your Password' />
+                <ErrorMessage name="password" component="div" className="error" />
+              </div>
 
-            <button type="submit">Sign Up</button>
-          </Form>
+              <button disabled={isSubmitting} type="submit">{isSubmitting ? "Signing Up..." : "Sign Up"}</button>
+            </Form>
+          )}
         </Formik>
         <p>Already have an account? <Link className='signup' to={ROUTES.LOGIN}>Log In</Link></p>
       </div>

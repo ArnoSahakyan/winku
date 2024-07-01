@@ -65,6 +65,19 @@
     .chat {
       height: 250px;
       overflow-y: auto;
+
+      .no-users {
+        color: $blue;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+
+      &-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
     }
   }
 }

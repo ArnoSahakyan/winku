@@ -44,6 +44,7 @@ type TUsers = {
   friendsBack: TFriendBack[],
   unassociated: Tunassocitaed[],
   loading: boolean,
+  messageLoading: boolean,
   error: string,
 }
 
@@ -59,6 +60,7 @@ const initialState: TUsers = {
   friendsBack: [],
   unassociated: [],
   loading: false,
+  messageLoading: false,
   error: undefined
 };
 
@@ -142,6 +144,14 @@ const friendsSlice = createSlice({
       .addCase(getMessages.fulfilled, (state, { payload }) => {
         const friend = state.friendsBack.find(friend => friend.id == payload.friendId)
         if (friend) friend.messages = payload.messages
+        state.messageLoading = false;
+      })
+      .addCase(getMessages.pending, (state) => {
+        state.messageLoading = true;
+      })
+      .addCase(getMessages.rejected, (state, action) => {
+        state.error = action.error.message
+        state.messageLoading = false;
       })
   },
   selectors: {
@@ -149,9 +159,10 @@ const friendsSlice = createSlice({
     getFriendsBack: (state) => state.friendsBack,
     getUnassociated: (state) => state.unassociated,
     getFriendsLoading: (state) => state.loading,
+    getMessagesLoading: (state) => state.messageLoading,
   }
 });
 
 export const { sendMessage, receiveMessage } = friendsSlice.actions
-export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading } = friendsSlice.selectors
+export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading, getMessagesLoading } = friendsSlice.selectors
 export default friendsSlice.reducer;

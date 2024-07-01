@@ -48,7 +48,7 @@ export default function MessageInput({ friend, socket }: { friend: TFriendBack, 
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ submitForm }) => (
+        {({ submitForm, isSubmitting }) => (
           <Form>
             <Field
               className="text-field"
@@ -57,7 +57,7 @@ export default function MessageInput({ friend, socket }: { friend: TFriendBack, 
               placeholder="Write your message..."
               onKeyDown={(event: React.KeyboardEvent<HTMLTextAreaElement>) => handleKeyDown(event, submitForm)}
             />
-            <button type="submit">&#xF6B9;</button>
+            <button disabled={isSubmitting} type="submit">&#xF6B9;</button>
           </Form>
         )}
       </Formik>

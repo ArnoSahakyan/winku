@@ -55,7 +55,7 @@ export default function Photos() {
             </div>
           )
       }
-      {pictures.length > 0 && (totalPages && currentPage < totalPages) && (
+      {pictures.filter(elem => elem.image).length > 0 && (totalPages && currentPage < totalPages) && (
         <Reload func={() => callNewPosts(limit, offset)} />
       )}
     </div>

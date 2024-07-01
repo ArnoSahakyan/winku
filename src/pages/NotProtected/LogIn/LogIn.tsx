@@ -64,19 +64,25 @@ export default function LogIn() {
           validateOnChange={true}
           onSubmit={handleSubmit}
         >
-          <Form>
-            <div className="input-wrapper">
-              <Field type="text" name="username" id="username" placeholder='Your Username' />
-              <ErrorMessage name="username" component="div" className="error" />
-            </div>
+          {
+            ({
+              isSubmitting
+            }) => (
+              <Form>
+                <div className="input-wrapper">
+                  <Field type="text" name="username" id="username" placeholder='Your Username' />
+                  <ErrorMessage name="username" component="div" className="error" />
+                </div>
 
-            <div className="input-wrapper">
-              <Field type="password" name="password" id="password" placeholder='Your Password' />
-              <ErrorMessage name="password" component="div" className="error" />
-            </div>
+                <div className="input-wrapper">
+                  <Field type="password" name="password" id="password" placeholder='Your Password' />
+                  <ErrorMessage name="password" component="div" className="error" />
+                </div>
 
-            <button type="submit">Log In</button>
-          </Form>
+                <button disabled={isSubmitting} type="submit">{isSubmitting ? "Logging In..." : "Log In"}</button>
+              </Form>
+            )
+          }
         </Formik>
         <p>Don't have an account? <Link className='signup' to={ROUTES.SIGNUP}>Sign Up</Link></p>
       </div>

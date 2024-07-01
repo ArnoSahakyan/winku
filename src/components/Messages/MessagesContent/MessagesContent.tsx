@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import './MessagesContent.scss'
-import { getFriendsBack, receiveMessage } from '../../../store/features/friends/friendsSlice'
+import { getFriendsBack, getMessagesLoading, receiveMessage } from '../../../store/features/friends/friendsSlice'
 import Friend from '../../FriendsBar/Friend/Friend'
 import { useEffect, useState, useRef } from 'react'
 import MessageChat from '../MessageChat/MessageChat'
@@ -9,6 +9,7 @@ import { getMessages } from '../../../store/features/friends/friendThunks'
 import { getAccessToken } from '../../../store/features/userInfo/userInfoSlice'
 import io, { Socket } from 'socket.io-client';
 import { AppDispatch } from '../../../store/setup'
+import SecondaryLoader from '../../shared/SecondaryLoader/SecondaryLoader'
 const url = import.meta.env.VITE_BACK_BASE_URL;
 
 export default function MessagesContent() {
@@ -16,7 +17,7 @@ export default function MessagesContent() {
   const friends = useSelector(getFriendsBack)
   const [selectedFriendIndex, setSelectedFriendIndex] = useState<number>(0);
   const chatRef = useRef<HTMLDivElement>(null);
-
+  const messageLoading = useSelector(getMessagesLoading)
   const [socket, setSocket] = useState<Socket | null>(null);
   const token = useSelector(getAccessToken);
 
@@ -90,11 +91,17 @@ export default function MessagesContent() {
           </div>
         </div>
 
-        <div className="chat" ref={chatRef}>
+        <div className={`${messageLoading || friends[selectedFriendIndex]?.messages?.length === 0 ? "chat-loading" : ""} chat`} ref={chatRef}>
           {
-            friends[selectedFriendIndex]?.messages.map(message => {
-              return <MessageChat key={message.messageId} content={message} user={friends[selectedFriendIndex]} />
-            })
+            (messageLoading && <SecondaryLoader />)
+            ||
+            (
+              friends[selectedFriendIndex]?.messages?.length === 0
+                ? <p className='no-users'>there are no messages here yet</p>
+                : friends[selectedFriendIndex]?.messages.map(message => {
+                  return <MessageChat key={message.messageId} content={message} user={friends[selectedFriendIndex]} />
+                })
+            )
           }
         </div>
 
