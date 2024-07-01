@@ -5,6 +5,7 @@ import FriendBar from './FriendBar'
 import { getRequestsApi, getUnassociatedApi } from '../../../store/features/friends/friendThunks'
 import './FriendsPage.scss'
 import { AppDispatch } from '../../../store/setup'
+import FriendSkeleton from '../../../components/shared/Skeletons/FriendSkeleton'
 
 export default function FriendsPage() {
   const [activePage, setActivePage] = useState('friends')
@@ -41,6 +42,7 @@ export default function FriendsPage() {
         </h4>
       </div>
       <div className="FriendsPage__list">
+        <FriendSkeleton />
         {activePage === 'friends' && (
           friends.length > 0 ?
             friends.map((friend) => {

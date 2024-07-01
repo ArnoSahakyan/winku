@@ -30,6 +30,9 @@ type TpostInitialState = {
   userPosts: PostState[],
   newsfeedPosts: PostState[],
   loading: boolean,
+  createLoading: boolean,
+  deleteLoading: { loading: boolean, postId: number | undefined },
+  commentLoading: { loading: boolean, postId: number | undefined },
   error: string | undefined
 }
 
@@ -37,6 +40,9 @@ const initialState: TpostInitialState = {
   userPosts: [],
   newsfeedPosts: [],
   loading: false,
+  createLoading: false,
+  deleteLoading: { loading: false, postId: undefined },
+  commentLoading: { loading: false, postId: undefined },
   error: undefined
 }
 
@@ -101,54 +107,65 @@ const postSlice = createSlice({
           image: payload.image ? payload.image : null,
         };
         state.userPosts.unshift(modifiedData)
+        state.createLoading = false
       })
       .addCase(createPost.pending, (state) => {
-        state.loading = true
+        state.createLoading = true
       })
       .addCase(createPost.rejected, (state, action) => {
         state.error = action.error.message;
+        state.createLoading = false
       })
 
-      .addCase(deletePost.fulfilled, (state, { payload }) => {
-        state.userPosts = state.userPosts.filter(post => post.postId != payload.postId)
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.userPosts = state.userPosts.filter(post => post.postId != action.payload.postId)
+        state.deleteLoading = { loading: false, postId: undefined };
       })
-      .addCase(deletePost.pending, (state) => {
-        state.loading = true
+      .addCase(deletePost.pending, (state, action) => {
+        state.deleteLoading = { loading: true, postId: action.meta.arg };
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.error = action.error.message;
+        state.deleteLoading = { loading: false, postId: undefined };
       })
 
-      .addCase(createComment.fulfilled, (state, { payload }) => {
-        if (payload.uploaderId === payload.userId) {
-          const post = state.userPosts.find(post => post.postId === payload.postId);
+      .addCase(createComment.fulfilled, (state, action) => {
+        if (action.payload.uploaderId === action.payload.userId) {
+          const post = state.userPosts.find(post => post.postId === action.payload.postId);
           if (post) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { uploaderId, ...comment } = payload;
+            const { uploaderId, ...comment } = action.payload;
             addComment(post, comment);
           }
         } else {
-          const post = state.newsfeedPosts.find(post => post.postId === payload.postId);
+          const post = state.newsfeedPosts.find(post => post.postId === action.payload.postId);
           if (post) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { uploaderId, ...comment } = payload;
+            const { uploaderId, ...comment } = action.payload;
             addComment(post, comment);
           }
         }
+        state.commentLoading = { loading: false, postId: undefined };
       })
-      .addCase(createComment.pending, (state) => {
-        state.loading = true
+      .addCase(createComment.pending, (state, action) => {
+        state.commentLoading = { loading: true, postId: action.meta.arg.postId };
       })
       .addCase(createComment.rejected, (state, action) => {
         state.error = action.error.message;
+        state.commentLoading = { loading: false, postId: undefined };
       })
 
   },
   selectors: {
     userPostsSelector: state => state.userPosts,
-    newsfeedPostsSelector: state => state.newsfeedPosts
+    newsfeedPostsSelector: state => state.newsfeedPosts,
+    postGetLoading: state => state.loading,
+    postCreateLoading: state => state.createLoading,
+    postDeleteLoading: state => state.deleteLoading,
+    postCommentLoading: state => state.commentLoading,
+    postError: state => state.error
   }
 });
 
-export const { userPostsSelector, newsfeedPostsSelector } = postSlice.selectors
+export const { userPostsSelector, newsfeedPostsSelector, postGetLoading, postCreateLoading, postDeleteLoading, postCommentLoading, postError } = postSlice.selectors
 export default postSlice.reducer;

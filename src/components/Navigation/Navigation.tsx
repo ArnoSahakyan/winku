@@ -91,49 +91,53 @@ export default function Navigation() {
       <BurgerMenu menuLinks={dropDownMenu} />
 
       <div className='Navigation'>
-        <div className="Navigation__logo">
-          <Link to={ROUTES.NEWSFEED}><img src="/logo.png" alt="Logo" /></Link>
-        </div>
-        <ul className='Navigation__menu'>
-          {dropDownMenu.map((menuItem) => (
-            <li key={menuItem.id}>
-              <a href=''>{menuItem.title} <span>&#xF282;</span> </a>
-              <ul className='submenu'>
-                {menuItem.subtitles.map((subtitle, index) => (
-                  <li key={index}><Link to={subtitle.link}>{subtitle.title}</Link></li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-
-        <ul className='Navigation__icons'>
-          <li>
-            <SearchUser />
-          </li>
-          <li>
-            <Link to={ROUTES.HOME}>
-              <IconHome />
-            </Link>
-          </li>
-        </ul>
-
-        <div className="Navigation__user">
-          <div onClick={() => setStatusOpen(!statusOpen)} className={`${status} user`}>
-            <img src={pfp} alt="User Profile" />
+        <div>
+          <div className="Navigation__logo">
+            <Link to={ROUTES.NEWSFEED}><img src="/logo.png" alt="Logo" /></Link>
           </div>
-          <span>&#xF479;</span>
-
-          <ul className={`${statusOpen ? 'open' : ''} actions`}>
-            {
-              onlineStatus.map(status => (
-                <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus({ onlineStatus: status }))} key={status}>{status}</li>
-              ))
-            }
-            <li><Link to={ROUTES.HOME}><span>&#xF4E1;</span> View Profile</Link></li>
-            <li><a onClick={() => toggleModal()} ><span>&#xF4CB;</span> Edit Profile</a></li>
-            <li><a onClick={() => logout()}><span>&#xF4FF;</span> Log Out</a></li>
+          <ul className='Navigation__menu'>
+            {dropDownMenu.map((menuItem) => (
+              <li key={menuItem.id}>
+                <a href=''>{menuItem.title} <span>&#xF282;</span> </a>
+                <ul className='submenu'>
+                  {menuItem.subtitles.map((subtitle, index) => (
+                    <li key={index}><Link to={subtitle.link}>{subtitle.title}</Link></li>
+                  ))}
+                </ul>
+              </li>
+            ))}
           </ul>
+        </div>
+
+        <div>
+          <ul className='Navigation__icons'>
+            <li>
+              <SearchUser />
+            </li>
+            <li>
+              <Link to={ROUTES.HOME}>
+                <IconHome />
+              </Link>
+            </li>
+          </ul>
+
+          <div className="Navigation__user">
+            <div onClick={() => setStatusOpen(!statusOpen)} className={`${status} user`}>
+              <img src={pfp} alt="User Profile" />
+            </div>
+            <span>&#xF479;</span>
+
+            <ul className={`${statusOpen ? 'open' : ''} actions`}>
+              {
+                onlineStatus.map(status => (
+                  <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus({ onlineStatus: status }))} key={status}>{status}</li>
+                ))
+              }
+              <li><Link to={ROUTES.HOME}><span>&#xF4E1;</span> View Profile</Link></li>
+              <li><a onClick={() => toggleModal()} ><span>&#xF4CB;</span> Edit Profile</a></li>
+              <li><a onClick={() => logout()}><span>&#xF4FF;</span> Log Out</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </>
