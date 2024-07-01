@@ -87,7 +87,7 @@ export default function Feed() {
 
   return (
     <div className='Feed'>
-      <CreatePost />
+      {!isNewsfeed && <CreatePost />}
 
       <div className="Feed__list">
         {
@@ -107,7 +107,7 @@ export default function Feed() {
           ||
           (
             posts.length === 0
-              ? <p className='no-users'>no posts available</p>
+              ? <p className={`${isNewsfeed ? 'newsfeed' : ''} no-users`}>no posts available</p>
               : posts.map((post) => (
                 <Post key={post.postId} postData={post} />
               ))
