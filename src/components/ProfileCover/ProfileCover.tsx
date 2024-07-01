@@ -1,13 +1,15 @@
 import './ProfileCover.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoverPhoto, getPfp } from '../../store/features/userInfo/userInfoSlice';
+import { getCoverPhoto, getLoading, getPfp } from '../../store/features/userInfo/userInfoSlice';
 import { changeUserImage } from '../../store/features/userInfo/userThunks';
 import { AppDispatch } from '../../store/setup';
+import SecondaryLoader from '../shared/SecondaryLoader/SecondaryLoader';
 
 export default function ProfileCover() {
   const dispatch = useDispatch<AppDispatch>();
-  const pfp = useSelector(getPfp)
-  const coverImage = useSelector(getCoverPhoto)
+  const pfp = useSelector(getPfp);
+  const coverImage = useSelector(getCoverPhoto);
+  const uploadLoading = useSelector(getLoading)
 
   const handlePfp = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -21,11 +23,19 @@ export default function ProfileCover() {
 
   return (
     <div className='ProfileCoverBG'>
-      <img className='coverBG' src={coverImage} alt='Cover Photo' />
+      {
+        uploadLoading.loading && uploadLoading.type === 'coverPhoto'
+          ? <div className='coverBG upload-loader'><SecondaryLoader /> </div>
+          : <img className='coverBG' src={coverImage} alt='Cover Photo' />
+      }
       <div className="ProfileCover">
         <div className="ProfileCover__left">
           <div className="pfp">
-            <img src={`${pfp}`} alt='profile picture' />
+            {
+              uploadLoading.loading && uploadLoading.type === 'pfp'
+                ? <div className='upload-loader'><SecondaryLoader /> </div>
+                : <img src={pfp} alt='profile picture' />
+            }
             <label htmlFor="upload-pfp" className='editpfp'>Edit Display Photo</label>
             <input
               id="upload-pfp"

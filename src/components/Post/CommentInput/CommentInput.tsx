@@ -49,10 +49,9 @@ export default function CommentInput({ post, replyData, setReplyData }: Tcomment
       >
         <Form className="CommentInput__input">
           <Field type="text" placeholder={`${replyData ? `Reply to ${replyData.fname}` : 'Post Your Comment'}`} name="content" />
-          <img alt='emoji' src="/emoji.webp" />
+          <button type="submit">&#xF6B9;</button>
         </Form>
       </Formik>
-
     </div>
   )
 }

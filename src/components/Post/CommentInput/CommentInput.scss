@@ -28,12 +28,16 @@
       border-radius: 3px;
     }
 
-    img {
+    button {
       position: absolute;
-      width: 18px;
-      height: 18px;
       right: 10px;
       top: 8px;
+      color: $blue;
+      background-color: transparent;
+      font-size: 18px;
+      font-family: "Bootstrap-icons";
+      border: 0;
+      outline: 0;
       cursor: pointer;
     }
   }

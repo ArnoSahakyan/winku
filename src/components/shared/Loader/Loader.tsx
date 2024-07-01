@@ -6,7 +6,7 @@ import './Loader.scss'
 
 export default function Loader() {
   return (
-    <div className='Loader'>
+    <div className='loader'>
       <l-helix
         size="100"
         speed="2.5"

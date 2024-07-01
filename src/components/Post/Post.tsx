@@ -1,6 +1,5 @@
 import InfoBar from './InfoBar/InfoBar'
-import './Post.scss'
-import { PostState, TComments } from '../../store/features/post/postSlice';
+import { PostState, TComments, postCommentLoading, postDeleteLoading } from '../../store/features/post/postSlice';
 import CommentBar from './CommentBar/CommentBar';
 import CommentInput from './CommentInput/CommentInput';
 import { useState } from 'react';
@@ -9,6 +8,8 @@ import { deletePost } from '../../store/features/post/postThunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store/setup';
 import { getUserID } from '../../store/features/userInfo/userInfoSlice';
+import CommentSkeleton from '../shared/Skeletons/CommentSkeleton';
+import './Post.scss'
 
 export type TInsigths = {
   likesCount: number,
@@ -19,7 +20,9 @@ export default function Post({ postData }: { postData: PostState }) {
   const [activeDelete, setActiveDelete] = useState(null);
   const dispatch = useDispatch<AppDispatch>();
   const [replyData, setReplyData] = useState<TComments | null>(null);
-  const userId = useSelector(getUserID)
+  const userId = useSelector(getUserID);
+  const commentLoading = useSelector(postCommentLoading)
+  const deleteLoading = useSelector(postDeleteLoading);
 
   const handleDeleteButton = (postId: number) => {
     if (activeDelete === postId) setActiveDelete(null)
@@ -53,10 +56,15 @@ export default function Post({ postData }: { postData: PostState }) {
           {
             postData.userId == userId &&
             <button
+              disabled={deleteLoading.loading && postData.postId === deleteLoading.postId}
               onClick={() => dispatch(deletePost(postData.postId))}
               className={activeDelete ? 'active' : 'not-active'}
             >
-              Delete Post
+              {
+                (deleteLoading.loading && postData.postId === deleteLoading.postId)
+                  ? "Deleting..."
+                  : "Delete Post"
+              }
             </button>
           }
         </div>
@@ -67,9 +75,10 @@ export default function Post({ postData }: { postData: PostState }) {
         <InfoBar likesCount={postData.likes} commentsCount={countComments(postData.comments)} />
       </div>
       {
-        postData.comments &&
+        (postData.comments || commentLoading.loading) &&
         <div className="Post__comments">
-          <CommentBar replyData={replyData} setReplyData={setReplyData} comments={postData.comments} />
+          {commentLoading.loading && commentLoading.postId === postData.postId && <div><CommentSkeleton /></div>}
+          {postData.comments && <CommentBar replyData={replyData} setReplyData={setReplyData} comments={postData.comments} />}
         </div>
       }
       <CommentInput replyData={replyData} setReplyData={setReplyData} post={postData} />

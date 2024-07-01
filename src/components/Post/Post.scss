@@ -38,6 +38,11 @@
         cursor: pointer;
         transition: 200ms;
 
+        &:disabled {
+          background-color: $blue-disabled;
+          cursor: not-allowed;
+        }
+
         &.active {
           display: block;
         }

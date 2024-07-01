@@ -47,7 +47,7 @@ export default function Photos() {
   return (
     <div className='Photos'>
       {
-        pictures.length === 0
+        pictures.filter(elem => elem.image).length === 0
           ? <p className='no-users'>no pictures available</p>
           : pictures.map(pic =>
             pic.image && <div key={pic.postId} className="Photos__img">

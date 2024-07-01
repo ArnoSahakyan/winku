@@ -15,21 +15,29 @@ export type TuserInfo = {
   roles: string[] | undefined;
 }
 
-const initialState: { data: TuserInfo, status: string, error: string | undefined } = {
-  data: {
-    id: undefined,
-    fname: undefined,
-    username: undefined,
-    email: undefined,
-    pfp: undefined,
-    coverPhoto: undefined,
-    job: undefined,
-    onlineStatus: undefined,
-    accessToken: undefined,
-    refreshToken: undefined,
-    roles: undefined,
-  },
-  status: 'idle',
+type TuserInfoSlice = {
+  data: TuserInfo,
+  loading: { loading: boolean, type: string | undefined },
+  error: string | undefined
+}
+
+const initialData = {
+  id: undefined,
+  fname: undefined,
+  username: undefined,
+  email: undefined,
+  pfp: undefined,
+  coverPhoto: undefined,
+  job: undefined,
+  onlineStatus: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
+  roles: undefined,
+}
+
+const initialState: TuserInfoSlice = {
+  data: initialData,
+  loading: { loading: false, type: undefined },
   error: undefined
 }
 
@@ -45,7 +53,6 @@ const userInfoSlice = createSlice({
     },
     userLogout: (state) => {
       state.data = initialState.data;
-      state.status = 'idle';
       state.error = undefined;
     },
   },
@@ -57,22 +64,27 @@ const userInfoSlice = createSlice({
           pfp: action.payload.pfp,
           coverPhoto: action.payload.coverPhoto
         };
-        state.status = 'succeeded';
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.status = 'loading';
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
         state.error = action.error.message;
       })
+
       .addCase(changeUserImage.fulfilled, (state, action) => {
         if (action.payload.type === "pfp") {
           state.data.pfp = action.payload.pfp
         } else if (action.payload.type === "coverPhoto") {
           state.data.coverPhoto = action.payload.coverPhoto
         }
+        state.loading = { loading: false, type: undefined };
       })
+      .addCase(changeUserImage.pending, (state, action) => {
+        state.loading = { loading: true, type: action.meta.arg.type };
+      })
+      .addCase(changeUserImage.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = { loading: false, type: undefined };
+      })
+
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {
         state.data.onlineStatus = payload.onlineStatus
@@ -102,11 +114,13 @@ const userInfoSlice = createSlice({
     getCoverPhoto: (state) => state.data.coverPhoto,
     getStatus: (state) => state.data.onlineStatus,
     getAccessToken: (state) => state.data.accessToken,
-    getRefreshToken: (state) => state.data.refreshToken
+    getRefreshToken: (state) => state.data.refreshToken,
+    getLoading: state => state.loading,
+    getError: state => state.error
   }
 });
 
 export const { setStatus, setAccessToken, userLogout } = userInfoSlice.actions;
-export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken } = userInfoSlice.selectors;
+export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken, getLoading, getError } = userInfoSlice.selectors;
 
 export default userInfoSlice.reducer;

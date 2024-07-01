@@ -18,6 +18,20 @@
     z-index: 0;
   }
 
+  .upload-loader {
+    background-color: $grey-bg;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .secondary-loader {
+      scale: 2;
+    }
+  }
+
   .ProfileCover {
     // position: relative;
     width: 100%;
@@ -127,7 +141,7 @@
 
 
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 600px) {
   .ProfileCoverBG {
     margin: 0;
     height: 250px;

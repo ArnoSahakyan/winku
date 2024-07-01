@@ -42,7 +42,9 @@ export type Tunassocitaed = {
 type TUsers = {
   requests: TRequest[],
   friendsBack: TFriendBack[],
-  unassociated: Tunassocitaed[]
+  unassociated: Tunassocitaed[],
+  loading: boolean,
+  error: string,
 }
 
 export type TMessages = {
@@ -55,7 +57,9 @@ export type TMessages = {
 const initialState: TUsers = {
   requests: [],
   friendsBack: [],
-  unassociated: []
+  unassociated: [],
+  loading: false,
+  error: undefined
 };
 
 const friendsSlice = createSlice({
@@ -91,32 +95,63 @@ const friendsSlice = createSlice({
     builder
       .addCase(getFriendsApi.fulfilled, (state, { payload }) => {
         state.friendsBack = [...payload];
+        state.loading = false;
       })
+      .addCase(getFriendsApi.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getFriendsApi.rejected, (state, { error }) => {
+        state.error = error.message
+        state.loading = false;
+      })
+
       .addCase(getRequestsApi.fulfilled, (state, { payload }) => {
         state.requests = [...payload];
+        state.loading = false;
       })
+      .addCase(getRequestsApi.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRequestsApi.rejected, (state, { error }) => {
+        state.error = error.message
+        state.loading = false;
+      })
+
+      .addCase(getUnassociatedApi.fulfilled, (state, { payload }) => {
+        state.unassociated = [...payload]
+        state.loading = false;
+      })
+      .addCase(getUnassociatedApi.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUnassociatedApi.rejected, (state, { error }) => {
+        state.error = error.message
+        state.loading = false;
+      })
+
       .addCase(deleteFriend.fulfilled, (state, { payload }) => {
         state.friendsBack = state.friendsBack.filter(friend => friend.id != payload.friendId);
       })
+
+
       .addCase(respondRequest.fulfilled, (state, { payload }) => {
         state.requests = state.requests.filter(request => request.requestId != payload.requestId);
       })
-      .addCase(getUnassociatedApi.fulfilled, (state, { payload }) => {
-        state.unassociated = [...payload]
-      })
+
+
       .addCase(getMessages.fulfilled, (state, { payload }) => {
         const friend = state.friendsBack.find(friend => friend.id == payload.friendId)
-        if (friend) { friend['messages'] = payload.messages }
+        if (friend) friend.messages = payload.messages
       })
-
   },
   selectors: {
     getRequests: (state) => state.requests,
     getFriendsBack: (state) => state.friendsBack,
     getUnassociated: (state) => state.unassociated,
+    getFriendsLoading: (state) => state.loading,
   }
 });
 
 export const { sendMessage, receiveMessage } = friendsSlice.actions
-export const { getRequests, getFriendsBack, getUnassociated } = friendsSlice.selectors
+export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading } = friendsSlice.selectors
 export default friendsSlice.reducer;

@@ -11,6 +11,12 @@
   border-radius: 5px;
   padding: 20px;
 
+  .FriendSkeleton {
+    width: 100%;
+    scale: 0.9;
+    transform-origin: left;
+  }
+
   &__search {
     form {
       input {

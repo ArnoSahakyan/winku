@@ -12,6 +12,12 @@
   z-index: 999;
   background-color: $white;
 
+  &>div {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
+
   &__logo {
     width: 95px;
     height: 34px;
@@ -87,7 +93,6 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    padding-left: 200px;
 
     li {
       position: relative;
@@ -250,7 +255,7 @@
 }
 
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 600px) {
   .Navigation {
     display: none;
   }
