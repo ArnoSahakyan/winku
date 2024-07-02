@@ -30,7 +30,7 @@ export default function Photos() {
   }
 
   useEffect(() => {
-    if (pictures.length === 0) {
+    if (pictures.data.length === 0) {
       if (totalPages !== 0) {
         dispatch(getUserPosts({ limit, offset }))
           .then((response) => {
@@ -42,20 +42,20 @@ export default function Photos() {
           });
       }
     }
-  }, [dispatch, offset, pictures.length, totalPages]);
+  }, [dispatch, offset, pictures.data.length, totalPages]);
 
   return (
     <div className='Photos'>
       {
-        pictures.filter(elem => elem.image).length === 0
+        pictures.data.filter(elem => elem.image).length === 0
           ? <p className='no-users'>no pictures available</p>
-          : pictures.map(pic =>
+          : pictures.data.map(pic =>
             pic.image && <div key={pic.postId} className="Photos__img">
               <img src={pic.image} alt={`Post N${pic.postId.toString()}`} />
             </div>
           )
       }
-      {pictures.filter(elem => elem.image).length > 0 && (totalPages && currentPage < totalPages) && (
+      {pictures.data.filter(elem => elem.image).length > 0 && (totalPages && currentPage < totalPages) && (
         <Reload func={() => callNewPosts(limit, offset)} />
       )}
     </div>

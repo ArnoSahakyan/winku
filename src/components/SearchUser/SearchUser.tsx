@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from 'react';
 import IconSearch from '../shared/Icons/IconSearch';
-import './SearchUser.scss';
 import { useDispatch } from 'react-redux';
 import { TsearchedUsers, searchUsers } from '../../store/features/userInfo/userThunks';
 import { debounce } from 'lodash';
 import Friend from '../FriendsBar/Friend/Friend';
 import { AppDispatch } from '../../store/setup';
+import SecondaryLoader from '../shared/SecondaryLoader/SecondaryLoader';
+import './SearchUser.scss';
 
 export default function SearchUser() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -40,15 +41,14 @@ export default function SearchUser() {
               }
               setOffset(newOffset + limit);
               setHasMore(payload.currentPage < payload.totalPages);
-              setLoading(false);
-            } else {
-              setLoading(false);
             }
           })
           .catch((err) => {
             setError(err.message || 'Failed to fetch users');
+          })
+          .finally(() => {
             setLoading(false);
-          });
+          })
       } else {
         setResults([]);
       }
@@ -71,24 +71,26 @@ export default function SearchUser() {
       <a onClick={() => setSearchOpen(!searchOpen)}>
         <IconSearch />
       </a>
-      <input className={`${searchOpen ? 'active' : 'inactive'} searchFriend`}
-        type="search"
-        name="search"
-        id="search"
-        placeholder='Search User'
-        value={searchTerm}
-        onChange={handleChange}
-      />
-
+      <div className='SearchUser__input'>
+        <input className={`${searchOpen ? 'active' : 'inactive'} searchFriend`}
+          type="text"
+          name="search"
+          id="search"
+          placeholder='Search User'
+          value={searchTerm}
+          onChange={handleChange}
+        />
+        {loading && <SecondaryLoader />}
+      </div>
       {
         results &&
         <div className={`${searchOpen ? 'active' : 'inactive'} SearchUser__results`}>
           {error && <p>Error: {error}</p>}
           {
-            results.length > 0 ? results.map((user) => (
+            !loading && (results.length > 0 ? results.map((user) => (
               <Friend key={user.id} user={user} onlyImg={false} />
             ))
-              : <p className='no-users'>No Users Available</p>
+              : <p className='no-users'>No Users Available</p>)
           }
           {hasMore && (!loading ? (
             <p className='load' onClick={handleLoadMore}>Load More</p>

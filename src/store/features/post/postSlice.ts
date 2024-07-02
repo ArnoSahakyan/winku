@@ -27,8 +27,20 @@ export type PostState = {
 };
 
 type TpostInitialState = {
-  userPosts: PostState[],
-  newsfeedPosts: PostState[],
+  userPosts: {
+    data: PostState[],
+    currentPage: number,
+    totalPages: number | undefined,
+    totalItems: number | undefined
+    offset: number
+  },
+  newsfeedPosts: {
+    data: PostState[],
+    currentPage: number,
+    totalPages: number | undefined,
+    totalItems: number | undefined
+    offset: number
+  },
   loading: boolean,
   createLoading: boolean,
   deleteLoading: { loading: boolean, postId: number | undefined },
@@ -37,8 +49,20 @@ type TpostInitialState = {
 }
 
 const initialState: TpostInitialState = {
-  userPosts: [],
-  newsfeedPosts: [],
+  userPosts: {
+    data: [],
+    currentPage: 1,
+    totalPages: undefined,
+    totalItems: undefined,
+    offset: 0
+  },
+  newsfeedPosts: {
+    data: [],
+    currentPage: 1,
+    totalPages: undefined,
+    totalItems: undefined,
+    offset: 0
+  },
   loading: false,
   createLoading: false,
   deleteLoading: { loading: false, postId: undefined },
@@ -71,9 +95,13 @@ const postSlice = createSlice({
     builder
       .addCase(getUserPosts.fulfilled, (state, { payload, meta }) => {
         if (meta.arg.offset === 0) {
-          state.userPosts = payload.data;
+          state.userPosts = payload;
         } else {
-          state.userPosts.push(...payload.data);
+          state.userPosts.data.push(...payload.data);
+          state.userPosts.currentPage = payload.currentPage;
+          state.userPosts.offset = payload.offset;
+          state.userPosts.totalItems = payload.totalItems;
+          state.userPosts.totalPages = payload.totalPages
         }
         state.loading = false;
       })
@@ -87,9 +115,13 @@ const postSlice = createSlice({
 
       .addCase(getNewsfeed.fulfilled, (state, { payload, meta }) => {
         if (meta.arg.offset === 0) {
-          state.newsfeedPosts = payload.data;
+          state.newsfeedPosts = payload;
         } else {
-          state.newsfeedPosts.push(...payload.data);
+          state.newsfeedPosts.data.push(...payload.data);
+          state.newsfeedPosts.currentPage = payload.currentPage;
+          state.newsfeedPosts.offset = payload.offset;
+          state.newsfeedPosts.totalItems = payload.totalItems;
+          state.newsfeedPosts.totalPages = payload.totalPages
         }
         state.loading = false;
       })
@@ -106,7 +138,7 @@ const postSlice = createSlice({
           ...payload,
           image: payload.image ? payload.image : null,
         };
-        state.userPosts.unshift(modifiedData)
+        state.userPosts.data.unshift(modifiedData)
         state.createLoading = false
       })
       .addCase(createPost.pending, (state) => {
@@ -118,7 +150,7 @@ const postSlice = createSlice({
       })
 
       .addCase(deletePost.fulfilled, (state, action) => {
-        state.userPosts = state.userPosts.filter(post => post.postId != action.payload.postId)
+        state.userPosts.data = state.userPosts.data.filter(post => post.postId != action.payload.postId)
         state.deleteLoading = { loading: false, postId: undefined };
       })
       .addCase(deletePost.pending, (state, action) => {
@@ -131,14 +163,14 @@ const postSlice = createSlice({
 
       .addCase(createComment.fulfilled, (state, action) => {
         if (action.payload.uploaderId === action.payload.userId) {
-          const post = state.userPosts.find(post => post.postId === action.payload.postId);
+          const post = state.userPosts.data.find(post => post.postId === action.payload.postId);
           if (post) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { uploaderId, ...comment } = action.payload;
             addComment(post, comment);
           }
         } else {
-          const post = state.newsfeedPosts.find(post => post.postId === action.payload.postId);
+          const post = state.newsfeedPosts.data.find(post => post.postId === action.payload.postId);
           if (post) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { uploaderId, ...comment } = action.payload;

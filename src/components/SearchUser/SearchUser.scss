@@ -1,12 +1,24 @@
 @use '@assets/webColors' as *;
 
 .SearchUser {
+  .SearchUser__input {
+    position: relative;
+  }
+
+  .secondary-loader {
+    position: absolute;
+    right: 0;
+    top: 18px;
+    display: block;
+    scale: 0.35;
+  }
+
   .searchFriend {
     position: absolute;
     width: 260px;
     padding: 15px 18px;
     font-size: 15px;
-    top: 40px;
+    top: 17px;
     right: 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, .3);
     border: none;
@@ -64,11 +76,15 @@
   }
 }
 
-
 @media screen and (max-width: 600px) {
   .SearchUser {
     padding: 10px;
     background-color: $blue;
+
+    .secondary-loader {
+      top: -4px;
+      scale: 0.3;
+    }
 
     a {
       display: none;
