@@ -5,6 +5,19 @@
   grid-template-columns: 1fr 4fr;
   height: 450px;
 
+  .no-users {
+    color: $blue;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  &-nomessages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+  }
+
   &__friends {
     outline: 2px solid $grey-bg;
     padding-left: 10px;
@@ -65,12 +78,6 @@
     .chat {
       height: 250px;
       overflow-y: auto;
-
-      .no-users {
-        color: $blue;
-        font-weight: 500;
-        text-transform: capitalize;
-      }
 
       &-loading {
         display: flex;
