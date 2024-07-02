@@ -103,6 +103,7 @@ const friendsSlice = createSlice({
       })
       .addCase(getFriendsApi.pending, (state) => {
         state.loading = true;
+        state.error = undefined;
       })
       .addCase(getFriendsApi.rejected, (state, { error }) => {
         state.error = error.message
@@ -115,6 +116,7 @@ const friendsSlice = createSlice({
       })
       .addCase(getRequestsApi.pending, (state) => {
         state.loading = true;
+        state.error = undefined;
       })
       .addCase(getRequestsApi.rejected, (state, { error }) => {
         state.error = error.message
@@ -127,6 +129,7 @@ const friendsSlice = createSlice({
       })
       .addCase(getUnassociatedApi.pending, (state) => {
         state.loading = true;
+        state.error = undefined;
       })
       .addCase(getUnassociatedApi.rejected, (state, { error }) => {
         state.error = error.message
@@ -139,6 +142,7 @@ const friendsSlice = createSlice({
       })
       .addCase(deleteFriend.pending, (state, action) => {
         state.respondLoading = { loading: true, userId: action.meta.arg }
+        state.error = undefined;
       })
       .addCase(deleteFriend.rejected, (state, { error }) => {
         state.error = error.message
@@ -151,6 +155,7 @@ const friendsSlice = createSlice({
       })
       .addCase(respondRequest.pending, (state, action) => {
         state.respondLoading = { loading: true, userId: action.meta.arg.senderId }
+        state.error = undefined;
       })
       .addCase(respondRequest.rejected, (state, { error }) => {
         state.error = error.message
@@ -162,6 +167,7 @@ const friendsSlice = createSlice({
       })
       .addCase(sendRequest.pending, (state, action) => {
         state.respondLoading = { loading: true, userId: action.meta.arg }
+        state.error = undefined;
       })
       .addCase(sendRequest.rejected, (state, { error }) => {
         state.error = error.message
@@ -175,6 +181,7 @@ const friendsSlice = createSlice({
       })
       .addCase(getMessages.pending, (state) => {
         state.messageLoading = true;
+        state.error = undefined;
       })
       .addCase(getMessages.rejected, (state, action) => {
         state.error = action.error.message
@@ -188,9 +195,10 @@ const friendsSlice = createSlice({
     getFriendsLoading: (state) => state.loading,
     getRespondLoading: (state) => state.respondLoading,
     getMessagesLoading: (state) => state.messageLoading,
+    getFriendsError: (state) => state.error
   }
 });
 
 export const { sendMessage, receiveMessage } = friendsSlice.actions
-export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading, getRespondLoading, getMessagesLoading } = friendsSlice.selectors
+export const { getRequests, getFriendsBack, getUnassociated, getFriendsLoading, getRespondLoading, getMessagesLoading, getFriendsError } = friendsSlice.selectors
 export default friendsSlice.reducer;

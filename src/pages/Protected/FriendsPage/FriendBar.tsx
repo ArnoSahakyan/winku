@@ -53,7 +53,7 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
         {isFriend === 'friend' && (
           <label htmlFor={`decline-${id}`}>
             <span className='span-decline'>&#xF659;</span>
-            <input type='button' id={`decline-${id}`} className='decline' disabled={isLoading(id)} value="Unfriend" onClick={() => handleUnfriend(id)} />
+            <input type='button' id={`decline-${id}`} className='decline' disabled={isLoading(id)} value="Unfriend" onClick={() => handleUnfriend(1000)} />
           </label>
         )}
         {isFriend === 'request' && (

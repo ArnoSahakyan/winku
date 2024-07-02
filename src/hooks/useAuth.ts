@@ -8,11 +8,11 @@ import { toast } from 'react-toastify';
 import { TlogInFormState } from "../pages/NotProtected/LogIn/LogIn";
 import { TsignUpFormState } from "../pages/NotProtected/SignUp/SignUp";
 
-const notifyError = (error: string) => {
+export const notifyError = (error: string) => {
   toast.error(error)
 }
 
-const notifySuccess = (message: string) => {
+export const notifySuccess = (message: string) => {
   toast.success(message)
 }
 

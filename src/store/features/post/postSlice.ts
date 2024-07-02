@@ -107,6 +107,7 @@ const postSlice = createSlice({
       })
       .addCase(getUserPosts.pending, (state) => {
         state.loading = true;
+        state.error = undefined;
       })
       .addCase(getUserPosts.rejected, (state, action) => {
         state.error = action.error.message;
@@ -127,6 +128,7 @@ const postSlice = createSlice({
       })
       .addCase(getNewsfeed.pending, (state) => {
         state.loading = true;
+        state.error = undefined;
       })
       .addCase(getNewsfeed.rejected, (state, action) => {
         state.error = action.error.message;
@@ -143,6 +145,7 @@ const postSlice = createSlice({
       })
       .addCase(createPost.pending, (state) => {
         state.createLoading = true
+        state.error = undefined;
       })
       .addCase(createPost.rejected, (state, action) => {
         state.error = action.error.message;
@@ -155,6 +158,7 @@ const postSlice = createSlice({
       })
       .addCase(deletePost.pending, (state, action) => {
         state.deleteLoading = { loading: true, postId: action.meta.arg };
+        state.error = undefined;
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.error = action.error.message;
@@ -181,6 +185,7 @@ const postSlice = createSlice({
       })
       .addCase(createComment.pending, (state, action) => {
         state.commentLoading = { loading: true, postId: action.meta.arg.postId };
+        state.error = undefined;
       })
       .addCase(createComment.rejected, (state, action) => {
         state.error = action.error.message;

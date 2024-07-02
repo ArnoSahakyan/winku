@@ -23,6 +23,7 @@ export default function FriendsPage() {
     }
   }, [activePage, dispatch, unassociated.length])
 
+
   return (
     <div className='FriendsPage'>
       <div className="FriendsPage__select">

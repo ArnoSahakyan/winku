@@ -79,12 +79,12 @@ const userInfoSlice = createSlice({
       })
       .addCase(changeUserImage.pending, (state, action) => {
         state.loading = { loading: true, type: action.meta.arg.type };
+        state.error = undefined;
       })
       .addCase(changeUserImage.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = { loading: false, type: undefined };
       })
-
 
       .addCase(changeOnlineStatus.fulfilled, (state, { payload }) => {
         state.data.onlineStatus = payload.onlineStatus
@@ -115,11 +115,11 @@ const userInfoSlice = createSlice({
     getAccessToken: (state) => state.data.accessToken,
     getRefreshToken: (state) => state.data.refreshToken,
     getLoading: state => state.loading,
-    getError: state => state.error
+    getUserError: state => state.error
   }
 });
 
 export const { setStatus, setAccessToken, userLogout } = userInfoSlice.actions;
-export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken, getLoading, getError } = userInfoSlice.selectors;
+export const { getUserID, getUsername, getName, getEmail, getPfp, getJob, getCoverPhoto, getStatus, getAccessToken, getRefreshToken, getLoading, getUserError } = userInfoSlice.selectors;
 
 export default userInfoSlice.reducer;
