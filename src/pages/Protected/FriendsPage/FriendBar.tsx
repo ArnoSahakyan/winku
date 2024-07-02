@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
-import { TFriendBack, TRequest, Tunassocitaed } from '../../../store/features/friends/friendsSlice';
-import './FriendBar.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { TFriendBack, TRequest, Tunassocitaed, getRespondLoading } from '../../../store/features/friends/friendsSlice';
 import { deleteFriend, respondRequest, sendRequest } from '../../../store/features/friends/friendThunks';
 import { useState } from 'react';
 import { AppDispatch } from '../../../store/setup';
+import './FriendBar.scss'
 
 interface FriendBarProps {
   data: TFriendBack | TRequest | Tunassocitaed;
@@ -13,6 +13,7 @@ interface FriendBarProps {
 export default function FriendBar({ data, isFriend }: FriendBarProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [sentFriend, setSentFriend] = useState(false);
+  const respondLoading = useSelector(getRespondLoading);
   const id = (isFriend === 'friend' || isFriend === 'none') ? (data as TFriendBack).id : (data as TRequest).senderId;
   const fname = (isFriend === 'friend' || isFriend === 'none') ? (data as TFriendBack).fname : (data as TRequest).fname;
   const pfp = (isFriend === 'friend' || isFriend === 'none') ? (data as TFriendBack).pfp : (data as TRequest).pfp;
@@ -35,6 +36,10 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
     dispatch(respondRequest(data))
   }
 
+  const isLoading = (id: number) => {
+    return respondLoading.loading && respondLoading.userId === id
+  }
+
   return (
     <div className='FriendBar'>
       <div className="FriendBar__content">
@@ -48,18 +53,18 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
         {isFriend === 'friend' && (
           <label htmlFor={`decline-${id}`}>
             <span className='span-decline'>&#xF659;</span>
-            <input type='button' id={`decline-${id}`} className='decline' value="Unfriend" onClick={() => handleUnfriend(id)} />
+            <input type='button' id={`decline-${id}`} className='decline' disabled={isLoading(id)} value="Unfriend" onClick={() => handleUnfriend(id)} />
           </label>
         )}
         {isFriend === 'request' && (
           <>
             <label htmlFor={`decline-${id}`}>
               <span className='span-decline'>&#xF659;</span>
-              <input type='button' id={`decline-${id}`} className='decline' value="Delete Request" onClick={() => handleRequest('rejected', id)} />
+              <input type='button' id={`decline-${id}`} className='decline' value="Delete Request" disabled={isLoading(id)} onClick={() => handleRequest('rejected', id)} />
             </label>
             <label htmlFor={`confirm-${id}`}>
               <span className='span-confirm'>&#xF633;</span>
-              <input type='button' id={`confirm-${id}`} className='confirm' value="Confirm" onClick={() => handleRequest('accepted', id)} />
+              <input type='button' id={`confirm-${id}`} className='confirm' value="Confirm" disabled={isLoading(id)} onClick={() => handleRequest('accepted', id)} />
             </label>
           </>
         )}
@@ -70,7 +75,7 @@ export default function FriendBar({ data, isFriend }: FriendBarProps) {
               {
                 sentFriend
                   ? <input type='button' disabled={true} id={`confirm-${id}`} className='confirm' value="Request Sent" />
-                  : <input type='button' id={`confirm-${id}`} className='confirm' value="Add Friend" onClick={() => handleAddFriend(id)} />
+                  : <input type='button' id={`confirm-${id}`} className='confirm' disabled={isLoading(id)} value="Add Friend" onClick={() => handleAddFriend(id)} />
               }
             </label>
           </>

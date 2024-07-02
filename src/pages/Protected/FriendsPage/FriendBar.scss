@@ -57,6 +57,11 @@
 
       &.decline {
         background-color: $decline;
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
       }
 
       &.confirm {
@@ -64,8 +69,8 @@
 
         &:disabled {
           background-color: $blue-disabled;
-          cursor: unset;
           opacity: 0.5;
+          cursor: unset;
         }
       }
     }
