@@ -52,6 +52,7 @@ export const getUserPosts = createAsyncThunk('post/getUserPosts', async ({ limit
     totalPages: response.data.totalPages,
     currentPage: response.data.currentPage,
     data: modifiedData,
+    offset: offset
   };
 });
 
@@ -71,6 +72,7 @@ export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, 
     totalPages: response.data.totalPages,
     currentPage: response.data.currentPage,
     data: modifiedData,
+    offset: offset
   };
 });
 
