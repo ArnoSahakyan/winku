@@ -100,33 +100,10 @@
       align-items: center;
       justify-content: center;
 
-      .searchFriend {
-        position: absolute;
-        width: 260px;
-        padding: 15px 18px;
-        font-size: 15px;
-        top: 40px;
-        right: 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-        border: none;
-        border-bottom: 2px solid $dark-grey;
-        outline: none;
-        display: none;
-
-        &:focus {
-          border-bottom: 2px solid $blue;
-        }
-
-        &.active {
-          display: block;
-        }
-      }
-
       a {
         padding: 0 15px;
         color: $dark-grey;
         cursor: pointer;
-
 
         svg {
           width: 18px;
