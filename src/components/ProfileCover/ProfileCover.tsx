@@ -42,7 +42,7 @@ export default function ProfileCover() {
               type="file"
               accept="image/*"
               onChange={handlePfp}
-              style={{ display: 'none' }} // Hide the input element
+              style={{ display: 'none' }}
             />
           </div>
           <label htmlFor="upload" className='editphoto'>Edit Cover Photo</label>
@@ -51,7 +51,7 @@ export default function ProfileCover() {
             type="file"
             accept="image/*"
             onChange={handleCover}
-            style={{ display: 'none' }} // Hide the input element
+            style={{ display: 'none' }}
           />
         </div>
 

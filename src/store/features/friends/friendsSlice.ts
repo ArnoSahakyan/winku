@@ -71,7 +71,6 @@ const friendsSlice = createSlice({
   initialState: initialState,
   reducers: {
     receiveMessage: (state, { payload }) => {
-      // const { friendId, message } = payload;
       const friend = state.friendsBack.find(friend => friend.id === payload.senderId);
 
       if (friend) {
@@ -83,7 +82,6 @@ const friendsSlice = createSlice({
       }
     },
     sendMessage: (state, { payload }) => {
-      // const { friendId, message } = payload;
       const friend = state.friendsBack.find(friend => friend.id === payload.receiverId);
       if (friend) {
         const newMessage = {

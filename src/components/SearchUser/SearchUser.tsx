@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import IconSearch from '../shared/Icons/IconSearch';
 import { useDispatch } from 'react-redux';
 import { TsearchedUsers, searchUsers } from '../../store/features/userInfo/userThunks';
@@ -19,6 +19,23 @@ export default function SearchUser() {
   const [hasMore, setHasMore] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const limit = 4;
+
+  const searchBar = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchBar.current && !searchBar.current.contains(event.target as Node)) {
+      setSearchOpen(false);
+      setSearchTerm('');
+      setResults(undefined)
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const debouncedSearch = useCallback(
     debounce((term: string, newOffset: number = 0) => {
@@ -67,7 +84,7 @@ export default function SearchUser() {
   };
 
   return (
-    <div className='SearchUser'>
+    <div className='SearchUser' ref={searchBar}>
       <a onClick={() => setSearchOpen(!searchOpen)}>
         <IconSearch />
       </a>

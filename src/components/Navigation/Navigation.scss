@@ -1,7 +1,7 @@
 @use '@assets/webColors' as *;
 
 .Navigation {
-  padding: 0 20px;
+  padding: 0 70px;
   box-shadow: 0 0 5px rgba(0, 0, 0, .2);
   display: flex;
   justify-content: space-between;
@@ -122,7 +122,7 @@
     .actions {
       position: absolute;
       top: 46px;
-      left: -60px;
+      right: -40px;
       background-color: $white;
       width: 150px;
       display: none;

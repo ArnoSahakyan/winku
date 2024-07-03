@@ -39,7 +39,7 @@ export default function PageBar() {
             id="upload-pfp"
             type="file"
             accept="image/*"
-            style={{ display: 'none' }} // Hide the input element
+            style={{ display: 'none' }}
           />
         </div>
         <div className="name">

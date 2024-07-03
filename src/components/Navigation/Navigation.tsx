@@ -138,8 +138,6 @@ export default function Navigation() {
             <div onClick={() => setStatusOpen(!statusOpen)} className={`${status} user`}>
               <img src={pfp} alt="User Profile" />
             </div>
-            <span>&#xF479;</span>
-
             <ul className={`${statusOpen ? 'open' : ''} actions`}>
               {onlineStatus.map(status => (
                 <li className={`${status} status`} onClick={() => dispatch(changeOnlineStatus({ onlineStatus: status }))} key={status}>{status}</li>

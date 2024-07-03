@@ -60,24 +60,6 @@ export const changeUserImage = createAsyncThunk(
   }
 );
 
-// export const changeCover = createAsyncThunk(
-//   'userInfo/changeCoverAsync',
-//   async (data: File | undefined) => {
-//     if (data) {
-//       const formData = new FormData();
-//       formData.append('file', data);
-
-//       const response = await api.post(`${url}/api/upload/cover`, formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       });
-//       return response.data;
-//     }
-//     else return;
-//   }
-// );
-
 export const changeOnlineStatus = createAsyncThunk('userInfo/changeOnlineStatus',
   async (data: { onlineStatus: string }) => {
     const response = await api.patch(`${url}/api/user/status`, data)

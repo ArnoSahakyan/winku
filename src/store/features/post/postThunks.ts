@@ -29,7 +29,7 @@ const updatePfpPaths = (comments: (TComments | TReplies)[] | null): (TComments |
     };
 
     if ((updatedComment as TComments).replies) {
-      (updatedComment as TComments).replies = updatePfpPaths((updatedComment as TComments).replies) as TReplies[]; // Recursively update replies
+      (updatedComment as TComments).replies = updatePfpPaths((updatedComment as TComments).replies) as TReplies[];
     }
 
     return updatedComment;
