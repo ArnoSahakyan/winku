@@ -6,6 +6,20 @@
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
+  position: relative;
+
+  .input-wrapper {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+
+    .error {
+      font-size: 14px;
+      color: $red;
+      position: absolute;
+      // bottom: -25px;
+    }
+  }
 
   &__img {
     width: 57px;
@@ -106,6 +120,12 @@
   .CreatePost {
     padding: 20px;
     width: 100%;
+
+    .input-wrapper {
+      .error {
+        font-size: 12px;
+      }
+    }
 
     &__img {
       width: 30px;

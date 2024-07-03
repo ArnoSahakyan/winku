@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPfp } from '../../store/features/userInfo/userInfoSlice';
@@ -19,7 +19,7 @@ const initialValues: formType = {
 }
 
 const validationSchema = object().shape({
-  content: string().nullable(),
+  content: string().max(255).nullable(),
   file: mixed().nullable().test('file-or-content', 'Please enter some content or upload an image', function () {
     const { content, file } = this.parent;
     return content?.trim() !== '' || !!file;
@@ -51,7 +51,6 @@ export default function CreatePost() {
         resetForm();
         setFilePreview(null);
       })
-
   }
 
   return (
@@ -94,6 +93,9 @@ export default function CreatePost() {
                   />
                 </div>
                 <button disabled={isSubmitting} type="submit">{isSubmitting ? "Posting..." : "Post"}</button>
+              </div>
+              <div className="input-wrapper">
+                <ErrorMessage name="content" component="div" className="error" />
               </div>
               <div className="preview">
                 {filePreview && (
