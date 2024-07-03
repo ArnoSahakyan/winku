@@ -11,9 +11,12 @@
     li {
       position: relative;
       display: flex;
-      // align-items: flex-start;
       gap: 2px;
       cursor: pointer;
+
+      &.liked {
+        color: red;
+      }
 
       &:hover p {
         opacity: 1;

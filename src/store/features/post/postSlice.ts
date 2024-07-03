@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createComment, createPost, deletePost, getNewsfeed, getUserPosts } from "./postThunks";
+import { createComment, createPost, deletePost, getNewsfeed, getUserPosts, likePost, unlikePost } from "./postThunks";
 
 export type TReplies = {
   commentId: number;
@@ -18,12 +18,13 @@ export type PostState = {
   postId: number;
   content: string | null;
   image: string | undefined;
-  likes: number;
+  likeCount: number;
   createdAt: Date;
   fname: string;
   pfp: string;
   userId: number;
   comments: TComments[] | null;
+  likedByUser: boolean;
 };
 
 type TpostInitialState = {
@@ -150,6 +151,36 @@ const postSlice = createSlice({
       .addCase(createPost.rejected, (state, action) => {
         state.error = action.error.message;
         state.createLoading = false
+      })
+
+      .addCase(likePost.fulfilled, (state, { payload }) => {
+        if (payload.posterId === payload.userId) {
+          const post = state.userPosts.data.find(post => post.postId === payload.postId);
+          post.likeCount = post.likeCount + 1;
+          post.likedByUser = true
+        } else {
+          const post = state.newsfeedPosts.data.find(post => post.postId === payload.postId);
+          post.likeCount = post.likeCount + 1;
+          post.likedByUser = true
+        }
+      })
+      .addCase(likePost.rejected, (state, { error }) => {
+        state.error = error.message
+      })
+
+      .addCase(unlikePost.fulfilled, (state, { payload }) => {
+        if (payload.posterId === payload.userId) {
+          const post = state.userPosts.data.find(post => post.postId === payload.postId);
+          post.likeCount = post.likeCount - 1;
+          post.likedByUser = false
+        } else {
+          const post = state.newsfeedPosts.data.find(post => post.postId === payload.postId);
+          post.likeCount = post.likeCount - 1;
+          post.likedByUser = false
+        }
+      })
+      .addCase(unlikePost.rejected, (state, { error }) => {
+        state.error = error.message
       })
 
       .addCase(deletePost.fulfilled, (state, action) => {

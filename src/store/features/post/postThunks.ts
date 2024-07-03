@@ -109,3 +109,21 @@ export const createComment = createAsyncThunk('post/createComment', async (data:
   }
   return modifiedData
 })
+
+export const likePost = createAsyncThunk('post/likePost', async (data: { postId: number, userId: number }) => {
+  const response = await api.post(`${url}/api/like`, { postId: data.postId });
+  const modifiedData = {
+    ...response.data,
+    posterId: data.userId
+  }
+  return modifiedData;
+})
+
+export const unlikePost = createAsyncThunk('post/unlikePost', async (data: { postId: number, userId: number }) => {
+  const response = await api.post(`${url}/api/unlike`, { postId: data.postId });
+  const modifiedData = {
+    ...response.data,
+    posterId: data.userId
+  }
+  return modifiedData;
+})

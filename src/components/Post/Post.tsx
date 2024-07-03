@@ -12,8 +12,8 @@ import CommentSkeleton from '../shared/Skeletons/CommentSkeleton';
 import './Post.scss'
 
 export type TInsigths = {
-  likesCount: number,
-  commentsCount: number
+  post: PostState
+  commentsCount: number,
 }
 
 export default function Post({ postData }: { postData: PostState }) {
@@ -72,7 +72,7 @@ export default function Post({ postData }: { postData: PostState }) {
       <div className="Post__content">
         {postData.content && <p>{postData.content}</p>}
         {(postData.image) && <img className='pfp' src={postData.image} alt='profile picture' />}
-        <InfoBar likesCount={postData.likes} commentsCount={countComments(postData.comments)} />
+        <InfoBar post={postData} commentsCount={countComments(postData.comments)} />
       </div>
       {
         (postData.comments || commentLoading.loading) &&
