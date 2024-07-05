@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserPosts } from '../../../store/features/post/postThunks';
-import { userPostsSelector } from '../../../store/features/post/postSlice';
+import { postGetLoading, userPostsSelector } from '../../../store/features/post/postSlice';
 import Reload from '../../../components/shared/Reload/Reload';
 import { AppDispatch } from '../../../store/setup';
 import './Photos.scss'
+import PhotoSkeleton from '../../../components/shared/Skeletons/PhotoSkeleton';
 
 export default function Photos() {
   const pictures = useSelector(userPostsSelector)
   const dispatch = useDispatch<AppDispatch>();
   const limit = 3;
+  const loading = useSelector(postGetLoading);
 
   const callNewPosts = (limit: number, offset: number) => {
     if (pictures.currentPage < pictures.totalPages! || pictures.totalPages === null) {
@@ -29,16 +31,26 @@ export default function Photos() {
     callNewPosts(limit, pictures.offset + limit);
   };
 
+  console.log("LOADING PICTURES", loading);
+
+
   return (
     <div className='Photos'>
       {
-        pictures.data.filter(elem => elem.image).length === 0
+        (loading &&
+          <>
+            <PhotoSkeleton />
+            <PhotoSkeleton />
+            <PhotoSkeleton />
+          </>)
+        ||
+        (pictures.data.filter(elem => elem.image).length === 0
           ? <p className='no-users'>no pictures available</p>
           : pictures.data.map(pic =>
             pic.image && <div key={pic.postId} className="Photos__img">
               <img src={pic.image} alt={`Post N${pic.postId.toString()}`} />
             </div>
-          )
+          ))
       }
       {pictures.data.filter(elem => elem.image).length > 0 && (pictures.totalPages && pictures.currentPage < pictures.totalPages) && (
         <Reload func={handleReload} />
