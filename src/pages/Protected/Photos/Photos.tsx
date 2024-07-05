@@ -34,7 +34,7 @@ export default function Photos() {
   return (
     <div className='Photos'>
       {
-        (loading &&
+        (loading && pictures.data.length === 0 &&
           <>
             <PhotoSkeleton />
             <PhotoSkeleton />
@@ -49,7 +49,14 @@ export default function Photos() {
             </div>
           ))
       }
-      {pictures.data.filter(elem => elem.image).length > 0 && (pictures.totalPages && pictures.currentPage < pictures.totalPages) && (
+
+      {loading && pictures.data.length > 0 && <>
+        <PhotoSkeleton />
+        <PhotoSkeleton />
+        <PhotoSkeleton />
+      </>}
+
+      {!loading && pictures.data.filter(elem => elem.image).length > 0 && (pictures.totalPages && pictures.currentPage < pictures.totalPages) && (
         <Reload func={handleReload} />
       )}
     </div>
