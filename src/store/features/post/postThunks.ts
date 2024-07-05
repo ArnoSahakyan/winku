@@ -76,6 +76,20 @@ export const getNewsfeed = createAsyncThunk('post/getNewsfeed', async ({ limit, 
   };
 });
 
+export const getUserPhotos = createAsyncThunk('post/getUserPhotos', async ({ limit, offset }: { limit: number, offset: number }) => {
+  const response = await api.get(`${url}/api/photos`,
+    { params: { limit, offset } }
+  )
+  response.data
+  return {
+    totalItems: response.data.totalItems,
+    totalPages: response.data.totalPages,
+    currentPage: response.data.currentPage,
+    data: response.data.data,
+    offset: offset
+  }
+})
+
 export const createPost = createAsyncThunk('post/createPost', async (data: formType) => {
   const formData = new FormData();
   data.file ? formData.append('file', data.file) : null
