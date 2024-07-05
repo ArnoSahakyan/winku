@@ -31,9 +31,6 @@ export default function Photos() {
     callNewPosts(limit, pictures.offset + limit);
   };
 
-  console.log("LOADING PICTURES", loading);
-
-
   return (
     <div className='Photos'>
       {
