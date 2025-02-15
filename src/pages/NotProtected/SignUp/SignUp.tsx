@@ -36,9 +36,9 @@ const validationSchema = object({
 export default function SignUp() {
   const { signup } = useAuth();
 
-  const handleSubmit = (values: TsignUpFormState, { resetForm }: { resetForm: () => void }) => {
-    signup(values, { resetForm })
-  }
+  const handleSubmit = (values: TsignUpFormState, { resetForm, setSubmitting }: { resetForm: () => void, setSubmitting: (isSubmitting: boolean) => void }) => {
+    signup(values, { resetForm, setSubmitting });
+  };
 
   return (
     <div className='SignUp'>

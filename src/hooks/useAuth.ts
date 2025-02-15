@@ -31,21 +31,26 @@ const useAuth = () => {
     }
   }
 
-  const signin = (values: TlogInFormState) => {
-    dispatch(loginUser(values))
-      .then((res) => {
-        if (res.meta.requestStatus != "fulfilled") {
-          notifyError("Something went wrong, please try again");
-        }
-      })
-      .then(() => dispatch(changeOnlineStatus({ onlineStatus: 'online' })))
-  }
+  const signin = async (values: TlogInFormState, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    try {
+      const res = await dispatch(loginUser(values)).unwrap();
 
-  const signup = async (values: TsignUpFormState, { resetForm }: { resetForm: () => void }) => {
-    const newValues = {
-      ...values,
-      roles: ['user']
-    };
+      if (!res) {
+        notifyError("Something went wrong, please try again");
+        return;
+      }
+
+      dispatch(changeOnlineStatus({ onlineStatus: 'online' }));
+    } catch (error) {
+      notifyError("Something went wrong, please try again");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+
+  const signup = async (values: TsignUpFormState, { resetForm, setSubmitting }: { resetForm: () => void, setSubmitting: (isSubmitting: boolean) => void }) => {
+    const newValues = { ...values, roles: ['user'] };
 
     try {
       const res = await dispatch(signupUser(newValues)).unwrap();
@@ -62,8 +67,11 @@ const useAuth = () => {
       } else {
         notifyError("An unknown error occurred");
       }
+    } finally {
+      setSubmitting(false);
     }
   };
+
 
   const logout = async () => {
     dispatch(changeOnlineStatus({ onlineStatus: "offline" }))

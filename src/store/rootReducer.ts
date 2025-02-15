@@ -8,6 +8,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 export const userInfoPersistConfig = {
   key: 'userInfo',
   storage,
+  blacklist: ['error']
 };
 
 export const rootReducer = combineReducers({

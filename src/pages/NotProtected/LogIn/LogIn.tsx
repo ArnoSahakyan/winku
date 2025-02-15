@@ -31,10 +31,6 @@ const initialValues: TlogInFormState = {
 export default function LogIn() {
   const { signin } = useAuth();
 
-  const handleSubmit = (values: TlogInFormState) => {
-    signin(values)
-  };
-
   return (
     <div className='LogIn'>
 
@@ -62,7 +58,7 @@ export default function LogIn() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           validateOnChange={true}
-          onSubmit={handleSubmit}
+          onSubmit={(values, { setSubmitting }) => signin(values, { setSubmitting })}
         >
           {
             ({
